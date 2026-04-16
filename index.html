@@ -1,0 +1,2508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nikko Cajayon — Learn, Build, Lead</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── RESET & BASE ─────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #080c10;
+      --bg2:       #0d1117;
+      --bg3:       #111820;
+      --surface:   #141d27;
+      --border:    rgba(0,200,160,0.12);
+      --accent:    #00c8a0;
+      --accent2:   #0ea5e9;
+      --accent3:   #a78bfa;
+      --text:      #e2eaf4;
+      --muted:     #6b8099;
+      --mono:      'Space Mono', monospace;
+      --display:   'Syne', sans-serif;
+      --body:      'IBM Plex Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    ::selection { background: var(--accent); color: #000; }
+
+    /* ─── SCROLLBAR ──────────────────────────────── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+    /* ─── CANVAS BACKGROUND ──────────────────────── */
+    #particle-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.45;
+    }
+
+    /* ─── NAV ────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 3rem;
+      background: rgba(8,12,16,0.82);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 1px;
+      background: var(--accent);
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* ─── SECTIONS ───────────────────────────────── */
+    section {
+      position: relative;
+      z-index: 1;
+    }
+
+    .container {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* ─── HERO ───────────────────────────────────── */
+    #home {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 90px;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 5rem;
+      align-items: center;
+      width: 100%;
+    }
+
+    .hero-photo-wrap {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    .hero-photo-frame {
+      position: relative;
+      width: 300px;
+      height: 300px;
+    }
+
+    .hero-photo-frame::before {
+      content: '';
+      position: absolute;
+      inset: -10px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      animation: spin-slow 12s linear infinite;
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      border-radius: 0;
+    }
+
+    .hero-photo-frame::after {
+      content: '';
+      position: absolute;
+      inset: -20px;
+      border: 1px solid rgba(0,200,160,0.2);
+      border-radius: 50%;
+      animation: spin-slow 20s linear infinite reverse;
+    }
+
+    @keyframes spin-slow {
+      to { transform: rotate(360deg); }
+    }
+
+    .hero-photo {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center top;
+      border: 3px solid var(--surface);
+      position: relative;
+      z-index: 1;
+      filter: saturate(0.9) contrast(1.05);
+    }
+
+    .hero-photo-placeholder {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 3px solid var(--border);
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 4rem;
+      color: var(--accent);
+    }
+
+    .hero-badge {
+      position: absolute;
+      bottom: 10px;
+      right: -10px;
+      background: var(--surface);
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      padding: 0.35rem 0.9rem;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      z-index: 2;
+      white-space: nowrap;
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+
+    .hero-text { position: relative; }
+
+    .hero-label {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .hero-name {
+      font-family: var(--display);
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.05;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--text) 0%, #8ab4d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-name-j {
+      display: inline-block;
+      font-family: var(--body);
+      font-weight: 800;
+      font-size: 0.97em;
+      letter-spacing: -0.01em;
+      transform: translateY(0.01em);
+      background: linear-gradient(135deg, var(--text) 0%, #8ab4d4 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-tagline {
+      font-family: var(--display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 1.4rem;
+      letter-spacing: 0.06em;
+    }
+
+    .typewriter-wrap {
+      font-family: var(--mono);
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      min-height: 1.5rem;
+    }
+
+    #typewriter { color: var(--text); }
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1em;
+      background: var(--accent);
+      margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .hero-desc {
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 440px;
+      line-height: 1.75;
+      margin-bottom: 2.4rem;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent);
+      color: #000;
+      padding: 0.75rem 1.8rem;
+      border-radius: 4px;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background: #00e8ba;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,200,160,0.3);
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: var(--text);
+      padding: 0.75rem 1.8rem;
+      border-radius: 4px;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: all 0.2s;
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* ─── SECTION HEADERS ────────────────────────── */
+    .section-header {
+      margin-bottom: 4rem;
+    }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      max-width: 60px;
+      height: 1px;
+      background: var(--accent);
+      opacity: 0.4;
+    }
+
+    .section-title {
+      font-family: var(--display);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--text);
+    }
+
+    .section-title span { color: var(--accent); }
+
+    /* ─── ABOUT ──────────────────────────────────── */
+    #about { padding: 7rem 0; }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 1.2rem;
+      font-size: 0.95rem;
+    }
+
+    .about-text p strong { color: var(--text); font-weight: 500; }
+
+    /* SKILL ORBIT / RADAR */
+    .skill-radar-wrap {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .radar-title {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    #skill-canvas {
+      width: 340px;
+      height: 340px;
+      display: block;
+    }
+
+    /* ─── PROJECTS ───────────────────────────────── */
+    #portfolio { padding: 7rem 0; background: var(--bg2); }
+
+    .filter-tabs {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+
+    .filter-tab {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      padding: 0.45rem 1.1rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+
+    .filter-tab:hover, .filter-tab.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(0,200,160,0.06);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.4rem;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.6rem;
+      transition: all 0.3s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 0;
+      background: var(--accent);
+      transition: height 0.3s;
+    }
+
+    .project-card:hover {
+      border-color: rgba(0,200,160,0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.4);
+    }
+
+    .project-card:hover::before { height: 100%; }
+
+    .project-cat {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      color: var(--accent2);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.7rem;
+    }
+
+    .project-title {
+      font-family: var(--display);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.6rem;
+      line-height: 1.3;
+    }
+
+    .project-desc {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 1rem;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      padding: 0.25rem 0.6rem;
+      background: rgba(14,165,233,0.1);
+      border: 1px solid rgba(14,165,233,0.2);
+      border-radius: 3px;
+      color: var(--accent2);
+      letter-spacing: 0.06em;
+    }
+
+    .project-card[style*="display: none"] { display: none !important; }
+
+    /* ─── TALKS ──────────────────────────────────── */
+    #speaking { padding: 7rem 0; }
+
+    .talks-timeline {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .talks-track-wrap {
+      overflow: hidden;
+    }
+
+    .talks-track {
+      display: flex;
+      gap: 1.6rem;
+      transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+      will-change: transform;
+    }
+
+    .talk-card {
+      flex: 0 0 340px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+
+    .talk-card:hover {
+      border-color: rgba(0,200,160,0.3);
+      transform: translateY(-4px);
+    }
+
+    .talk-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+      filter: saturate(0.8);
+      transition: filter 0.3s;
+    }
+
+    .talk-img-placeholder {
+      width: 100%;
+      height: 180px;
+      background: var(--bg3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+
+    .talk-card:hover .talk-img { filter: saturate(1); }
+
+    .talk-body { padding: 1.3rem; }
+
+    .talk-venue {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .talk-title {
+      font-family: var(--display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+      line-height: 1.3;
+    }
+
+    .talk-topic {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .talks-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 2rem;
+    }
+
+    .talks-nav {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .nav-arrow {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .nav-arrow:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .talks-dots {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--border);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .dot.active {
+      background: var(--accent);
+      width: 20px;
+      border-radius: 3px;
+    }
+
+    /* ─── CERTIFICATIONS ─────────────────────────── */
+    #certifications { padding: 7rem 0; background: var(--bg2); }
+
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.4rem;
+    }
+
+    .cert-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.8rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+
+    .cert-card::after {
+      content: '✓';
+      position: absolute;
+      top: 1rem;
+      right: 1.2rem;
+      font-size: 1.2rem;
+      color: var(--accent);
+      opacity: 0.4;
+    }
+
+    .cert-card:hover {
+      border-color: rgba(0,200,160,0.3);
+      transform: translateY(-3px);
+    }
+
+    .cert-icon {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .cert-title {
+      font-family: var(--display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+
+    .cert-issuer {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+
+    .cert-validity {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    /* ─── AFFILIATIONS ───────────────────────────── */
+    #affiliations { padding: 7rem 0; }
+
+    .affiliations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.4rem;
+    }
+
+    .affil-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      transition: all 0.3s;
+    }
+
+    .affil-card:hover {
+      border-color: rgba(167,139,250,0.3);
+      transform: translateY(-3px);
+    }
+
+    .affil-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .affil-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+      background: var(--bg3);
+      flex-shrink: 0;
+    }
+
+    .affil-logo-placeholder {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .affil-name {
+      font-family: var(--display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .affil-role {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--accent3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 0.15rem;
+    }
+
+    .affil-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .affil-link {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      transition: color 0.2s;
+      align-self: flex-start;
+    }
+
+    .affil-link:hover { color: #00e8ba; }
+
+    /* ─── CONTACT ────────────────────────────────── */
+    #contact { padding: 7rem 0; background: var(--bg2); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+    }
+
+    .contact-info h3 {
+      font-family: var(--display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .contact-info p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.75;
+      margin-bottom: 2rem;
+    }
+
+    .socials {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      color: var(--muted);
+      text-decoration: none;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      transition: color 0.2s;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .social-link:hover { color: var(--accent); }
+
+    .social-icon {
+      width: 20px;
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-group label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text);
+      font-family: var(--body);
+      font-size: 0.9rem;
+      padding: 0.75rem 1rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+      resize: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0,200,160,0.08);
+    }
+
+    .form-group textarea { min-height: 120px; }
+
+    /* ─── FOOTER ─────────────────────────────────── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 2.5rem;
+      border-top: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    footer span { color: var(--accent); }
+
+    /* ─── SCROLL REVEAL ──────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    /* ─── MOBILE ──────────────────────────────────── */
+    @media (max-width: 860px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; text-align: center; padding-top: 2rem; }
+      .hero-photo-wrap { justify-content: center; }
+      .hero-desc { max-width: 100%; }
+      .hero-ctas { justify-content: center; }
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      #skill-canvas { width: 280px; height: 280px; }
+    }
+
+    /* ─── TERMINAL ───────────────────────────────────── */
+    #terminal-fab {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.6rem;
+    }
+
+    #terminal-toggle {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      box-shadow: 0 4px 24px rgba(0,200,160,0.35);
+      transition: all 0.25s;
+      color: #000;
+      position: relative;
+    }
+
+    #terminal-toggle:hover {
+      background: #00e8ba;
+      transform: scale(1.08);
+      box-shadow: 0 6px 32px rgba(0,200,160,0.5);
+    }
+
+    #terminal-toggle .fab-label {
+      position: absolute;
+      right: 62px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.3rem 0.75rem;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--accent);
+      white-space: nowrap;
+      letter-spacing: 0.1em;
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.3s;
+    }
+
+    #terminal-toggle.hide-label .fab-label { opacity: 0; }
+
+    #terminal-widget {
+      position: fixed;
+      bottom: 6rem;
+      right: 2rem;
+      width: 680px;
+      max-width: calc(100vw - 2rem);
+      height: 460px;
+      background: rgba(8,12,16,0.97);
+      border: 1px solid var(--accent);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      z-index: 199;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(0,200,160,0.08);
+      backdrop-filter: blur(20px);
+      transform: translateY(20px) scale(0.97);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+      overflow: hidden;
+    }
+
+    #terminal-widget.open {
+      transform: none;
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .term-titlebar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.65rem 1rem;
+      background: rgba(20,29,39,0.95);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      cursor: move;
+      user-select: none;
+    }
+
+    .term-dots {
+      display: flex;
+      gap: 0.45rem;
+    }
+
+    .term-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .term-dot.red    { background: #ff5f57; }
+    .term-dot.yellow { background: #febc2e; }
+    .term-dot.green  { background: #28c840; }
+    .term-dot.red:hover { filter: brightness(1.2); cursor: pointer; }
+
+    .term-title {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    .term-clear-btn {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      color: var(--muted);
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.2rem 0.5rem;
+      cursor: pointer;
+      letter-spacing: 0.08em;
+      transition: all 0.2s;
+    }
+
+    .term-clear-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+    .term-output {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem 1.2rem;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      line-height: 1.7;
+      scroll-behavior: smooth;
+    }
+
+    .term-output::-webkit-scrollbar { width: 3px; }
+    .term-output::-webkit-scrollbar-thumb { background: rgba(0,200,160,0.3); }
+
+    .term-line { margin-bottom: 0.15rem; }
+    .term-line.prompt { color: var(--accent); }
+    .term-line.prompt span.cmd { color: var(--text); }
+    .term-line.out  { color: #a0b4c8; }
+    .term-line.err  { color: #f87171; }
+    .term-line.success { color: var(--accent); }
+    .term-line.accent2 { color: var(--accent2); }
+    .term-line.accent3 { color: var(--accent3); }
+    .term-line.warn { color: #fbbf24; }
+    .term-line.blank { height: 0.6rem; }
+    .term-line.dim  { color: var(--muted); }
+
+    .term-bar {
+      display: inline-block;
+      height: 0.7em;
+      background: var(--accent);
+      vertical-align: middle;
+      border-radius: 2px;
+      margin-right: 0.3rem;
+    }
+
+    /* suggestion chips */
+    .term-suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      padding: 0.5rem 1.2rem;
+      border-top: 1px solid var(--border);
+      background: rgba(13,17,23,0.8);
+      flex-shrink: 0;
+    }
+
+    .suggestion-chip {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      padding: 0.22rem 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      cursor: pointer;
+      letter-spacing: 0.06em;
+      transition: all 0.18s;
+      background: transparent;
+    }
+
+    .suggestion-chip:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(0,200,160,0.06);
+    }
+
+    .term-input-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.7rem 1.2rem;
+      border-top: 1px solid var(--border);
+      background: rgba(13,17,23,0.9);
+      flex-shrink: 0;
+    }
+
+    .term-prompt-symbol {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    #term-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text);
+      caret-color: var(--accent);
+    }
+
+    .term-autocomplete {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      color: var(--muted);
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 720px) {
+      #terminal-widget { width: calc(100vw - 1rem); right: 0.5rem; bottom: 5.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="particle-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <a href="#home" class="nav-logo">// nikko.cajayon</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#portfolio">Projects</a></li>
+    <li><a href="#speaking">Talks</a></li>
+    <li><a href="#certifications">Certs</a></li>
+    <li><a href="#affiliations">Community</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-photo-wrap reveal">
+        <div class="hero-photo-frame">
+          <img
+            src="https://nik-1019.github.io/DevSite/source/Profile.jpg"
+            alt="Nikko Cajayon"
+            class="hero-photo"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+          />
+          <div class="hero-photo-placeholder" style="display:none;">NK</div>
+        </div>
+        <div class="hero-badge">
+          <span class="pulse-dot"></span>
+          Open to Speaking Engagements
+        </div>
+      </div>
+
+      <div class="hero-text">
+        <p class="hero-label">// tech.lead &amp; cloud.builder</p>
+        <h1 class="hero-name">Nikko<br />Ca<span class="hero-name-j">j</span>ayon</h1>
+        <p class="hero-tagline">Learn, Build, Lead</p>
+        <div class="typewriter-wrap">
+          <span id="typewriter"></span><span class="cursor"></span>
+        </div>
+        <p class="hero-desc">
+          Emerging technologist building practical AI & automation systems.
+          Community lead, cloud engineer, and public speaker helping
+          others navigate the next era of tech.
+        </p>
+        <div class="hero-ctas">
+          <a href="#portfolio" class="btn-primary">View My Work →</a>
+          <a href="#contact" class="btn-outline">Get In Touch</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div>
+        <div class="section-header reveal">
+          <p class="section-label">01 // About</p>
+          <h2 class="section-title">Technologist.<br /><span>Builder.</span> Speaker.</h2>
+        </div>
+        <div class="about-text">
+          <p class="reveal reveal-delay-1">
+            I'm an emerging technologist focused on building <strong>practical, hands-on solutions</strong>
+            across cloud and AI. My work spans core cloud services, security fundamentals,
+            automation pipelines, and end-to-end AI systems.
+          </p>
+          <p class="reveal reveal-delay-2">
+            As a <strong>community lead and public speaker</strong>, I contribute through workshops,
+            talks, and collaboration with student and professional organizations — helping
+            aspiring technologists find their path and build in public.
+          </p>
+          <p class="reveal reveal-delay-3">
+            Currently working with <strong>AWS, Azure, Prgramming, AI, and Automation</strong> to build
+            agentic workflows and intelligent automation systems. Believe deeply in the
+            power of open knowledge and community-led growth.
+          </p>
+        </div>
+      </div>
+      <div class="skill-radar-wrap reveal reveal-delay-2">
+        <p class="radar-title">// tech.stack</p>
+        <canvas id="skill-canvas" width="340" height="340"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="portfolio">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-label">02 // Projects</p>
+      <h2 class="section-title">Things I've <span>Built</span></h2>
+    </div>
+    <div class="filter-tabs reveal">
+      <button class="filter-tab active" data-filter="all">All</button>
+      <button class="filter-tab" data-filter="cloud">Cloud</button>
+      <button class="filter-tab" data-filter="ai">AI / ML</button>
+      <button class="filter-tab" data-filter="automation">Automation</button>
+      <button class="filter-tab" data-filter="devops">DevOps</button>
+    </div>
+    <div class="projects-grid" id="projects-grid">
+
+      <div class="project-card reveal" data-cat="ai">
+        <p class="project-cat">AI / ML</p>
+        <h3 class="project-title">Seekurity — CV Security Monitor</h3>
+        <p class="project-desc">Computer vision system for real-time security monitoring and violence pattern detection trained on AWS SageMaker.</p>
+        <div class="project-tags">
+          <span class="tag">AWS SageMaker</span><span class="tag">Python</span><span class="tag">React</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal reveal-delay-1" data-cat="automation">
+        <p class="project-cat">Automation</p>
+        <h3 class="project-title">Autonomous Agentic Workflow</h3>
+        <p class="project-desc">Automating repetitive workflows leveraging agentic design patterns in Copilot Studio on Azure.</p>
+        <div class="project-tags">
+          <span class="tag">Copilot Studio</span><span class="tag">Azure</span><span class="tag">Python</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal reveal-delay-2" data-cat="cloud">
+        <p class="project-cat">Cloud</p>
+        <h3 class="project-title">Serverless Data Pipeline</h3>
+        <p class="project-desc">Real-time processing pipeline handling 100K+ events/day with 98.9% uptime using AWS serverless stack.</p>
+        <div class="project-tags">
+          <span class="tag">Lambda</span><span class="tag">API Gateway</span><span class="tag">DynamoDB</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal" data-cat="cloud">
+        <p class="project-cat">Cloud</p>
+        <h3 class="project-title">Visualize Relational Database</h3>
+        <p class="project-desc">Producing digestible insights from raw data using AWS Databases and Amazon QuickSight.</p>
+        <div class="project-tags">
+          <span class="tag">Amazon RDS</span><span class="tag">QuickSight</span><span class="tag">IAM</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal reveal-delay-1" data-cat="devops">
+        <p class="project-cat">DevOps</p>
+        <h3 class="project-title">Infrastructure as Code Framework</h3>
+        <p class="project-desc">Reusable IaC framework standardizing cloud deployments across teams — reduced deploy time from hours to minutes.</p>
+        <div class="project-tags">
+          <span class="tag">Terraform</span><span class="tag">Ansible</span><span class="tag">GitLab CI</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal reveal-delay-2" data-cat="ai">
+        <p class="project-cat">AI / ML</p>
+        <h3 class="project-title">AI Azure Event Workflows</h3>
+        <p class="project-desc">Intelligent event-driven workflows using Azure AI services for automated processing and decision-making.</p>
+        <div class="project-tags">
+          <span class="tag">Azure AI</span><span class="tag">Event Grid</span><span class="tag">Logic Apps</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal" data-cat="devops">
+        <p class="project-cat">DevOps</p>
+        <h3 class="project-title">Cloud Security Automation</h3>
+        <p class="project-desc">Automated security scanning ensuring 100% compliance with industry standards across all cloud resources.</p>
+        <div class="project-tags">
+          <span class="tag">Security Hub</span><span class="tag">CloudTrail</span><span class="tag">Python</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal reveal-delay-1" data-cat="ai">
+        <p class="project-cat">AI / ML</p>
+        <h3 class="project-title">AI DevOps API</h3>
+        <p class="project-desc">AI-powered DevOps automation API for intelligent pipeline management and deployment optimization.</p>
+        <div class="project-tags">
+          <span class="tag">Azure DevOps</span><span class="tag">AI/ML</span><span class="tag">REST API</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal reveal-delay-2" data-cat="automation">
+        <p class="project-cat">Automation</p>
+        <h3 class="project-title">AI FinOps — Cost Optimizer</h3>
+        <p class="project-desc">AI-driven financial operations optimization for cloud deployments with intelligent cost analysis.</p>
+        <div class="project-tags">
+          <span class="tag">FinOps</span><span class="tag">AI Analytics</span><span class="tag">Vercel</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TALKS -->
+<section id="speaking">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-label">03 // Speaking</p>
+      <h2 class="section-title">Talks &amp; <span>Engagements</span></h2>
+    </div>
+    <div class="talks-timeline reveal">
+      <div class="talks-track-wrap">
+        <div class="talks-track" id="talks-track">
+
+          <div class="talk-card">
+            <img src="https://nik-1019.github.io/DevSite/source/talks/az:repo/az:repo.jpeg" alt="az:Repo Workshop" class="talk-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="talk-img-placeholder" style="display:none;">🤖</div>
+            <div class="talk-body">
+              <p class="talk-venue">Microsoft HQ, One Ayala · Nov 2025</p>
+              <h3 class="talk-title">az:Repo — Code & Cloud Agentic Workshop</h3>
+              <p class="talk-topic">"Build Autonomous Workflow" — agentic design patterns in Copilot Studio</p>
+            </div>
+          </div>
+
+          <div class="talk-card">
+            <img src="https://nik-1019.github.io/DevSite/source/talks/SkillBuilder/Skillbuilder.jpeg" alt="SkillBuilder" class="talk-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="talk-img-placeholder" style="display:none;">☁️</div>
+            <div class="talk-body">
+              <p class="talk-venue">AWS Cloud Club Philippines · 2024</p>
+              <h3 class="talk-title">SkillBuilder Kick-off</h3>
+              <p class="talk-topic">"Introducing Cloud Computing and Career Development" for aspiring cloud professionals</p>
+            </div>
+          </div>
+
+          <div class="talk-card">
+            <img src="https://nik-1019.github.io/DevSite/source/talks/beyondcode/beyondcode.jpeg" alt="Beyond Code" class="talk-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="talk-img-placeholder" style="display:none;">🏗️</div>
+            <div class="talk-body">
+              <p class="talk-venue">Tech Community · 2024</p>
+              <h3 class="talk-title">Beyond Code</h3>
+              <p class="talk-topic">"Building System Applications Beyond Code" — system design and architecture principles</p>
+            </div>
+          </div>
+
+          <div class="talk-card">
+            <img src="https://nik-1019.github.io/DevSite/source/talks/cloud-edu/1737959174654.jpeg" alt="Cloud Educators" class="talk-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="talk-img-placeholder" style="display:none;">🎓</div>
+            <div class="talk-body">
+              <p class="talk-venue">Cloud Educators Community · 2024</p>
+              <h3 class="talk-title">Cloud Educators</h3>
+              <p class="talk-topic">"Navigating and Starting Your Infrastructure with AWS EC2" — hands-on workshop</p>
+            </div>
+          </div>
+
+          <div class="talk-card">
+            <img src="https://nik-1019.github.io/DevSite/source/talks/azure-ignite/1728614419270.jpeg" alt="Azure Ignite" class="talk-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="talk-img-placeholder" style="display:none;">⚡</div>
+            <div class="talk-body">
+              <p class="talk-venue">Microsoft Community · 2024</p>
+              <h3 class="talk-title">Azure Ignite</h3>
+              <p class="talk-topic">"Microsoft Azure Innovation Showcase" — latest Azure services and announcements</p>
+            </div>
+          </div>
+
+          <div class="talk-card">
+            <img src="https://nik-1019.github.io/DevSite/source/talks/communityday-1/comday-1.jpeg" alt="Community Day" class="talk-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="talk-img-placeholder" style="display:none;">🌐</div>
+            <div class="talk-body">
+              <p class="talk-venue">AWS Community · 2024</p>
+              <h3 class="talk-title">AWS Community Day</h3>
+              <p class="talk-topic">"Cloud Community Building" — building and nurturing tech communities across the Philippines</p>
+            </div>
+          </div>
+
+          <div class="talk-card">
+            <div class="talk-img-placeholder">🗺️</div>
+            <div class="talk-body">
+              <p class="talk-venue">CloudFest · 2024</p>
+              <h3 class="talk-title">CloudFest: Know the Way</h3>
+              <p class="talk-topic">"Navigating Cloud Technologies" — guiding developers through the cloud landscape</p>
+            </div>
+          </div>
+
+          <div class="talk-card">
+            <img src="https://nik-1019.github.io/DevSite/source/talks/techtalk/1729649614977.jpeg" alt="Tech Talk" class="talk-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="talk-img-placeholder" style="display:none;">💬</div>
+            <div class="talk-body">
+              <p class="talk-venue">Tech Community · 2024</p>
+              <h3 class="talk-title">Tech Talk Series</h3>
+              <p class="talk-topic">"Emerging Technologies Discussion" — impact of emerging tech on software development</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="talks-controls">
+        <div class="talks-dots" id="talks-dots"></div>
+        <div class="talks-nav">
+          <button class="nav-arrow" id="talks-prev">←</button>
+          <button class="nav-arrow" id="talks-next">→</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-label">04 // Certifications</p>
+      <h2 class="section-title">Continuous <span>Learning</span></h2>
+    </div>
+    <div class="certs-grid">
+      <div class="cert-card reveal">
+        <div class="cert-icon">☁️</div>
+        <h3 class="cert-title">AWS Certified Cloud Practitioner</h3>
+        <p class="cert-issuer">Amazon Web Services</p>
+        <p class="cert-validity">Valid until: Dec 2027</p>
+      </div>
+      <div class="cert-card reveal reveal-delay-1">
+        <div class="cert-icon">🔷</div>
+        <h3 class="cert-title">AZ-900: Azure Fundamentals</h3>
+        <p class="cert-issuer">Microsoft Azure</p>
+        <p class="cert-validity">Valid until: Oct 2026</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AFFILIATIONS -->
+<section id="affiliations">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-label">05 // Community</p>
+      <h2 class="section-title">Professional <span>Affiliations</span></h2>
+    </div>
+    <div class="affiliations-grid">
+
+      <div class="affil-card reveal">
+        <div class="affil-header">
+          <img src="https://nik-1019.github.io/DevSite/source/Affiliations'_logo/nextwork.jpg" alt="NextWork" class="affil-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <div class="affil-logo-placeholder" style="display:none;">🚀</div>
+          <div>
+            <p class="affil-name">NextWork</p>
+            <p class="affil-role">Community Lead · Strategist</p>
+          </div>
+        </div>
+        <p class="affil-desc">Active contributor to cloud-native projects and advocate for building in public.</p>
+        <a href="https://www.facebook.com/profile.php?id=61566312267398" class="affil-link" target="_blank">Visit Site →</a>
+      </div>
+
+      <div class="affil-card reveal reveal-delay-1">
+        <div class="affil-header">
+          <img src="https://nik-1019.github.io/DevSite/source/Affiliations'_logo/AWSCCPH.png" alt="AWS Cloud Club PH" class="affil-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <div class="affil-logo-placeholder" style="display:none;">☁️</div>
+          <div>
+            <p class="affil-name">AWS Cloud Club — Philippines</p>
+            <p class="affil-role">Director of SkillBuilder</p>
+          </div>
+        </div>
+        <p class="affil-desc">Organizing monthly meetups and speaking on AWS best practices and new services.</p>
+        <a href="https://www.facebook.com/AWSCloudClubsPhilippines" class="affil-link" target="_blank">Visit Site →</a>
+      </div>
+
+      <div class="affil-card reveal reveal-delay-2">
+        <div class="affil-header">
+          <img src="https://nik-1019.github.io/DevSite/source/Affiliations'_logo/haribon.jpg" alt="AWS CC Haribon" class="affil-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <div class="affil-logo-placeholder" style="display:none;">🦅</div>
+          <div>
+            <p class="affil-name">AWS CC — Haribon</p>
+            <p class="affil-role">Chief Technology Officer</p>
+          </div>
+        </div>
+        <p class="affil-desc">Promoting DevOps practices and culture transformation within the local tech community.</p>
+        <a href="https://www.facebook.com/AWSCloudClubHaribon" class="affil-link" target="_blank">Visit Site →</a>
+      </div>
+
+      <div class="affil-card reveal">
+        <div class="affil-header">
+          <img src="https://nik-1019.github.io/DevSite/source/Affiliations'_logo/azure.jpg" alt="Azure PH" class="affil-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <div class="affil-logo-placeholder" style="display:none;">🔷</div>
+          <div>
+            <p class="affil-name">Microsoft Azure Developers PH</p>
+            <p class="affil-role">Co-Founder</p>
+          </div>
+        </div>
+        <p class="affil-desc">Co-founded the community connecting Azure developers across the Philippines.</p>
+        <a href="https://www.facebook.com/MicrosoftAzurePH" class="affil-link" target="_blank">Visit Site →</a>
+      </div>
+
+      <div class="affil-card reveal reveal-delay-1">
+        <div class="affil-header">
+          <img src="https://nik-1019.github.io/DevSite/source/Affiliations'_logo/Microsoft Learn.jpg" alt="Microsoft Learn" class="affil-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <div class="affil-logo-placeholder" style="display:none;">🎓</div>
+          <div>
+            <p class="affil-name">Microsoft Learn Program</p>
+            <p class="affil-role">Microsoft Student Ambassador</p>
+          </div>
+        </div>
+        <p class="affil-desc">Building projects that showcase Azure technologies and conducting technical workshops.</p>
+        <a href="https://mvp.microsoft.com/en-US/studentambassadors/profile/04919813-a750-4e30-a541-18dfcdbac458" class="affil-link" target="_blank">Visit Site →</a>
+      </div>
+
+      <div class="affil-card reveal reveal-delay-2">
+        <div class="affil-header">
+          <img src="https://nik-1019.github.io/DevSite/source/Affiliations'_logo/Microsoft Student Community.jpg" alt="MSC PLM" class="affil-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <div class="affil-logo-placeholder" style="display:none;">🤝</div>
+          <div>
+            <p class="affil-name">Microsoft Student Community — PLM</p>
+            <p class="affil-role">Chief Relations Officer</p>
+          </div>
+        </div>
+        <p class="affil-desc">Bridging collaboration between student bodies and industry professionals.</p>
+        <a href="https://www.facebook.com/plmmsc" class="affil-link" target="_blank">Visit Site →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-label">06 // Contact</p>
+      <h2 class="section-title">Get In <span>Touch</span></h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <h3>Let's build something together.</h3>
+        <p>
+          Always interested in discussing cloud architecture, AI automation,
+          speaking opportunities, or community collaboration. Don't hesitate to reach out.
+        </p>
+        <div class="socials">
+          <a href="https://linkedin.com/in/nikko-cajayon/" class="social-link" target="_blank">
+            <span class="social-icon">in</span>
+            linkedin.com/in/nikko-cajayon
+          </a>
+          <a href="https://github.com/Nik-1019" class="social-link" target="_blank">
+            <span class="social-icon">⌥</span>
+            github.com/Nik-1019
+          </a>
+          <a href="https://instagram.com/iamnikko_01/" class="social-link" target="_blank">
+            <span class="social-icon">✦</span>
+            @iamnikko_01
+          </a>
+          <a href="https://www.facebook.com/cajayonnikko" class="social-link" target="_blank">
+            <span class="social-icon">f</span>
+            cajayonnikko
+          </a>
+        </div>
+      </div>
+      <div class="contact-form reveal reveal-delay-2">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" placeholder="Your name" />
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="you@example.com" />
+        </div>
+        <div class="form-group">
+          <label>Subject</label>
+          <input type="text" placeholder="Speaking inquiry, collaboration..." />
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea placeholder="Tell me what's on your mind..."></textarea>
+        </div>
+        <button class="btn-primary" style="align-self:flex-start;">Send Message →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TERMINAL FAB -->
+<div id="terminal-fab">
+  <button id="terminal-toggle" title="Open Terminal (` key)">
+    <span class="fab-label">// open terminal</span>
+    &#x276F;_
+  </button>
+</div>
+
+<!-- TERMINAL WIDGET -->
+<div id="terminal-widget" role="dialog" aria-label="Interactive Terminal">
+  <div class="term-titlebar" id="term-drag-handle">
+    <div class="term-dots">
+      <div class="term-dot red" id="term-close-dot" title="Close"></div>
+      <div class="term-dot yellow"></div>
+      <div class="term-dot green"></div>
+    </div>
+    <span class="term-title">nikko@portfolio:~$</span>
+    <button class="term-clear-btn" id="term-clear-btn">clear</button>
+  </div>
+  <div class="term-output" id="term-output"></div>
+  <div class="term-suggestions" id="term-suggestions"></div>
+  <div class="term-input-row">
+    <span class="term-prompt-symbol">❯</span>
+    <input id="term-input" type="text" autocomplete="off" spellcheck="false" placeholder="type a command..." aria-label="Terminal input" />
+    <span class="term-autocomplete" id="term-autocomplete"></span>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>Designed &amp; built by <span>Nikko Cajayon</span> · Learn, Build, Lead · 2025</p>
+</footer>
+
+<script>
+/* ─── PARTICLE BACKGROUND ──────────────────────────── */
+(function() {
+  const canvas = document.getElementById('particle-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [], mouse = {x: -9999, y: -9999};
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const PARTICLE_COUNT = 90;
+  const ACCENT = '0,200,160';
+  const ACCENT2 = '14,165,233';
+
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    particles.push({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      r: Math.random() * 1.4 + 0.4,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      color: Math.random() > 0.5 ? ACCENT : ACCENT2,
+      opacity: Math.random() * 0.5 + 0.1
+    });
+  }
+
+  window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Grid
+    ctx.strokeStyle = 'rgba(0,200,160,0.04)';
+    ctx.lineWidth = 1;
+    const grid = 80;
+    for (let x = 0; x < W; x += grid) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+    for (let y = 0; y < H; y += grid) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+    particles.forEach(p => {
+      // Mouse repel
+      const dx = p.x - mouse.x, dy = p.y - mouse.y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 120) {
+        p.x += dx / dist * 1.5;
+        p.y += dy / dist * 1.5;
+      }
+
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W;
+      if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H;
+      if (p.y > H) p.y = 0;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${p.color},${p.opacity})`;
+      ctx.fill();
+    });
+
+    // Connections
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i+1; j < particles.length; j++) {
+        const a = particles[i], b = particles[j];
+        const d = Math.sqrt((a.x-b.x)**2 + (a.y-b.y)**2);
+        if (d < 130) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(0,200,160,${0.06 * (1 - d/130)})`;
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ─── TYPEWRITER ─────────────────────────────────── */
+(function() {
+  const el = document.getElementById('typewriter');
+  const phrases = [
+    'AI & Automation Engineer',
+    'Cloud Solutions Builder',
+    'Community Lead & Speaker',
+    'Agentic Workflow Designer',
+    'NextWork Community Lead',
+  ];
+  let pi = 0, ci = 0, deleting = false;
+
+  function tick() {
+    const phrase = phrases[pi];
+    if (!deleting) {
+      el.textContent = phrase.slice(0, ++ci);
+      if (ci === phrase.length) { deleting = true; setTimeout(tick, 1800); return; }
+    } else {
+      el.textContent = phrase.slice(0, --ci);
+      if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; setTimeout(tick, 400); return; }
+    }
+    setTimeout(tick, deleting ? 40 : 65);
+  }
+  tick();
+})();
+
+/* ─── SKILL RADAR / ORBIT ────────────────────────── */
+(function() {
+  const canvas = document.getElementById('skill-canvas');
+  const ctx = canvas.getContext('2d');
+  const CX = 170, CY = 170, R = 130;
+  let angle = 0;
+
+  const skills = [
+    { name: 'AWS',       level: 0.88, color: '#FF9900' },
+    { name: 'Azure',     level: 0.82, color: '#0ea5e9' },
+    { name: 'Programming',    level: 0.85, color: '#3b82f6' },
+    { name: 'AI',       level: 0.78, color: '#00c8a0' },
+    { name: 'Automation',    level: 0.80, color: '#a78bfa' },
+    { name: 'Leadership',level: 0.75, color: '#f472b6' },
+  ];
+
+  function drawRadar() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const N = skills.length;
+    const step = (Math.PI * 2) / N;
+
+    // Concentric rings
+    [0.25, 0.5, 0.75, 1].forEach(r => {
+      ctx.beginPath();
+      for (let i = 0; i < N; i++) {
+        const a = step * i - Math.PI/2;
+        const x = CX + Math.cos(a) * R * r;
+        const y = CY + Math.sin(a) * R * r;
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.strokeStyle = 'rgba(0,200,160,0.1)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    });
+
+    // Axes
+    for (let i = 0; i < N; i++) {
+      const a = step * i - Math.PI/2;
+      ctx.beginPath();
+      ctx.moveTo(CX, CY);
+      ctx.lineTo(CX + Math.cos(a)*R, CY + Math.sin(a)*R);
+      ctx.strokeStyle = 'rgba(0,200,160,0.08)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    // Filled polygon
+    ctx.beginPath();
+    skills.forEach((s, i) => {
+      const a = step * i - Math.PI/2;
+      const x = CX + Math.cos(a) * R * s.level;
+      const y = CY + Math.sin(a) * R * s.level;
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(0,200,160,0.08)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(0,200,160,0.5)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // Dots + labels
+    skills.forEach((s, i) => {
+      const a = step * i - Math.PI/2;
+      const x = CX + Math.cos(a) * R * s.level;
+      const y = CY + Math.sin(a) * R * s.level;
+
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, Math.PI*2);
+      ctx.fillStyle = s.color;
+      ctx.fill();
+
+      // Orbiting dot
+      const ox = CX + Math.cos(a + angle) * R * 0.25;
+      const oy = CY + Math.sin(a + angle) * R * 0.25;
+      ctx.beginPath();
+      ctx.arc(ox, oy, 2, 0, Math.PI*2);
+      ctx.fillStyle = `${s.color}88`;
+      ctx.fill();
+
+      // Label
+      const lx = CX + Math.cos(a) * (R + 24);
+      const ly = CY + Math.sin(a) * (R + 24);
+      ctx.font = '600 11px "IBM Plex Sans", sans-serif';
+      ctx.fillStyle = '#e2eaf4';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(s.name, lx, ly);
+    });
+
+    // Center
+    ctx.beginPath();
+    ctx.arc(CX, CY, 4, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(0,200,160,0.6)';
+    ctx.fill();
+
+    angle += 0.008;
+    requestAnimationFrame(drawRadar);
+  }
+  drawRadar();
+})();
+
+/* ─── PROJECT FILTERS ────────────────────────────── */
+(function() {
+  const tabs = document.querySelectorAll('.filter-tab');
+  const cards = document.querySelectorAll('.project-card');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const filter = tab.dataset.filter;
+
+      cards.forEach(card => {
+        const cat = card.dataset.cat;
+        const show = filter === 'all' || cat === filter;
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        if (!show) {
+          card.style.display = 'none';
+        } else {
+          card.style.display = 'block';
+          setTimeout(() => {
+            card.style.transition = 'opacity 0.4s, transform 0.4s';
+            card.style.opacity = '1';
+            card.style.transform = 'none';
+          }, 30);
+        }
+      });
+    });
+  });
+})();
+
+/* ─── TALKS CAROUSEL ─────────────────────────────── */
+(function() {
+  const track = document.getElementById('talks-track');
+  const dotsContainer = document.getElementById('talks-dots');
+  const CARD_WIDTH = 340 + 24; // width + gap
+  const VISIBLE = Math.floor(window.innerWidth / CARD_WIDTH) || 1;
+  const totalCards = track.children.length;
+  const maxOffset = totalCards - VISIBLE;
+  let current = 0;
+
+  // Create dots
+  const dotCount = Math.ceil(totalCards / VISIBLE);
+  for (let i = 0; i < dotCount; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i * VISIBLE));
+    dotsContainer.appendChild(d);
+  }
+
+  function goTo(idx) {
+    current = Math.max(0, Math.min(idx, maxOffset));
+    track.style.transform = `translateX(-${current * CARD_WIDTH}px)`;
+    document.querySelectorAll('.dot').forEach((d, i) => {
+      d.classList.toggle('active', i === Math.floor(current / VISIBLE));
+    });
+  }
+
+  document.getElementById('talks-prev').addEventListener('click', () => goTo(current - VISIBLE));
+  document.getElementById('talks-next').addEventListener('click', () => goTo(current + VISIBLE));
+})();
+
+/* ─── SCROLL REVEAL ──────────────────────────────── */
+(function() {
+  const els = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  els.forEach(el => obs.observe(el));
+})();
+
+/* ─── TERMINAL ───────────────────────────────────── */
+(function() {
+  const widget   = document.getElementById('terminal-widget');
+  const toggle   = document.getElementById('terminal-toggle');
+  const output   = document.getElementById('term-output');
+  const input    = document.getElementById('term-input');
+  const sugBox   = document.getElementById('term-suggestions');
+  const acHint   = document.getElementById('term-autocomplete');
+  const closeBtn = document.getElementById('term-close-dot');
+  const clearBtn = document.getElementById('term-clear-btn');
+
+  let history = [], histIdx = -1, isOpen = false;
+
+  /* ── COMMAND REGISTRY ── */
+  const ALL_COMMANDS = [
+    'help','whoami','skills','projects','talks',
+    'affiliations','certs','contact',
+    'open linkedin','open github','open instagram',
+    'hire me','sudo nikko','sudo rm -rf /',
+    'clear','ls','pwd','date','uname'
+  ];
+
+  const COMMANDS = {
+
+    help() {
+      return [
+        { t:'success', v:'╔══════════════════════════════════════════╗' },
+        { t:'success', v:'║        NIKKO CAJAYON — COMMAND MANUAL    ║' },
+        { t:'success', v:'╚══════════════════════════════════════════╝' },
+        { t:'blank' },
+        { t:'accent2', v:'  INFORMATION' },
+        { t:'dim',     v:'  ──────────────────────────────────────' },
+        { t:'out',     v:'  whoami          →  About Nikko' },
+        { t:'out',     v:'  skills          →  Tech stack & proficiency' },
+        { t:'out',     v:'  projects        →  Projects (+ flags: --cloud --ai --automation --devops)' },
+        { t:'out',     v:'  talks           →  Speaking history' },
+        { t:'out',     v:'  affiliations    →  Community roles' },
+        { t:'out',     v:'  certs           →  Certifications' },
+        { t:'out',     v:'  contact         →  Socials & links' },
+        { t:'blank' },
+        { t:'accent2', v:'  NAVIGATION' },
+        { t:'dim',     v:'  ──────────────────────────────────────' },
+        { t:'out',     v:'  open linkedin   →  Open LinkedIn profile' },
+        { t:'out',     v:'  open github     →  Open GitHub' },
+        { t:'out',     v:'  open instagram  →  Open Instagram' },
+        { t:'blank' },
+        { t:'accent2', v:'  UTILITY' },
+        { t:'dim',     v:'  ──────────────────────────────────────' },
+        { t:'out',     v:'  hire me         →  Why you should hire Nikko' },
+        { t:'out',     v:'  ls              →  List sections' },
+        { t:'out',     v:'  pwd             →  Current path' },
+        { t:'out',     v:'  date            →  Current date' },
+        { t:'out',     v:'  uname           →  System info' },
+        { t:'out',     v:'  clear           →  Clear terminal' },
+        { t:'blank' },
+        { t:'dim',     v:'  TIP: Press ↑ / ↓ to navigate history. Tab to autocomplete.' },
+      ];
+    },
+
+    whoami() {
+      return [
+        { t:'blank' },
+        { t:'accent2', v:' ███╗   ██╗██╗██╗  ██╗██╗  ██╗ ██████╗ ' },
+        { t:'accent2', v:' ████╗  ██║██║██║ ██╔╝██║ ██╔╝██╔═══██╗' },
+        { t:'accent2', v:' ██╔██╗ ██║██║█████╔╝ █████╔╝ ██║   ██║' },
+        { t:'accent2', v:' ██║╚██╗██║██║██╔═██╗ ██╔═██╗ ██║   ██║' },
+        { t:'accent2', v:' ██║ ╚████║██║██║  ██╗██║  ██╗╚██████╔╝' },
+        { t:'accent2', v:' ╚═╝  ╚═══╝╚═╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ' },
+        { t:'blank' },
+        { t:'success', v:'  Name      : Nikko Cajayon' },
+        { t:'success', v:'  Title     : AI & Cloud Engineer · Community Lead · Speaker' },
+        { t:'success', v:'  Tagline   : Learn, Build, Lead' },
+        { t:'out',     v:'  Location  : Philippines 🇵🇭' },
+        { t:'out',     v:'  Focus     : AI Automation · Cloud Infra · Agentic Workflows' },
+        { t:'out',     v:'  Status    : 🟢 Open to speaking engagements' },
+        { t:'blank' },
+        { t:'dim',     v:'  "As an emerging technologist, I build practical solutions' },
+        { t:'dim',     v:'   across cloud and AI — then teach others to do the same."' },
+        { t:'blank' },
+      ];
+    },
+
+    skills() {
+      const bars = [
+        { name: 'AWS         ', level: 90, color: '#FF9900' },
+        { name: 'Programming ', level: 89, color: '#3b82f6' },
+        { name: 'Azure       ', level: 82, color: '#0ea5e9' },
+        { name: 'Leadership  ', level: 92, color: '#a78bfa' },
+        { name: 'Automation  ', level: 95, color: '#00c8a0' },
+        { name: 'AI          ', level: 95, color: '#f472b6' },
+      ];
+      const lines = [
+        { t:'blank' },
+        { t:'accent2', v:'  // TECH STACK & PROFICIENCY' },
+        { t:'blank' },
+      ];
+      bars.forEach(b => {
+        const filled = Math.round(b.level / 5);
+        const bar = '█'.repeat(filled) + '░'.repeat(20 - filled);
+        lines.push({ t:'out', v:`  ${b.name}  ${bar}  ${b.level}%` });
+      });
+      lines.push({ t:'blank' });
+      lines.push({ t:'dim', v:'  Also working with: Docker, Terraform, Kubernetes, Go, REST APIs' });
+      lines.push({ t:'blank' });
+      return lines;
+    },
+
+    projects(flag) {
+      const all = [
+        { cat:'ai',         name:'Seekurity — CV Security Monitor',       desc:'Real-time violence detection with AWS SageMaker + CV model' },
+        { cat:'automation', name:'Autonomous Agentic Workflow',            desc:'Copilot Studio agentic design on Azure — automates repetitive flows' },
+        { cat:'cloud',      name:'Serverless Data Pipeline',              desc:'100K+ events/day, 98.9% uptime — Lambda, API GW, DynamoDB' },
+        { cat:'cloud',      name:'Visualize Relational Database',         desc:'Raw data → insights via AWS RDS + Amazon QuickSight' },
+        { cat:'devops',     name:'Infrastructure as Code Framework',      desc:'Reusable Terraform/Ansible IaC — cut deploy time hours → minutes' },
+        { cat:'ai',         name:'AI Azure Event Workflows',              desc:'Event-driven Azure AI pipelines for automated decision-making' },
+        { cat:'devops',     name:'Cloud Security Automation',             desc:'100% compliance enforcement via Security Hub + Python' },
+        { cat:'ai',         name:'AI DevOps API',                         desc:'Intelligent pipeline management via Azure DevOps + AI/ML' },
+        { cat:'automation', name:'AI FinOps Optimizer',                   desc:'AI cost analysis for cloud deployments — Vercel + FinOps' },
+        { cat:'cloud',      name:'AWS Networks VPC',                      desc:'Multi-tier secure VPC architecture with HA design' },
+      ];
+
+      const cats = { '--cloud':'cloud','--ai':'ai','--automation':'automation','--devops':'devops' };
+      const filter = cats[flag] || null;
+      const filtered = filter ? all.filter(p => p.cat === filter) : all;
+
+      const lines = [
+        { t:'blank' },
+        { t:'accent2', v:`  // PROJECTS${filter ? ` [${filter.toUpperCase()}]` : ' [ALL]'}   (filter: --cloud --ai --automation --devops)` },
+        { t:'blank' },
+      ];
+
+      filtered.forEach((p, i) => {
+        const catColor = { cloud:'accent2', ai:'accent3', automation:'success', devops:'warn' }[p.cat] || 'out';
+        lines.push({ t:catColor, v:`  [${p.cat.toUpperCase()}]  ${p.name}` });
+        lines.push({ t:'dim',   v:`         ${p.desc}` });
+        lines.push({ t:'blank' });
+      });
+
+      if (filtered.length === 0) lines.push({ t:'err', v:`  No projects found for flag: ${flag}` });
+      return lines;
+    },
+
+    talks() {
+      const data = [
+        { title:'az:Repo — Code & Cloud Agentic Workshop', venue:'Microsoft HQ, One Ayala', date:'Nov 2025', topic:'Build Autonomous Workflow' },
+        { title:'SkillBuilder Kick-off',                   venue:'AWS Cloud Club PH',        date:'2024',     topic:'Introducing Cloud Computing & Career Development' },
+        { title:'Beyond Code',                             venue:'Tech Community',            date:'2024',     topic:'Building System Applications Beyond Code' },
+        { title:'Cloud Educators',                         venue:'Cloud Educators Community', date:'2024',     topic:'AWS EC2 Infrastructure — Hands-on Workshop' },
+        { title:'Azure Ignite',                            venue:'Microsoft Community',       date:'2024',     topic:'Microsoft Azure Innovation Showcase' },
+        { title:'CloudFest: Know the Way',                 venue:'CloudFest',                 date:'2024',     topic:'Navigating Cloud Technologies' },
+        { title:'AWS Community Day',                       venue:'AWS Community PH',          date:'2024',     topic:'Cloud Community Building' },
+        { title:'Tech Talk Series',                        venue:'Tech Community',            date:'2024',     topic:'Emerging Technologies Discussion' },
+      ];
+      const lines = [
+        { t:'blank' },
+        { t:'accent2', v:'  // SPEAKING ENGAGEMENTS & TALKS' },
+        { t:'blank' },
+      ];
+      data.forEach((t, i) => {
+        lines.push({ t:'success', v:`  ${String(i+1).padStart(2,'0')}.  ${t.title}` });
+        lines.push({ t:'out',    v:`       📍 ${t.venue}  ·  ${t.date}` });
+        lines.push({ t:'dim',    v:`       "${t.topic}"` });
+        lines.push({ t:'blank' });
+      });
+      return lines;
+    },
+
+    affiliations() {
+      const data = [
+        { org:'NextWork',                          role:'Community Lead · Strategist',        emoji:'🚀' },
+        { org:'AWS Cloud Club — Philippines',      role:'Director of SkillBuilder',           emoji:'☁️' },
+        { org:'AWS CC — Haribon',                  role:'Chief Technology Officer',           emoji:'🦅' },
+        { org:'Microsoft Azure Developers PH',     role:'Co-Founder',                         emoji:'🔷' },
+        { org:'Microsoft Learn Program',           role:'Microsoft Student Ambassador',       emoji:'🎓' },
+        { org:'Cloud Educators Community',         role:'Learner · Mentor',                   emoji:'📚' },
+        { org:'Microsoft Student Community — PLM', role:'Chief Relations Officer',            emoji:'🤝' },
+      ];
+      const lines = [
+        { t:'blank' },
+        { t:'accent2', v:'  // PROFESSIONAL AFFILIATIONS' },
+        { t:'blank' },
+      ];
+      data.forEach(a => {
+        lines.push({ t:'accent3', v:`  ${a.emoji}  ${a.org}` });
+        lines.push({ t:'dim',    v:`      Role: ${a.role}` });
+        lines.push({ t:'blank' });
+      });
+      return lines;
+    },
+
+    certs() {
+      return [
+        { t:'blank' },
+        { t:'accent2', v:'  // CERTIFICATIONS' },
+        { t:'blank' },
+        { t:'success', v:'  ☁️  AWS Certified Cloud Practitioner' },
+        { t:'out',     v:'      Issuer : Amazon Web Services' },
+        { t:'out',     v:'      Valid  : Until Dec 2027' },
+        { t:'blank' },
+        { t:'success', v:'  🔷  AZ-900: Azure Fundamentals' },
+        { t:'out',     v:'      Issuer : Microsoft Azure' },
+        { t:'out',     v:'      Valid  : Until Oct 2026' },
+        { t:'blank' },
+        { t:'dim',     v:'  More certifications coming soon...' },
+        { t:'blank' },
+      ];
+    },
+
+    contact() {
+      return [
+        { t:'blank' },
+        { t:'accent2', v:'  // CONTACT & SOCIALS' },
+        { t:'blank' },
+        { t:'success', v:'  LinkedIn   →  linkedin.com/in/nikko-cajayon' },
+        { t:'success', v:'  GitHub     →  github.com/Nik-1019' },
+        { t:'out',     v:'  Instagram  →  @iamnikko_01' },
+        { t:'out',     v:'  Facebook   →  cajayonnikko' },
+        { t:'blank' },
+        { t:'dim',     v:'  Use "open linkedin" or "open github" to navigate directly.' },
+        { t:'blank' },
+      ];
+    },
+
+    ls() {
+      return [
+        { t:'blank' },
+        { t:'out', v:'  drwxr-xr-x  home/' },
+        { t:'out', v:'  drwxr-xr-x  about/' },
+        { t:'out', v:'  drwxr-xr-x  projects/' },
+        { t:'out', v:'  drwxr-xr-x  talks/' },
+        { t:'out', v:'  drwxr-xr-x  certifications/' },
+        { t:'out', v:'  drwxr-xr-x  affiliations/' },
+        { t:'out', v:'  drwxr-xr-x  contact/' },
+        { t:'out', v:'  -rw-r--r--  CLAUDE.md' },
+        { t:'out', v:'  -rw-r--r--  index.html' },
+        { t:'blank' },
+      ];
+    },
+
+    pwd() {
+      return [{ t:'out', v:'  /home/nikko/portfolio' }];
+    },
+
+    date() {
+      return [{ t:'out', v:`  ${new Date().toString()}` }];
+    },
+
+    uname() {
+      return [
+        { t:'blank' },
+        { t:'success', v:'  Nikko-OS v2.0.25 (Cloud Edition)' },
+        { t:'out',     v:'  Kernel  : Learn.Build.Lead-5.0.0-agentic' },
+        { t:'out',     v:'  Arch    : AWS + Azure (multi-cloud)' },
+        { t:'out',     v:'  Runtime : Python 3.x, n8n, Claude Code' },
+        { t:'out',     v:'  Uptime  : Always learning' },
+        { t:'blank' },
+      ];
+    },
+
+    'hire me'() {
+      return [
+        { t:'blank' },
+        { t:'warn',    v:'  ┌─────────────────────────────────────────┐' },
+        { t:'warn',    v:'  │         WHY HIRE NIKKO CAJAYON?         │' },
+        { t:'warn',    v:'  └─────────────────────────────────────────┘' },
+        { t:'blank' },
+        { t:'success', v:'  ✅  Builds real AI & automation systems — not just talks about them' },
+        { t:'success', v:'  ✅  Multi-cloud (AWS + Azure) with hands-on certifications' },
+        { t:'success', v:'  ✅  Public speaker — can communicate tech clearly to any audience' },
+        { t:'success', v:'  ✅  Community leader — knows how to build, grow & sustain teams' },
+        { t:'success', v:'  ✅  Agentic workflow design with Claude, n8n, Copilot Studio' },
+        { t:'success', v:'  ✅  Active builder — ships projects, not just side projects' },
+        { t:'blank' },
+        { t:'accent2', v:'  → Reach out: linkedin.com/in/nikko-cajayon' },
+        { t:'accent2', v:'  → Or type: open linkedin' },
+        { t:'blank' },
+        { t:'dim',     v:'  "Learn, Build, Lead — in that order, every time."' },
+        { t:'blank' },
+      ];
+    },
+
+    'sudo nikko'() {
+      return [
+        { t:'blank' },
+        { t:'accent3', v:'  [sudo] password for nikko: ••••••••••••' },
+        { t:'blank' },
+        { t:'success', v:'  ✓ Identity verified.' },
+        { t:'blank' },
+        { t:'warn',    v:'  Unlocking NIKKO CAJAYON — FULL POWER MODE...' },
+        { t:'blank' },
+        { t:'accent2', v:'  💥  CloudFormation stacks deploying...' },
+        { t:'accent2', v:'  🤖  Agentic workflows initializing...' },
+        { t:'accent2', v:'  ☁️   Multi-cloud orchestration: ONLINE' },
+        { t:'accent2', v:'  🧠  AI pipelines: ACTIVE' },
+        { t:'accent2', v:'  🎤  Speaker mode: ENGAGED' },
+        { t:'blank' },
+        { t:'success', v:'  All systems operational. Nikko is ready to build.' },
+        { t:'blank' },
+        { t:'dim',     v:'  WARNING: Output may include disruptive innovation.' },
+        { t:'blank' },
+      ];
+    },
+
+    'sudo rm -rf /'() {
+      return [
+        { t:'blank' },
+        { t:'err',  v:'  rm: cannot remove \'/\': Permission denied' },
+        { t:'blank' },
+        { t:'warn', v:'  Nice try. This portfolio runs on cloud infra.' },
+        { t:'out',  v:'  It autoscales, self-heals, and has 99.9% uptime.' },
+        { t:'dim',  v:'  (Also, Nikko has backups.)' },
+        { t:'blank' },
+      ];
+    },
+  };
+
+  /* ── SUGGESTION CHIPS ── */
+  const CHIPS = ['help','whoami','skills','projects','talks','hire me','sudo nikko','contact'];
+
+  function renderChips(filter) {
+    sugBox.innerHTML = '';
+    const list = filter
+      ? ALL_COMMANDS.filter(c => c.startsWith(filter) && c !== filter)
+      : CHIPS;
+    list.slice(0, 10).forEach(cmd => {
+      const btn = document.createElement('button');
+      btn.className = 'suggestion-chip';
+      btn.textContent = cmd;
+      btn.addEventListener('mousedown', e => {
+        e.preventDefault();
+        input.value = cmd;
+        runCommand(cmd);
+      });
+      sugBox.appendChild(btn);
+    });
+  }
+
+  /* ── OUTPUT HELPERS ── */
+  function print(lines) {
+    lines.forEach(l => {
+      const div = document.createElement('div');
+      div.className = `term-line ${l.t || 'out'}`;
+      div.textContent = l.v || '';
+      output.appendChild(div);
+    });
+    output.scrollTop = output.scrollHeight;
+  }
+
+  function printPrompt(cmd) {
+    const div = document.createElement('div');
+    div.className = 'term-line prompt';
+    div.innerHTML = `<span style="color:var(--muted)">nikko@portfolio</span><span style="color:var(--accent)">:~$</span> <span class="cmd">${cmd}</span>`;
+    output.appendChild(div);
+  }
+
+  function clearOutput() {
+    output.innerHTML = '';
+  }
+
+  /* ── BOOT SEQUENCE ── */
+  function boot() {
+    clearOutput();
+    print([
+      { t:'blank' },
+      { t:'accent2', v:'  ╔══════════════════════════════════════════════╗' },
+      { t:'accent2', v:'  ║   NIKKO CAJAYON — Interactive Portfolio CLI  ║' },
+      { t:'accent2', v:'  ╚══════════════════════════════════════════════╝' },
+      { t:'blank' },
+      { t:'out',  v:'  Welcome. This terminal lets you explore my work.' },
+      { t:'dim',  v:'  Type  help  to see all available commands.' },
+      { t:'dim',  v:'  Use ↑ ↓ to navigate history. Tab to autocomplete.' },
+      { t:'blank' },
+      { t:'success', v:'  🟢 System online. Ready.' },
+      { t:'blank' },
+    ]);
+    renderChips();
+  }
+
+  /* ── RUN COMMAND ── */
+  function runCommand(raw) {
+    const cmd = raw.trim().toLowerCase();
+    if (!cmd) return;
+
+    // History
+    history.unshift(cmd);
+    if (history.length > 50) history.pop();
+    histIdx = -1;
+
+    printPrompt(cmd);
+    input.value = '';
+    acHint.textContent = '';
+    renderChips();
+
+    if (cmd === 'clear') { clearOutput(); boot(); return; }
+
+    // Open commands
+    if (cmd === 'open linkedin') { window.open('https://linkedin.com/in/nikko-cajayon/', '_blank'); print([{ t:'success', v:'  Opening LinkedIn...' }]); return; }
+    if (cmd === 'open github')   { window.open('https://github.com/Nik-1019', '_blank'); print([{ t:'success', v:'  Opening GitHub...' }]); return; }
+    if (cmd === 'open instagram') { window.open('https://instagram.com/iamnikko_01/', '_blank'); print([{ t:'success', v:'  Opening Instagram...' }]); return; }
+
+    // Projects with flags
+    if (cmd.startsWith('projects')) {
+      const flag = cmd.split(' ')[1] || null;
+      print(COMMANDS.projects(flag));
+      return;
+    }
+
+    // Exact match
+    if (COMMANDS[cmd]) {
+      print(COMMANDS[cmd]());
+      return;
+    }
+
+    // Not found
+    print([
+      { t:'err', v:`  command not found: ${cmd}` },
+      { t:'dim', v:`  Type 'help' to see available commands.` },
+      { t:'blank' },
+    ]);
+  }
+
+  /* ── INPUT EVENTS ── */
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      runCommand(input.value);
+    } else if (e.key === 'Tab') {
+      e.preventDefault();
+      const val = input.value.toLowerCase();
+      const match = ALL_COMMANDS.find(c => c.startsWith(val) && c !== val);
+      if (match) { input.value = match; acHint.textContent = ''; renderChips(match); }
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (histIdx < history.length - 1) { histIdx++; input.value = history[histIdx]; }
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (histIdx > 0) { histIdx--; input.value = history[histIdx]; }
+      else { histIdx = -1; input.value = ''; }
+    }
+  });
+
+  input.addEventListener('input', () => {
+    const val = input.value.toLowerCase();
+    const match = ALL_COMMANDS.find(c => c.startsWith(val) && c !== val && val.length > 0);
+    acHint.textContent = match ? match.slice(val.length) : '';
+    renderChips(val || null);
+  });
+
+  /* ── TOGGLE OPEN/CLOSE ── */
+  function openTerminal() {
+    isOpen = true;
+    widget.classList.add('open');
+    toggle.classList.add('hide-label');
+    setTimeout(() => input.focus(), 250);
+  }
+
+  function closeTerminal() {
+    isOpen = false;
+    widget.classList.remove('open');
+    toggle.classList.remove('hide-label');
+  }
+
+  toggle.addEventListener('click', () => isOpen ? closeTerminal() : openTerminal());
+  closeBtn.addEventListener('click', closeTerminal);
+  clearBtn.addEventListener('click', () => { clearOutput(); boot(); });
+
+  // Backtick shortcut
+  document.addEventListener('keydown', e => {
+    if (e.key === '`' && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
+      isOpen ? closeTerminal() : openTerminal();
+    }
+    if (e.key === 'Escape' && isOpen) closeTerminal();
+  });
+
+  /* ── DRAG ── */
+  (function() {
+    const handle = document.getElementById('term-drag-handle');
+    let dragging = false, ox = 0, oy = 0;
+
+    handle.addEventListener('mousedown', e => {
+      if (e.target === closeBtn || e.target === clearBtn) return;
+      dragging = true;
+      const rect = widget.getBoundingClientRect();
+      ox = e.clientX - rect.left;
+      oy = e.clientY - rect.top;
+      widget.style.transition = 'none';
+    });
+
+    document.addEventListener('mousemove', e => {
+      if (!dragging) return;
+      let nx = e.clientX - ox;
+      let ny = e.clientY - oy;
+      nx = Math.max(0, Math.min(nx, window.innerWidth  - widget.offsetWidth));
+      ny = Math.max(0, Math.min(ny, window.innerHeight - widget.offsetHeight));
+      widget.style.right  = 'auto';
+      widget.style.bottom = 'auto';
+      widget.style.left   = nx + 'px';
+      widget.style.top    = ny + 'px';
+    });
+
+    document.addEventListener('mouseup', () => {
+      dragging = false;
+      widget.style.transition = '';
+    });
+  })();
+
+  /* ── INIT ── */
+  boot();
+  renderChips();
+
+  // Auto-open on load after short delay so visitors see it
+  setTimeout(openTerminal, 800);
+
+})();
+</script>
+</body>
+</html>
