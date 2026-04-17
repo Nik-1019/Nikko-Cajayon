@@ -2027,7 +2027,7 @@
   const ALL_COMMANDS = [
     'help','whoami','skills','projects','talks',
     'affiliations','certs','contact',
-    'open linkedin','open github','open instagram',
+    'open linkedin','open github','open instagram','open facebook','open portfolio',
     'hire me','sudo nikko','sudo rm -rf /',
     'clear','ls','pwd','date','uname'
   ];
@@ -2055,6 +2055,8 @@
         { t:'out',     v:'  open linkedin   →  Open LinkedIn profile' },
         { t:'out',     v:'  open github     →  Open GitHub' },
         { t:'out',     v:'  open instagram  →  Open Instagram' },
+        { t:'out',     v:'  open facebook   →  Open Facebook' },
+        { t:'out',     v:'  open portfolio  →  Open NextWork portfolio' },
         { t:'blank' },
         { t:'accent2', v:'  UTILITY' },
         { t:'dim',     v:'  ──────────────────────────────────────' },
@@ -2409,6 +2411,8 @@
     if (cmd === 'open linkedin') { window.open('https://linkedin.com/in/nikko-cajayon/', '_blank'); print([{ t:'success', v:'  Opening LinkedIn...' }]); return; }
     if (cmd === 'open github')   { window.open('https://github.com/Nik-1019', '_blank'); print([{ t:'success', v:'  Opening GitHub...' }]); return; }
     if (cmd === 'open instagram') { window.open('https://instagram.com/iamnikko_01/', '_blank'); print([{ t:'success', v:'  Opening Instagram...' }]); return; }
+    if (cmd === 'open facebook') { window.open('https://www.facebook.com/cajayonnikko', '_blank'); print([{ t:'success', v:'  Opening Facebook...' }]); return; }
+    if (cmd === 'open portfolio') { window.open('https://learn.nextwork.org/portfolio', '_blank'); print([{ t:'success', v:'  Opening Portfolio...' }]); return; }
 
     // Projects with flags
     if (cmd.startsWith('projects')) {
