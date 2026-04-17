@@ -2021,7 +2021,19 @@
   const closeBtn = document.getElementById('term-close-dot');
   const clearBtn = document.getElementById('term-clear-btn');
 
-  let history = [], histIdx = -1, isOpen = false;
+  let history = [], histIdx = -1, isOpen = false, superuserUnlocked = false;
+
+  const SUPERUSER_LINKS = {
+    facebook: 'https://www.facebook.com/',
+    instagram: 'https://www.instagram.com/',
+    linkedin: 'https://www.linkedin.com/feed/',
+    youtube: 'https://www.linkedin.com/feed/',
+    nextwork: 'https://learn.nextwork.org/',
+    github: 'https://github.com/Nik-1019',
+    claude: 'https://claude.ai/new',
+    chatgpt: 'https://chatgpt.com/',
+    gemini: 'https://gemini.google.com/app'
+  };
 
   /* ── COMMAND REGISTRY ── */
   const ALL_COMMANDS = [
@@ -2406,6 +2418,30 @@
     renderChips();
 
     if (cmd === 'clear') { clearOutput(); boot(); return; }
+
+    if (cmd === 'superuser nyx') {
+      superuserUnlocked = true;
+      print([
+        { t:'success', v:'  [SUPERUSER ACCESS GRANTED]' },
+        { t:'accent2', v:'  Available quick links:' },
+        { t:'out', v:'  facebook, instagram, linkedin, youtube, nextwork, github, claude, chatgpt, gemini' },
+        { t:'dim', v:'  Type any of those commands directly.' },
+      ]);
+      return;
+    }
+
+    if (!superuserUnlocked && SUPERUSER_LINKS[cmd]) {
+      print([
+        { t:'err', v:'  Access denied.' },
+      ]);
+      return;
+    }
+
+    if (superuserUnlocked && SUPERUSER_LINKS[cmd]) {
+      window.open(SUPERUSER_LINKS[cmd], '_blank');
+      print([{ t:'success', v:`  Opening ${cmd}...` }]);
+      return;
+    }
 
     // Open commands
     if (cmd === 'open linkedin') { window.open('https://linkedin.com/in/nikko-cajayon/', '_blank'); print([{ t:'success', v:'  Opening LinkedIn...' }]); return; }
