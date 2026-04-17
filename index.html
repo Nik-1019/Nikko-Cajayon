@@ -1027,6 +1027,8 @@
       width: 680px;
       max-width: calc(100vw - 2rem);
       height: 460px;
+      min-width: 360px;
+      min-height: 260px;
       background: rgba(8,12,16,0.97);
       border: 1px solid var(--accent);
       border-radius: 10px;
@@ -1040,6 +1042,7 @@
       pointer-events: none;
       transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
       overflow: hidden;
+      resize: none;
     }
 
     #terminal-widget.open {
@@ -1097,6 +1100,18 @@
     }
 
     .term-clear-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+    .term-resize-handle {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      z-index: 2;
+    }
+
+    .term-resize-handle.nw { top: 0; left: 0; cursor: nwse-resize; }
+    .term-resize-handle.ne { top: 0; right: 0; cursor: nesw-resize; }
+    .term-resize-handle.sw { bottom: 0; left: 0; cursor: nesw-resize; }
+    .term-resize-handle.se { bottom: 0; right: 0; cursor: nwse-resize; }
 
     .term-output {
       flex: 1;
@@ -1200,6 +1215,7 @@
 
     @media (max-width: 720px) {
       #terminal-widget { width: calc(100vw - 1rem); right: 0.5rem; bottom: 5.5rem; }
+      .term-resize-handle { display: none; }
     }
   </style>
 </head>
@@ -1681,6 +1697,10 @@
 
 <!-- TERMINAL WIDGET -->
 <div id="terminal-widget" role="dialog" aria-label="Interactive Terminal">
+  <div class="term-resize-handle nw" data-resize="nw" aria-hidden="true"></div>
+  <div class="term-resize-handle ne" data-resize="ne" aria-hidden="true"></div>
+  <div class="term-resize-handle sw" data-resize="sw" aria-hidden="true"></div>
+  <div class="term-resize-handle se" data-resize="se" aria-hidden="true"></div>
   <div class="term-titlebar" id="term-drag-handle">
     <div class="term-dots">
       <div class="term-dot red" id="term-close-dot" title="Close"></div>
@@ -2466,10 +2486,16 @@
   /* ── DRAG ── */
   (function() {
     const handle = document.getElementById('term-drag-handle');
+    const resizeHandles = widget.querySelectorAll('.term-resize-handle');
     let dragging = false, ox = 0, oy = 0;
+    let resizing = false, resizeCorner = null;
+    let sx = 0, sy = 0;
+    let startW = 0, startH = 0, startL = 0, startT = 0;
+    const MIN_W = 360;
+    const MIN_H = 260;
 
     handle.addEventListener('mousedown', e => {
-      if (e.target === closeBtn || e.target === clearBtn) return;
+      if (e.target === closeBtn || e.target === clearBtn || e.target.closest('.term-resize-handle')) return;
       dragging = true;
       const rect = widget.getBoundingClientRect();
       ox = e.clientX - rect.left;
@@ -2478,6 +2504,42 @@
     });
 
     document.addEventListener('mousemove', e => {
+      if (resizing) {
+        const dx = e.clientX - sx;
+        const dy = e.clientY - sy;
+        const right = startL + startW;
+        const bottom = startT + startH;
+
+        let width = startW;
+        let height = startH;
+        let left = startL;
+        let top = startT;
+
+        if (resizeCorner.includes('e')) width = startW + dx;
+        if (resizeCorner.includes('s')) height = startH + dy;
+        if (resizeCorner.includes('w')) {
+          width = startW - dx;
+          left = right - width;
+        }
+        if (resizeCorner.includes('n')) {
+          height = startH - dy;
+          top = bottom - height;
+        }
+
+        width = Math.max(MIN_W, width);
+        height = Math.max(MIN_H, height);
+        left = Math.max(0, Math.min(left, window.innerWidth - width));
+        top = Math.max(0, Math.min(top, window.innerHeight - height));
+
+        widget.style.right = 'auto';
+        widget.style.bottom = 'auto';
+        widget.style.left = left + 'px';
+        widget.style.top = top + 'px';
+        widget.style.width = Math.min(width, window.innerWidth - left) + 'px';
+        widget.style.height = Math.min(height, window.innerHeight - top) + 'px';
+        return;
+      }
+
       if (!dragging) return;
       let nx = e.clientX - ox;
       let ny = e.clientY - oy;
@@ -2491,7 +2553,28 @@
 
     document.addEventListener('mouseup', () => {
       dragging = false;
+      resizing = false;
+      resizeCorner = null;
       widget.style.transition = '';
+    });
+
+    resizeHandles.forEach(rh => {
+      rh.addEventListener('mousedown', e => {
+        e.preventDefault();
+        e.stopPropagation();
+        resizing = true;
+        resizeCorner = rh.dataset.resize;
+        sx = e.clientX;
+        sy = e.clientY;
+
+        const rect = widget.getBoundingClientRect();
+        startW = rect.width;
+        startH = rect.height;
+        startL = rect.left;
+        startT = rect.top;
+
+        widget.style.transition = 'none';
+      });
     });
   })();
 
