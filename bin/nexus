@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+BIN_DIR="$(CDPATH= cd -- "$(dirname "$(readlink -f "$0")")" && pwd)"
+NEXUS_HTML="$(readlink -f "$BIN_DIR/../NEXUS.html")"
+if [ ! -f "$NEXUS_HTML" ]; then
+  printf '%s\n' "NEXUS.html not found (expected $NEXUS_HTML)" >&2
+  exit 1
+fi
+if command -v xdg-open >/dev/null 2>&1; then
+  exec xdg-open "$NEXUS_HTML" >/dev/null 2>&1
+elif command -v open >/dev/null 2>&1; then
+  exec open "$NEXUS_HTML" >/dev/null 2>&1
+fi
+printf '%s\n' "No xdg-open or open; open this file manually: $NEXUS_HTML" >&2
+exit 1
