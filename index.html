@@ -2023,6 +2023,19 @@
 
   let history = [], histIdx = -1, isOpen = false, superuserUnlocked = false;
 
+  const LINK_COMMANDS = {
+    facebook:  { url: 'https://www.facebook.com/cajayonnikko',        label: 'Facebook' },
+    fb:        { url: 'https://www.facebook.com/cajayonnikko',        label: 'Facebook' },
+    linkedin:  { url: 'https://www.linkedin.com/in/nikko-cajayon/',   label: 'LinkedIn' },
+    insta:     { url: 'https://www.instagram.com/iamnikko_01/',     label: 'Instagram' },
+    instagram: { url: 'https://www.instagram.com/iamnikko_01/',     label: 'Instagram' },
+    intagram:  { url: 'https://www.instagram.com/iamnikko_01/',     label: 'Instagram' },
+    nextwork:  { url: 'https://nextwork.ai/',                         label: 'NextWork' },
+    claude:    { url: 'https://claude.ai/new',                        label: 'Claude' },
+    gpt:       { url: 'https://chatgpt.com/',                         label: 'ChatGPT' },
+    chatgpt:   { url: 'https://chatgpt.com/',                         label: 'ChatGPT' },
+  };
+
   const SUPERUSER_LINKS = {
     facebook: 'https://www.facebook.com/',
     instagram: 'https://www.instagram.com/',
@@ -2040,6 +2053,7 @@
     'help','whoami','skills','projects','talks',
     'affiliations','certs','contact',
     'open linkedin','open github','open instagram','open facebook','open portfolio',
+    'facebook','fb','linkedin','insta','instagram','intagram','nextwork','claude','gpt','chatgpt',
     'nexus','sbd','skillbuilder',
     'hire me','sudo nikko','sudo rm -rf /',
     'clear','ls','pwd','date','uname'
@@ -2073,6 +2087,15 @@
         { t:'out',     v:'  nexus           →  Open the NEXUS page (NEXUS.html)' },
         { t:'out',     v:'  sbd             →  Open SkillBuilder (Skillbuilder.html)' },
         { t:'out',     v:'  skillbuilder    →  Open SkillBuilder (Skillbuilder.html)' },
+        { t:'blank' },
+        { t:'accent2', v:'  QUICK LINKS' },
+        { t:'dim',     v:'  ──────────────────────────────────────' },
+        { t:'out',     v:'  facebook / fb   →  Facebook profile' },
+        { t:'out',     v:'  linkedin        →  LinkedIn profile' },
+        { t:'out',     v:'  insta / instagram →  Instagram profile' },
+        { t:'out',     v:'  nextwork        →  NextWork' },
+        { t:'out',     v:'  claude          →  Claude AI' },
+        { t:'out',     v:'  gpt / chatgpt   →  ChatGPT' },
         { t:'blank' },
         { t:'accent2', v:'  UTILITY' },
         { t:'dim',     v:'  ──────────────────────────────────────' },
@@ -2448,6 +2471,13 @@
     renderChips();
 
     if (cmd === 'clear') { clearOutput(); boot(); return; }
+
+    if (LINK_COMMANDS[cmd]) {
+      const { url, label } = LINK_COMMANDS[cmd];
+      window.open(url, '_blank');
+      print([{ t:'success', v:`  Opening ${label}...` }]);
+      return;
+    }
 
     if (cmd === 'superuser nyx') {
       superuserUnlocked = true;
