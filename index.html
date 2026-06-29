@@ -2040,7 +2040,7 @@
     'help','whoami','skills','projects','talks',
     'affiliations','certs','contact',
     'open linkedin','open github','open instagram','open facebook','open portfolio',
-    'nexus',
+    'nexus','sbd','skillbuilder',
     'hire me','sudo nikko','sudo rm -rf /',
     'clear','ls','pwd','date','uname'
   ];
@@ -2071,6 +2071,8 @@
         { t:'out',     v:'  open facebook   →  Open Facebook' },
         { t:'out',     v:'  open portfolio  →  Open NextWork portfolio' },
         { t:'out',     v:'  nexus           →  Open the NEXUS page (NEXUS.html)' },
+        { t:'out',     v:'  sbd             →  Open SkillBuilder (Skillbuilder.html)' },
+        { t:'out',     v:'  skillbuilder    →  Open SkillBuilder (Skillbuilder.html)' },
         { t:'blank' },
         { t:'accent2', v:'  UTILITY' },
         { t:'dim',     v:'  ──────────────────────────────────────' },
@@ -2314,6 +2316,21 @@
         { t:'accent2', v:'  // NEXUS' },
         { t:'success', v:'  Linking to NEXUS...' },
         { t:'dim',     v:'  Redirecting to NEXUS.html' },
+        { t:'blank' },
+      ];
+    },
+
+    sbd() {
+      return COMMANDS.skillbuilder();
+    },
+
+    skillbuilder() {
+      setTimeout(() => { window.location.href = 'Skillbuilder.html'; }, 400);
+      return [
+        { t:'blank' },
+        { t:'accent2', v:'  // SKILLBUILDER' },
+        { t:'success', v:'  Linking to SkillBuilder...' },
+        { t:'dim',     v:'  Redirecting to Skillbuilder.html' },
         { t:'blank' },
       ];
     },
