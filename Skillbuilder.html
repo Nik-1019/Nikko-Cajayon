@@ -86,6 +86,15 @@
     else if(e.key==='ArrowLeft'||e.key==='PageUp'){ e.preventDefault(); go(cur-1); }
     else if(e.key==='Home'){ go(0); } else if(e.key==='End'){ go(N-1); }
   });
+  // mouse wheel: down = next, up = prev
+  var wheelLock=false;
+  window.addEventListener('wheel',function(e){
+    e.preventDefault();
+    if(wheelLock||Math.abs(e.deltaY)<10)return;
+    wheelLock=true;
+    go(cur+(e.deltaY>0?1:-1));
+    setTimeout(function(){ wheelLock=false; },600);
+  },{passive:false});
   // touch swipe (bonus)
   var sx=null;
   window.addEventListener('touchstart',function(e){ sx=e.touches[0].clientX; },{passive:true});
