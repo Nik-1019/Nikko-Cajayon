@@ -2054,7 +2054,7 @@
     'affiliations','certs','contact',
     'open linkedin','open github','open instagram','open facebook','open portfolio',
     'facebook','fb','linkedin','insta','instagram','intagram','nextwork','claude','gpt','chatgpt',
-    'nexus','sbd','skillbuilder',
+    'nexus','sbd','skillbuilder','n8n','n8n-anatomy',
     'hire me','sudo nikko','sudo rm -rf /',
     'clear','ls','pwd','date','uname'
   ];
@@ -2087,6 +2087,8 @@
         { t:'out',     v:'  nexus           →  Open the NEXUS page (NEXUS.html)' },
         { t:'out',     v:'  sbd             →  Open SkillBuilder (Skillbuilder.html)' },
         { t:'out',     v:'  skillbuilder    →  Open SkillBuilder (Skillbuilder.html)' },
+        { t:'out',     v:'  n8n-anatomy     →  Anatomy of a Workflow (n8n-anatomy.html)' },
+        { t:'out',     v:'  n8n             →  Anatomy of a Workflow (n8n-anatomy.html)' },
         { t:'blank' },
         { t:'accent2', v:'  QUICK LINKS' },
         { t:'dim',     v:'  ──────────────────────────────────────' },
@@ -2354,6 +2356,21 @@
         { t:'accent2', v:'  // SKILLBUILDER' },
         { t:'success', v:'  Linking to SkillBuilder...' },
         { t:'dim',     v:'  Redirecting to Skillbuilder.html' },
+        { t:'blank' },
+      ];
+    },
+
+    n8n() {
+      return COMMANDS['n8n-anatomy']();
+    },
+
+    'n8n-anatomy'() {
+      setTimeout(() => { window.location.href = 'n8n-anatomy.html'; }, 400);
+      return [
+        { t:'blank' },
+        { t:'accent2', v:'  // N8N — ANATOMY OF A WORKFLOW' },
+        { t:'success', v:'  Linking to Anatomy of a Workflow...' },
+        { t:'dim',     v:'  Redirecting to n8n-anatomy.html' },
         { t:'blank' },
       ];
     },
