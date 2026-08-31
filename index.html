@@ -395,6 +395,315 @@
 
     .section-title span { color: var(--accent); }
 
+    /* ─── TOOLS MARQUEE ──────────────────────────── */
+    .tools-marquee {
+      position: relative;
+      z-index: 1;
+      padding: 2.2rem 0 2.6rem;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(13,17,23,0.6), rgba(8,12,16,0.9));
+      overflow: hidden;
+    }
+
+    .tm-label {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 1.4rem;
+    }
+
+    .tm-row {
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+              mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+    }
+
+    .tm-row + .tm-row { margin-top: 0.85rem; }
+
+    .tm-track {
+      display: flex;
+      gap: 0.85rem;
+      width: max-content;
+      animation: tm-scroll 42s linear infinite;
+      will-change: transform;
+    }
+
+    .tm-row--rev .tm-track {
+      animation-direction: reverse;
+      animation-duration: 52s;
+    }
+
+    @keyframes tm-scroll {
+      from { transform: translate3d(0,0,0); }
+      to   { transform: translate3d(-50%,0,0); }
+    }
+
+    .tools-marquee:hover .tm-track { animation-play-state: paused; }
+
+    .tm-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex: 0 0 auto;
+      padding: 0.55rem 1.05rem 0.55rem 0.55rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      color: var(--text);
+      white-space: nowrap;
+      transition: border-color 0.25s, background 0.25s, transform 0.25s;
+    }
+
+    .tm-item:hover {
+      border-color: rgba(0,200,160,0.45);
+      background: #17222e;
+      transform: translateY(-2px);
+    }
+
+    .tm-ico {
+      display: grid;
+      place-items: center;
+      width: 26px; height: 26px;
+      border-radius: 7px;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      background: rgba(0,200,160,0.12);
+      color: var(--accent);
+    }
+
+    .tm-ico.b { background: rgba(14,165,233,0.14); color: var(--accent2); }
+    .tm-ico.p { background: rgba(167,139,250,0.14); color: var(--accent3); }
+
+    /* ─── SYSTEM / WORKFLOW VISUAL ───────────────── */
+    #system { padding: 7rem 0 6rem; background: var(--bg2); }
+
+    .sys-intro { text-align: center; max-width: 720px; margin: 0 auto 3rem; }
+
+    .sys-intro .section-label { justify-content: center; }
+
+    .sys-intro p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-top: 1rem;
+    }
+
+    .sys-window {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--bg3);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.45);
+    }
+
+    .sys-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1rem;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sys-bar .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .sys-bar .dot.r { background: #ff5f57; }
+    .sys-bar .dot.y { background: #febc2e; }
+    .sys-bar .dot.g { background: #28c840; }
+
+    .sys-bar-title {
+      flex: 1;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 0.66rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    .sys-canvas {
+      position: relative;
+      padding: 1.6rem 1rem 1.2rem;
+      background-image:
+        radial-gradient(circle at 1px 1px, rgba(107,128,153,0.22) 1px, transparent 0);
+      background-size: 22px 22px;
+      overflow-x: auto;
+    }
+
+    .sys-canvas svg { display: block; width: 100%; min-width: 880px; height: auto; }
+
+    .sys-tagline {
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      color: var(--muted);
+      padding: 0 1rem 0.4rem;
+    }
+
+    .sys-tagline b { color: var(--accent); font-weight: 400; }
+
+    .node-box { fill: #141d27; stroke: rgba(0,200,160,0.22); stroke-width: 1.2; }
+    .node-box.alt   { stroke: rgba(14,165,233,0.3); }
+    .node-box.warn  { stroke: rgba(167,139,250,0.32); }
+    .node-box.start { fill: #12242a; stroke: var(--accent); stroke-width: 1.6; }
+    .node-glyph { font-size: 17px; }
+    .node-label { fill: #e2eaf4; font-family: 'Space Mono', monospace; font-size: 11px; text-anchor: middle; }
+    .node-sub   { fill: #6b8099; font-family: 'IBM Plex Sans', sans-serif; font-size: 9.5px; text-anchor: middle; }
+    .wire { fill: none; stroke: rgba(107,128,153,0.42); stroke-width: 1.3; }
+    .wire.dash { stroke: rgba(167,139,250,0.55); stroke-dasharray: 5 5; }
+    .wire-label { fill: #a78bfa; font-family: 'Space Mono', monospace; font-size: 9px; text-anchor: middle; }
+    .packet { fill: var(--accent); }
+    .packet.b { fill: var(--accent2); }
+    .packet.p { fill: var(--accent3); }
+
+    .sys-legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.4rem;
+      margin-top: 2rem;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--muted);
+    }
+
+    .sys-legend span { display: flex; align-items: center; gap: 0.45rem; }
+    .sys-legend i { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+    .sys-legend i.b { background: var(--accent2); }
+    .sys-legend i.p { background: var(--accent3); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .packet { display: none; }
+    }
+
+    /* ─── THE REALITY (scroll-stacked cards) ─────── */
+    .reality-stack {
+      margin-top: 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2.2rem;
+    }
+
+    .reality-card {
+      position: sticky;
+      top: calc(120px + var(--i, 0) * 26px);
+      background: linear-gradient(145deg, #101a24, #0b1119);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.6rem 2.4rem;
+      min-height: 340px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 2rem;
+      align-items: center;
+      box-shadow: 0 -6px 40px rgba(0,0,0,0.5);
+      transition: border-color 0.3s;
+      overflow: hidden;
+    }
+
+    .reality-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      background: radial-gradient(600px 200px at 85% 0%, rgba(0,200,160,0.07), transparent 70%);
+      pointer-events: none;
+    }
+
+    .reality-card:hover { border-color: rgba(0,200,160,0.32); }
+
+    .reality-num {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      margin-bottom: 1.1rem;
+    }
+
+    .reality-card h3 {
+      font-family: var(--display);
+      font-size: clamp(1.5rem, 3vw, 2.15rem);
+      font-weight: 800;
+      line-height: 1.12;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .reality-card h3 span { color: var(--accent); }
+
+    .reality-card p {
+      font-size: 0.92rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 46ch;
+    }
+
+    .reality-visual {
+      position: relative;
+      height: 200px;
+      border-radius: 12px;
+      border: 1px dashed rgba(107,128,153,0.24);
+      background: rgba(8,12,16,0.5);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .reality-visual .rv-glyph {
+      font-size: 3.4rem;
+      opacity: 0.5;
+      filter: grayscale(0.3);
+    }
+
+    .reality-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, transparent 30%, rgba(0,200,160,0.09) 50%, transparent 70%);
+      transform: translateX(-100%);
+      animation: rv-sheen 4.5s ease-in-out infinite;
+    }
+
+    @keyframes rv-sheen {
+      0%, 60% { transform: translateX(-100%); }
+      100%    { transform: translateX(100%); }
+    }
+
+    @supports (animation-timeline: view()) {
+      @media (prefers-reduced-motion: no-preference) {
+        .reality-card {
+          animation: card-recede linear both;
+          animation-timeline: view();
+          animation-range: exit -20vh;
+        }
+        @keyframes card-recede {
+          to { transform: scale(0.93); opacity: 0.55; }
+        }
+      }
+    }
+
+    @media (max-width: 860px) {
+      .reality-card { grid-template-columns: 1fr; padding: 1.8rem 1.4rem; min-height: 0; }
+      .reality-visual { height: 130px; }
+    }
+
+    .reality-close {
+      margin-top: 2.4rem;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .reality-close strong {
+      color: var(--accent);
+      font-weight: 400;
+    }
+
     /* ─── ABOUT ──────────────────────────────────── */
     #about { padding: 7rem 0; }
 
@@ -677,6 +986,786 @@
       width: 20px;
       border-radius: 3px;
     }
+
+    /* ─── TALKS REEL (auto-scrolling marquee) ────── */
+    .talk-reel {
+      position: relative;
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      margin-bottom: 3.5rem;
+      overflow: hidden;
+      /* fade both edges so the loop never shows a seam */
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+              mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+    }
+
+    .talk-reel-track {
+      display: flex;
+      gap: 1.1rem;
+      width: max-content;
+      animation: reel-scroll 64s linear infinite;
+      will-change: transform;
+    }
+
+    /* track holds the item list twice; -50% lands exactly on the copy */
+    @keyframes reel-scroll {
+      from { transform: translate3d(0, 0, 0); }
+      to   { transform: translate3d(-50%, 0, 0); }
+    }
+
+    .talk-reel:hover .talk-reel-track,
+    .talk-reel:focus-within .talk-reel-track { animation-play-state: paused; }
+
+    /* image on top, description reads underneath — no overlay to fight */
+    .reel-item {
+      position: relative;
+      flex: 0 0 340px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--bg2);
+      margin: 0;
+      transition: border-color 0.35s, transform 0.35s;
+    }
+
+    .reel-item:hover {
+      border-color: rgba(0,200,160,0.38);
+      transform: translateY(-5px);
+    }
+
+    .reel-media {
+      position: relative;
+      height: 200px;
+      overflow: hidden;
+      background: var(--bg3);
+    }
+
+    .reel-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(0.6) brightness(0.78);
+      transform: scale(1.02);
+      transition: filter 0.45s, transform 0.45s;
+    }
+
+    .reel-item:hover img {
+      filter: saturate(1) brightness(1);
+      transform: scale(1.06);
+    }
+
+    .reel-fallback {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.6rem;
+      background:
+        radial-gradient(circle at 50% 40%, rgba(0,200,160,0.09), transparent 60%),
+        var(--bg3);
+      opacity: 0.6;
+    }
+
+    /* thin accent rule tying the photo to its caption */
+    .reel-media::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.45s;
+    }
+
+    .reel-item:hover .reel-media::after { transform: scaleX(1); }
+
+    .reel-cap {
+      padding: 1rem 1.1rem 1.2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .reel-venue {
+      display: block;
+      font-family: var(--mono);
+      font-size: 0.56rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+
+    .reel-desc {
+      display: block;
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: var(--text);
+    }
+
+    @media (max-width: 640px) {
+      .reel-item { flex: 0 0 260px; }
+      .reel-media { height: 160px; }
+      .talk-reel-track { animation-duration: 48s; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .talk-reel-track { animation: none; }
+      .talk-reel { overflow-x: auto; }
+    }
+
+    /* ─── METHOD: LEARN · BUILD · LEAD ───────────── */
+    #method { padding: 7rem 0; background: var(--bg2); }
+
+    .method-head { max-width: 640px; }
+
+    .method-head p.method-sub {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.7;
+      margin-top: 1rem;
+    }
+
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.6rem;
+      margin-top: 3.4rem;
+      position: relative;
+    }
+
+    .method-card {
+      position: relative;
+      background: linear-gradient(160deg, #131d28, #0d141c);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem 1.8rem 1.8rem;
+      overflow: hidden;
+      transition: transform 0.35s, border-color 0.35s;
+    }
+
+    .method-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(0,200,160,0.32);
+    }
+
+    /* concentric radar rings, top-right */
+    .method-rings {
+      position: absolute;
+      top: -70px; right: -70px;
+      width: 210px; height: 210px;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .method-rings span {
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      border: 1px solid rgba(0,200,160,0.16);
+      border-radius: 50%;
+    }
+
+    .method-rings span:nth-child(1) { width: 80px;  height: 80px;  }
+    .method-rings span:nth-child(2) { width: 140px; height: 140px; }
+    .method-rings span:nth-child(3) { width: 200px; height: 200px; }
+
+    .method-icon {
+      position: absolute;
+      top: 1.6rem; right: 1.6rem;
+      width: 40px; height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: rgba(0,200,160,0.1);
+      font-size: 1.15rem;
+    }
+
+    .method-num {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      margin-bottom: 1.4rem;
+    }
+
+    .method-card h3 {
+      font-family: var(--display);
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 0.7rem;
+      letter-spacing: -0.02em;
+    }
+
+    .method-card > p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1.3rem;
+    }
+
+    .method-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+
+    .method-chip {
+      font-family: var(--mono);
+      font-size: 0.63rem;
+      padding: 0.32rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(8,12,16,0.6);
+      color: var(--muted);
+    }
+
+    /* arrow connectors between cards */
+    .method-arrow {
+      position: absolute;
+      top: 50%;
+      width: 2.6rem;
+      height: 1px;
+      background: rgba(107,128,153,0.3);
+    }
+
+    .method-arrow::after {
+      content: '';
+      position: absolute;
+      right: 0; top: -3px;
+      border: 3.5px solid transparent;
+      border-left-color: rgba(107,128,153,0.55);
+    }
+
+    .method-arrow.a1 { left: calc(33.333% - 1.9rem); }
+    .method-arrow.a2 { left: calc(66.666% - 1.55rem); }
+
+    @media (max-width: 900px) {
+      .method-grid { grid-template-columns: 1fr; gap: 1.4rem; }
+      .method-arrow { display: none; }
+    }
+
+    /* ─── REAL SCREENS STRIP ─────────────────────── */
+    #screens { padding: 4.5rem 0 5.5rem; overflow: hidden; }
+
+    .screens-caption {
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2.4rem;
+    }
+
+    .screens-caption b { color: var(--accent); font-weight: 400; }
+
+    .screens-strip {
+      position: relative;
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+              mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+    }
+
+    .screens-track {
+      display: flex;
+      gap: 1.3rem;
+      width: max-content;
+      animation: tm-scroll 70s linear infinite;
+      will-change: transform;
+    }
+
+    .screens-strip:hover .screens-track,
+    .screens-strip:focus-within .screens-track { animation-play-state: paused; }
+
+    .screen-frame {
+      flex: 0 0 430px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--bg3);
+      padding: 0;
+      cursor: zoom-in;
+      text-align: left;
+      font: inherit;
+      color: inherit;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .screen-frame:hover {
+      border-color: rgba(0,200,160,0.4);
+      transform: translateY(-4px);
+    }
+
+    .screen-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.5rem 0.7rem;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .screen-bar i {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #ff5f57;
+    }
+    .screen-bar i:nth-child(2) { background: #febc2e; }
+    .screen-bar i:nth-child(3) { background: #28c840; }
+
+    .screen-bar span {
+      margin-left: auto;
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .screen-body {
+      display: block;
+      position: relative;
+      aspect-ratio: 16 / 10;
+      background: #0b1119;
+      overflow: hidden;
+    }
+
+    .screen-body img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(0.7) brightness(0.82);
+      transition: filter 0.4s, transform 0.4s;
+    }
+
+    .screen-frame:hover .screen-body img {
+      filter: saturate(1) brightness(1);
+      transform: scale(1.03);
+    }
+
+    /* animated skeleton placeholder — shown until a real screenshot is dropped in */
+    .screen-skeleton {
+      position: absolute;
+      inset: 0;
+      padding: 0.9rem;
+      display: grid;
+      grid-template-columns: 74px 1fr;
+      gap: 0.7rem;
+      background: #0b1119;
+    }
+
+    .sk-side, .sk-main { display: flex; flex-direction: column; gap: 0.5rem; height: 100%; }
+
+    .sk-bar {
+      height: 9px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #16202b 25%, #1d2a37 50%, #16202b 75%);
+      background-size: 300% 100%;
+      animation: sk-shimmer 2.4s linear infinite;
+    }
+
+    .sk-bar.w60 { width: 60%; }
+    .sk-bar.w80 { width: 80%; }
+    .sk-bar.w40 { width: 40%; }
+    .sk-bar.tall { flex: 1 1 auto; min-height: 46px; }
+    .sk-bar.accent { background: linear-gradient(90deg, rgba(0,200,160,0.18) 25%, rgba(0,200,160,0.35) 50%, rgba(0,200,160,0.18) 75%); background-size: 300% 100%; }
+
+    @keyframes sk-shimmer {
+      from { background-position: 150% 0; }
+      to   { background-position: -150% 0; }
+    }
+
+    .screen-meta {
+      display: block;
+      padding: 0.85rem 0.9rem 1rem;
+      border-top: 1px solid var(--border);
+      background: var(--bg2);
+    }
+
+    .screen-kind {
+      display: block;
+      font-family: var(--mono);
+      font-size: 0.57rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.35rem;
+    }
+
+    .screen-name {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    /* lightbox */
+    #screen-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      display: none;
+      place-items: center;
+      padding: 4vh 4vw;
+      background: rgba(4,7,10,0.92);
+      backdrop-filter: blur(6px);
+    }
+
+    #screen-lightbox.open { display: grid; }
+
+    #screen-lightbox figure {
+      max-width: 1100px;
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--bg3);
+    }
+
+    #screen-lightbox img { width: 100%; display: block; }
+
+    #screen-lightbox figcaption {
+      padding: 1rem 1.2rem;
+      font-family: var(--mono);
+      font-size: 0.76rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    .lb-close {
+      position: absolute;
+      top: 1.6rem; right: 2rem;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 0.4rem 0.8rem;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    .lb-close:hover { border-color: var(--accent); color: var(--accent); }
+
+    @media (max-width: 640px) {
+      .screen-frame { flex: 0 0 300px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .screens-track { animation: none; }
+      .screens-strip { overflow-x: auto; }
+      .sk-bar { animation: none; }
+    }
+
+    /* ─── SERVICES COVERFLOW ─────────────────────── */
+    #services { padding: 7rem 0; background: var(--bg2); }
+
+    .svc-head { text-align: center; max-width: 640px; margin: 0 auto; }
+    .svc-head .section-label { justify-content: center; }
+    .svc-head p { color: var(--muted); margin-top: 0.9rem; font-size: 0.94rem; }
+
+    .svc-stage {
+      position: relative;
+      height: 460px;
+      margin-top: 3rem;
+      perspective: 1400px;
+      display: grid;
+      place-items: center;
+    }
+
+    .svc-card {
+      position: absolute;
+      width: 360px;
+      max-width: 82vw;
+      padding: 2rem 1.8rem;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: linear-gradient(160deg, #141f2b, #0c131b);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      transition: transform 0.55s cubic-bezier(0.4,0,0.2,1), opacity 0.55s, filter 0.55s;
+      will-change: transform;
+    }
+
+    .svc-card[data-pos="0"]  { transform: translateX(0) scale(1) rotateY(0deg); opacity: 1; z-index: 5; border-color: rgba(0,200,160,0.3); }
+    .svc-card[data-pos="-1"] { transform: translateX(-300px) scale(0.86) rotateY(18deg);  opacity: 0.22; z-index: 4; filter: blur(2.5px); }
+    .svc-card[data-pos="1"]  { transform: translateX(300px)  scale(0.86) rotateY(-18deg); opacity: 0.22; z-index: 4; filter: blur(2.5px); }
+    .svc-card[data-pos="-2"] { transform: translateX(-500px) scale(0.74) rotateY(24deg);  opacity: 0.08; z-index: 3; filter: blur(4px); }
+    .svc-card[data-pos="2"]  { transform: translateX(500px)  scale(0.74) rotateY(-24deg); opacity: 0.08; z-index: 3; filter: blur(4px); }
+    .svc-card[data-pos="hidden"] { transform: scale(0.6); opacity: 0; z-index: 1; pointer-events: none; }
+
+    .svc-icon {
+      width: 46px; height: 46px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: rgba(0,200,160,0.1);
+      font-size: 1.3rem;
+      margin: 0 auto 1rem;
+    }
+
+    .svc-count {
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 0.64rem;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    .svc-card h3 {
+      font-family: var(--display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.4rem;
+    }
+
+    .svc-card > p {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .svc-badge {
+      display: block;
+      width: fit-content;
+      margin: 0 auto 1.4rem;
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(0,200,160,0.1);
+      border-radius: 999px;
+      padding: 0.35rem 0.85rem;
+    }
+
+    .svc-list { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+
+    .svc-list li {
+      display: flex;
+      gap: 0.6rem;
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .svc-list li::before {
+      content: '✓';
+      color: var(--accent);
+      font-size: 0.8rem;
+      flex: 0 0 auto;
+    }
+
+    .svc-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.4rem;
+      margin-top: 1.6rem;
+    }
+
+    .svc-arrow {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 1rem;
+      cursor: pointer;
+      transition: border-color 0.25s, color 0.25s, transform 0.25s;
+    }
+
+    .svc-arrow:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.08); }
+
+    .svc-dots { display: flex; gap: 0.5rem; }
+
+    .svc-dot {
+      width: 8px; height: 8px;
+      border-radius: 999px;
+      border: none;
+      background: rgba(107,128,153,0.35);
+      cursor: pointer;
+      transition: width 0.3s, background 0.3s;
+    }
+
+    .svc-dot.active { width: 26px; background: var(--accent); }
+
+    @media (max-width: 700px) {
+      .svc-stage { height: 520px; }
+      .svc-card[data-pos="-1"], .svc-card[data-pos="1"],
+      .svc-card[data-pos="-2"], .svc-card[data-pos="2"] { opacity: 0; }
+    }
+
+    /* ─── COMMUNITY / CLIENT SHOWCASE ────────────── */
+    .show-lede {
+      margin-top: 1rem;
+      color: var(--muted);
+      font-size: 0.92rem;
+      max-width: 52ch;
+    }
+
+    .show-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .show-card {
+      position: relative;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem 1.7rem 1.6rem;
+      overflow: hidden;
+      transition: transform 0.35s, border-color 0.35s;
+    }
+
+    .show-card:hover { transform: translateY(-6px); border-color: rgba(0,200,160,0.32); }
+
+    /* corner ticks, like a blueprint crop mark */
+    .show-card::before,
+    .show-card::after {
+      content: '+';
+      position: absolute;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: rgba(107,128,153,0.35);
+    }
+    .show-card::before { top: 0.5rem; left: 0.6rem; }
+    .show-card::after  { bottom: 0.5rem; right: 0.6rem; }
+
+    .show-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 1.4rem;
+    }
+
+    .show-num {
+      font-family: var(--display);
+      font-size: 2.6rem;
+      font-weight: 800;
+      line-height: 1;
+      color: rgba(107,128,153,0.22);
+    }
+
+    .show-logo {
+      width: 52px; height: 52px;
+      border-radius: 12px;
+      object-fit: contain;
+      background: #fff;
+      padding: 6px;
+      border: 1px solid var(--border);
+    }
+
+    .show-logo-fallback {
+      width: 52px; height: 52px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 1.4rem;
+      background: rgba(0,200,160,0.1);
+      border: 1px solid var(--border);
+    }
+
+    .show-name {
+      font-family: var(--display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+
+    .show-role {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.9rem;
+    }
+
+    .show-desc {
+      font-size: 0.86rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1.2rem;
+    }
+
+    .show-tags {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      padding-top: 0.9rem;
+    }
+
+    .show-link {
+      display: inline-block;
+      margin-top: 0.9rem;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .show-link:hover { text-decoration: underline; }
+
+    /* client slots — placeholder state until real logos/details land */
+    #clients { padding: 7rem 0; }
+
+    .show-card.slot {
+      border-style: dashed;
+      border-color: rgba(107,128,153,0.28);
+      background: rgba(13,17,23,0.5);
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .show-card.slot:hover { border-color: rgba(0,200,160,0.35); }
+
+    .slot-mark {
+      width: 52px; height: 52px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      border: 1px dashed rgba(107,128,153,0.4);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 1.1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .slot-line {
+      height: 10px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #131c26 25%, #1b2836 50%, #131c26 75%);
+      background-size: 300% 100%;
+      animation: sk-shimmer 2.6s linear infinite;
+      margin-bottom: 0.6rem;
+    }
+
+    .slot-line.w70 { width: 70%; }
+    .slot-line.w45 { width: 45%; }
+    .slot-line.w90 { width: 90%; }
+
+    .slot-note {
+      margin-top: 1.2rem;
+      font-family: var(--mono);
+      font-size: 0.63rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .slot-note b { color: var(--accent); font-weight: 400; }
 
     /* ─── CERTIFICATIONS ─────────────────────────── */
     #certifications { padding: 7rem 0; background: var(--bg2); }
@@ -1227,11 +2316,14 @@
 <nav>
   <a href="#home" class="nav-logo">// nikko.cajayon</a>
   <ul class="nav-links">
+    <li><a href="#system">System</a></li>
     <li><a href="#about">About</a></li>
+    <li><a href="#method">Method</a></li>
     <li><a href="#portfolio">Projects</a></li>
+    <li><a href="#services">Services</a></li>
     <li><a href="#speaking">Talks</a></li>
-    <li><a href="#certifications">Certs</a></li>
     <li><a href="#affiliations">Community</a></li>
+    <li><a href="#clients">Clients</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
@@ -1277,13 +2369,235 @@
   </div>
 </section>
 
+<!-- TOOLS & SKILLS MARQUEE -->
+<section class="tools-marquee" aria-label="Tools and technologies I work with">
+  <p class="tm-label">// the stack I build with</p>
+
+  <div class="tm-row">
+    <div class="tm-track" data-marquee>
+      <span class="tm-item"><span class="tm-ico">AWS</span>Amazon Web Services</span>
+      <span class="tm-item"><span class="tm-ico b">AZ</span>Microsoft Azure</span>
+      <span class="tm-item"><span class="tm-ico">PY</span>Python</span>
+      <span class="tm-item"><span class="tm-ico p">n8n</span>n8n</span>
+      <span class="tm-item"><span class="tm-ico b">CS</span>Copilot Studio</span>
+      <span class="tm-item"><span class="tm-ico p">CL</span>Claude</span>
+      <span class="tm-item"><span class="tm-ico">TF</span>Terraform</span>
+      <span class="tm-item"><span class="tm-ico b">DK</span>Docker</span>
+      <span class="tm-item"><span class="tm-ico">GH</span>GitHub Actions</span>
+      <span class="tm-item"><span class="tm-ico p">LX</span>Linux</span>
+      <span class="tm-item"><span class="tm-ico b">SM</span>SageMaker</span>
+      <span class="tm-item"><span class="tm-ico">λ</span>Lambda</span>
+    </div>
+  </div>
+
+  <div class="tm-row tm-row--rev">
+    <div class="tm-track" data-marquee>
+      <span class="tm-item"><span class="tm-ico b">AI</span>Azure AI Foundry</span>
+      <span class="tm-item"><span class="tm-ico">RAG</span>RAG Pipelines</span>
+      <span class="tm-item"><span class="tm-ico p">AG</span>Agentic Workflows</span>
+      <span class="tm-item"><span class="tm-ico">JS</span>JavaScript</span>
+      <span class="tm-item"><span class="tm-ico b">RE</span>React</span>
+      <span class="tm-item"><span class="tm-ico">SQL</span>PostgreSQL</span>
+      <span class="tm-item"><span class="tm-ico p">CI</span>CI / CD</span>
+      <span class="tm-item"><span class="tm-ico">IAM</span>Cloud Security</span>
+      <span class="tm-item"><span class="tm-ico b">QS</span>QuickSight</span>
+      <span class="tm-item"><span class="tm-ico p">GIT</span>Git</span>
+      <span class="tm-item"><span class="tm-ico">API</span>REST APIs</span>
+      <span class="tm-item"><span class="tm-ico b">K8</span>Kubernetes</span>
+    </div>
+  </div>
+</section>
+
+<!-- SYSTEM / LIVE WORKFLOW VISUAL -->
+<section id="system">
+  <div class="container">
+    <div class="sys-intro reveal">
+      <p class="section-label">00 // Live System</p>
+      <h2 class="section-title">One trigger fires.<br /><span>The system runs itself.</span></h2>
+      <p>
+        A real agentic pipeline shape I build — an event comes in, the system validates it,
+        enriches it, hands it to an agent, and routes every outcome: auto-execute, escalate
+        to a human, or log and close. Nobody touches it after deploy.
+      </p>
+    </div>
+
+    <div class="sys-window reveal reveal-delay-1">
+      <div class="sys-bar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="sys-bar-title">agentic-workflow — production</span>
+      </div>
+
+      <div class="sys-canvas">
+        <p class="sys-tagline">One event in. <b>Every outcome routed.</b></p>
+        <svg viewBox="0 0 1080 430" role="img" aria-label="Diagram of an agentic automation workflow: an event trigger flows through validate, enrich and an AI agent to a decision node, which routes to auto-execute, human review, or log and close.">
+          <defs>
+            <!-- top rail -->
+            <path id="w1" class="wire" d="M 168 96 H 252" />
+            <path id="w2" class="wire" d="M 348 96 H 432" />
+            <path id="w3" class="wire" d="M 528 96 H 612" />
+            <path id="w4" class="wire" d="M 708 96 H 792" />
+            <!-- branches down from the decision node -->
+            <path id="w5" class="wire" d="M 840 132 V 200 Q 840 232 808 232 H 260 Q 228 232 228 264 V 300" />
+            <path id="w6" class="wire" d="M 840 132 V 200 Q 840 232 808 232 H 572 Q 540 232 540 264 V 300" />
+            <path id="w7" class="wire" d="M 840 132 V 264 V 300" />
+            <!-- retry loop back to validate -->
+            <path id="w8" class="wire dash" d="M 300 132 V 168 Q 300 186 282 186 H 186 Q 168 186 168 168 V 132" />
+          </defs>
+
+          <use href="#w1" /><use href="#w2" /><use href="#w3" /><use href="#w4" />
+          <use href="#w5" /><use href="#w6" /><use href="#w7" /><use href="#w8" />
+          <text class="wire-label" x="234" y="204">retry on fail</text>
+
+          <!-- top row -->
+          <g>
+            <rect class="node-box start" x="108" y="66" width="60" height="60" rx="14" />
+            <text class="node-glyph" x="138" y="104" text-anchor="middle">⚡</text>
+            <text class="node-label" x="138" y="148">Event Trigger</text>
+            <text class="node-sub"   x="138" y="163">Webhook · form · queue</text>
+          </g>
+          <g>
+            <rect class="node-box" x="270" y="66" width="60" height="60" rx="14" />
+            <text class="node-glyph" x="300" y="104" text-anchor="middle">🛡️</text>
+            <text class="node-label" x="300" y="148">Validate</text>
+            <text class="node-sub"   x="300" y="163">Schema + auth check</text>
+          </g>
+          <g>
+            <rect class="node-box alt" x="450" y="66" width="60" height="60" rx="14" />
+            <text class="node-glyph" x="480" y="104" text-anchor="middle">🧩</text>
+            <text class="node-label" x="480" y="148">Enrich</text>
+            <text class="node-sub"   x="480" y="163">Context from source data</text>
+          </g>
+          <g>
+            <rect class="node-box alt" x="630" y="66" width="60" height="60" rx="14" />
+            <text class="node-glyph" x="660" y="104" text-anchor="middle">🤖</text>
+            <text class="node-label" x="660" y="148">AI Agent</text>
+            <text class="node-sub"   x="660" y="163">Reason · plan · call tools</text>
+          </g>
+          <g>
+            <rect class="node-box warn" x="810" y="66" width="60" height="60" rx="14" />
+            <text class="node-glyph" x="840" y="104" text-anchor="middle">🔀</text>
+            <text class="node-label" x="840" y="148">Decision</text>
+            <text class="node-sub"   x="840" y="163">Confidence routing</text>
+          </g>
+
+          <!-- bottom row -->
+          <g>
+            <rect class="node-box" x="198" y="300" width="60" height="60" rx="14" />
+            <text class="node-glyph" x="228" y="338" text-anchor="middle">✅</text>
+            <text class="node-label" x="228" y="382">Auto-Execute</text>
+            <text class="node-sub"   x="228" y="397">High confidence · no human</text>
+          </g>
+          <g>
+            <rect class="node-box warn" x="510" y="300" width="60" height="60" rx="14" />
+            <text class="node-glyph" x="540" y="338" text-anchor="middle">👤</text>
+            <text class="node-label" x="540" y="382">Human Review</text>
+            <text class="node-sub"   x="540" y="397">Edge case · needs a call</text>
+          </g>
+          <g>
+            <rect class="node-box alt" x="810" y="300" width="60" height="60" rx="14" />
+            <text class="node-glyph" x="840" y="338" text-anchor="middle">📊</text>
+            <text class="node-label" x="840" y="382">Log &amp; Store</text>
+            <text class="node-sub"   x="840" y="397">Every run, auditable</text>
+          </g>
+
+          <!-- packets travelling the wires -->
+          <circle class="packet" r="4">
+            <animateMotion dur="2.2s" repeatCount="indefinite" begin="0s"><mpath href="#w1" /></animateMotion>
+          </circle>
+          <circle class="packet" r="4">
+            <animateMotion dur="2.2s" repeatCount="indefinite" begin="0.5s"><mpath href="#w2" /></animateMotion>
+          </circle>
+          <circle class="packet b" r="4">
+            <animateMotion dur="2.2s" repeatCount="indefinite" begin="1s"><mpath href="#w3" /></animateMotion>
+          </circle>
+          <circle class="packet b" r="4">
+            <animateMotion dur="2.2s" repeatCount="indefinite" begin="1.5s"><mpath href="#w4" /></animateMotion>
+          </circle>
+          <circle class="packet" r="4">
+            <animateMotion dur="4.4s" repeatCount="indefinite" begin="2s"><mpath href="#w5" /></animateMotion>
+          </circle>
+          <circle class="packet p" r="4">
+            <animateMotion dur="4.4s" repeatCount="indefinite" begin="3.4s"><mpath href="#w6" /></animateMotion>
+          </circle>
+          <circle class="packet b" r="4">
+            <animateMotion dur="3s" repeatCount="indefinite" begin="2.4s"><mpath href="#w7" /></animateMotion>
+          </circle>
+          <circle class="packet p" r="3.4">
+            <animateMotion dur="3.2s" repeatCount="indefinite" begin="1.2s"><mpath href="#w8" /></animateMotion>
+          </circle>
+        </svg>
+      </div>
+    </div>
+
+    <div class="sys-legend reveal reveal-delay-2">
+      <span><i></i> Happy path</span>
+      <span><i class="b"></i> Data &amp; logging</span>
+      <span><i class="p"></i> Human / retry branch</span>
+    </div>
+  </div>
+</section>
+
+<!-- THE REALITY -->
+<section id="reality">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-label">01 // The Reality</p>
+      <h2 class="section-title">Before the tools,<br /><span>the problem.</span></h2>
+    </div>
+
+    <div class="reality-stack">
+
+      <div class="reality-card" style="--i:0">
+        <div>
+          <p class="reality-num">01</p>
+          <h3>The same <span>manual work</span>, every week?</h3>
+          <p>
+            Copy-pasting between tools. Reports rebuilt by hand every Monday. Follow-ups
+            nobody sends. Hours a week spent on work a workflow could run at 2am.
+          </p>
+        </div>
+        <div class="reality-visual"><span class="rv-glyph">🗂️</span></div>
+      </div>
+
+      <div class="reality-card" style="--i:1">
+        <div>
+          <p class="reality-num">02</p>
+          <h3>Cloud that <span>nobody owns</span>?</h3>
+          <p>
+            Resources spun up in a hurry and never revisited. No naming, no structure,
+            no one sure what breaks if it gets deleted. It works — until it doesn't.
+          </p>
+        </div>
+        <div class="reality-visual"><span class="rv-glyph">☁️</span></div>
+      </div>
+
+      <div class="reality-card" style="--i:2">
+        <div>
+          <p class="reality-num">03</p>
+          <h3>AI pilots that <span>never ship</span>?</h3>
+          <p>
+            A demo that impressed everyone once, then stalled. Teams finish the course
+            and the certification, but still have no working system at the end of it.
+          </p>
+        </div>
+        <div class="reality-visual"><span class="rv-glyph">🧪</span></div>
+      </div>
+
+    </div>
+
+    <p class="reality-close reveal">
+      // Sound familiar? <strong>That's the work I do</strong> — and the work I teach others to do.
+    </p>
+  </div>
+</section>
+
 <!-- ABOUT -->
 <section id="about">
   <div class="container">
     <div class="about-grid">
       <div>
         <div class="section-header reveal">
-          <p class="section-label">01 // About</p>
+          <p class="section-label">02 // About</p>
           <h2 class="section-title">Technologist.<br /><span>Builder.</span> Speaker.</h2>
         </div>
         <div class="about-text">
@@ -1312,11 +2626,82 @@
   </div>
 </section>
 
+<!-- METHOD: LEARN · BUILD · LEAD -->
+<section id="method">
+  <div class="container">
+    <div class="method-head reveal">
+      <p class="section-label">03 // The Method</p>
+      <h2 class="section-title">Learn. Build. Lead.<br /><span>Always in that order.</span></h2>
+      <p class="method-sub">
+        Skip a step and it falls apart. Learn without building and it stays theory.
+        Build without leading and it stays a side project. Run the three in sequence
+        and the work compounds.
+      </p>
+    </div>
+
+    <div class="method-grid">
+      <span class="method-arrow a1" aria-hidden="true"></span>
+      <span class="method-arrow a2" aria-hidden="true"></span>
+
+      <div class="method-card reveal">
+        <div class="method-rings" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="method-icon">📡</div>
+        <p class="method-num">01</p>
+        <h3>Learn.</h3>
+        <p>
+          Go deep before going loud. Certifications, labs, docs, and breaking things
+          in a sandbox until the fundamentals actually hold.
+        </p>
+        <div class="method-chips">
+          <span class="method-chip">Certs</span>
+          <span class="method-chip">Labs</span>
+          <span class="method-chip">Docs</span>
+          <span class="method-chip">Sandbox</span>
+        </div>
+      </div>
+
+      <div class="method-card reveal reveal-delay-1">
+        <div class="method-rings" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="method-icon">🛠️</div>
+        <p class="method-num">02</p>
+        <h3>Build.</h3>
+        <p>
+          Turn the theory into something that runs in production. Cloud infrastructure,
+          agentic workflows, pipelines — shipped, monitored, and owned.
+        </p>
+        <div class="method-chips">
+          <span class="method-chip">Cloud</span>
+          <span class="method-chip">AI Agents</span>
+          <span class="method-chip">Automation</span>
+          <span class="method-chip">DevOps</span>
+        </div>
+      </div>
+
+      <div class="method-card reveal reveal-delay-2">
+        <div class="method-rings" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="method-icon">🎤</div>
+        <p class="method-num">03</p>
+        <h3>Lead.</h3>
+        <p>
+          Hand the map to the next person. Talks, workshops, and communities so the
+          knowledge outlives the project it came from.
+        </p>
+        <div class="method-chips">
+          <span class="method-chip">Talks</span>
+          <span class="method-chip">Workshops</span>
+          <span class="method-chip">Communities</span>
+          <span class="method-chip">Mentoring</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- PROJECTS -->
 <section id="portfolio">
   <div class="container">
     <div class="section-header reveal">
-      <p class="section-label">02 // Projects</p>
+      <p class="section-label">04 // Projects</p>
       <h2 class="section-title">Things I've <span>Built</span></h2>
     </div>
     <div class="filter-tabs reveal">
@@ -1413,13 +2798,302 @@
   </div>
 </section>
 
+<!-- REAL SCREENS FROM THE WORK -->
+<section id="screens">
+  <p class="screens-caption reveal">Real screens from the <b>systems I build</b> — cloud, software, DevOps, AI agents.</p>
+
+  <div class="screens-strip reveal reveal-delay-1" role="region" aria-label="Screenshots from projects">
+    <div class="screens-track" data-marquee>
+
+      <button type="button" class="screen-frame" data-shot="./assets/screens/agentic-workflow.png" data-kind="AI Agents" data-name="Agentic workflow — Copilot Studio orchestration">
+        <span class="screen-bar"><i></i><i></i><i></i><span>AI Agents</span></span>
+        <span class="screen-body">
+          <img src="./assets/screens/agentic-workflow.png" alt="Agentic workflow orchestration screen" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
+          <span class="screen-skeleton" style="display:none;">
+            <span class="sk-side"><span class="sk-bar w80"></span><span class="sk-bar w60"></span><span class="sk-bar w80"></span><span class="sk-bar w40"></span></span>
+            <span class="sk-main"><span class="sk-bar accent w60"></span><span class="sk-bar tall"></span><span class="sk-bar w80"></span><span class="sk-bar w40"></span></span>
+          </span>
+        </span>
+        <span class="screen-meta">
+          <span class="screen-kind">AI Agents</span>
+          <span class="screen-name">Agentic workflow — Copilot Studio orchestration</span>
+        </span>
+      </button>
+
+      <button type="button" class="screen-frame" data-shot="./assets/screens/serverless-pipeline.png" data-kind="Cloud" data-name="Serverless event pipeline — Lambda, API Gateway, DynamoDB">
+        <span class="screen-bar"><i></i><i></i><i></i><span>Cloud</span></span>
+        <span class="screen-body">
+          <img src="./assets/screens/serverless-pipeline.png" alt="Serverless pipeline architecture screen" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
+          <span class="screen-skeleton" style="display:none;">
+            <span class="sk-side"><span class="sk-bar w60"></span><span class="sk-bar w80"></span><span class="sk-bar w40"></span><span class="sk-bar w80"></span></span>
+            <span class="sk-main"><span class="sk-bar w40"></span><span class="sk-bar tall"></span><span class="sk-bar accent w60"></span><span class="sk-bar w80"></span></span>
+          </span>
+        </span>
+        <span class="screen-meta">
+          <span class="screen-kind">Cloud</span>
+          <span class="screen-name">Serverless event pipeline — Lambda, API Gateway, DynamoDB</span>
+        </span>
+      </button>
+
+      <button type="button" class="screen-frame" data-shot="./assets/screens/seekurity.png" data-kind="Software" data-name="Seekurity — CV monitoring dashboard">
+        <span class="screen-bar"><i></i><i></i><i></i><span>Software</span></span>
+        <span class="screen-body">
+          <img src="./assets/screens/seekurity.png" alt="Seekurity computer vision dashboard" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
+          <span class="screen-skeleton" style="display:none;">
+            <span class="sk-side"><span class="sk-bar w80"></span><span class="sk-bar w40"></span><span class="sk-bar w60"></span><span class="sk-bar w80"></span></span>
+            <span class="sk-main"><span class="sk-bar tall"></span><span class="sk-bar accent w40"></span><span class="sk-bar w80"></span><span class="sk-bar w60"></span></span>
+          </span>
+        </span>
+        <span class="screen-meta">
+          <span class="screen-kind">Software</span>
+          <span class="screen-name">Seekurity — CV monitoring dashboard</span>
+        </span>
+      </button>
+
+      <button type="button" class="screen-frame" data-shot="./assets/screens/iac-pipeline.png" data-kind="DevOps" data-name="IaC deploy pipeline — Terraform plan to production">
+        <span class="screen-bar"><i></i><i></i><i></i><span>DevOps</span></span>
+        <span class="screen-body">
+          <img src="./assets/screens/iac-pipeline.png" alt="Infrastructure as code deployment pipeline" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
+          <span class="screen-skeleton" style="display:none;">
+            <span class="sk-side"><span class="sk-bar w40"></span><span class="sk-bar w80"></span><span class="sk-bar w60"></span><span class="sk-bar w40"></span></span>
+            <span class="sk-main"><span class="sk-bar w80"></span><span class="sk-bar accent tall"></span><span class="sk-bar w60"></span><span class="sk-bar w40"></span></span>
+          </span>
+        </span>
+        <span class="screen-meta">
+          <span class="screen-kind">DevOps</span>
+          <span class="screen-name">IaC deploy pipeline — Terraform plan to production</span>
+        </span>
+      </button>
+
+      <button type="button" class="screen-frame" data-shot="./assets/screens/quicksight.png" data-kind="Cloud" data-name="QuickSight — relational data visualised for non-engineers">
+        <span class="screen-bar"><i></i><i></i><i></i><span>Cloud</span></span>
+        <span class="screen-body">
+          <img src="./assets/screens/quicksight.png" alt="QuickSight analytics dashboard" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
+          <span class="screen-skeleton" style="display:none;">
+            <span class="sk-side"><span class="sk-bar w60"></span><span class="sk-bar w40"></span><span class="sk-bar w80"></span><span class="sk-bar w60"></span></span>
+            <span class="sk-main"><span class="sk-bar accent w80"></span><span class="sk-bar tall"></span><span class="sk-bar w40"></span><span class="sk-bar w60"></span></span>
+          </span>
+        </span>
+        <span class="screen-meta">
+          <span class="screen-kind">Cloud</span>
+          <span class="screen-name">QuickSight — relational data visualised for non-engineers</span>
+        </span>
+      </button>
+
+      <button type="button" class="screen-frame" data-shot="./assets/screens/finops.png" data-kind="Automation" data-name="AI FinOps — cost anomaly detection and recommendations">
+        <span class="screen-bar"><i></i><i></i><i></i><span>Automation</span></span>
+        <span class="screen-body">
+          <img src="./assets/screens/finops.png" alt="FinOps cost optimisation dashboard" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
+          <span class="screen-skeleton" style="display:none;">
+            <span class="sk-side"><span class="sk-bar w80"></span><span class="sk-bar w60"></span><span class="sk-bar w40"></span><span class="sk-bar w80"></span></span>
+            <span class="sk-main"><span class="sk-bar w60"></span><span class="sk-bar accent tall"></span><span class="sk-bar w80"></span><span class="sk-bar w40"></span></span>
+          </span>
+        </span>
+        <span class="screen-meta">
+          <span class="screen-kind">Automation</span>
+          <span class="screen-name">AI FinOps — cost anomaly detection and recommendations</span>
+        </span>
+      </button>
+
+    </div>
+  </div>
+</section>
+
+<!-- WHAT I CAN DO FOR YOU -->
+<section id="services">
+  <div class="container">
+    <div class="svc-head reveal">
+      <p class="section-label">05 // Services</p>
+      <h2 class="section-title">What I can do <span>for you.</span></h2>
+      <p>Pick one. Stack a few. Build the whole system.</p>
+    </div>
+
+    <div class="svc-stage reveal reveal-delay-1" id="svc-stage">
+
+      <article class="svc-card" data-pos="0">
+        <div class="svc-icon">☁️</div>
+        <p class="svc-count">01 / 05</p>
+        <h3>Cloud Architecture</h3>
+        <p>Infrastructure that someone actually owns.</p>
+        <span class="svc-badge">Built to be handed over</span>
+        <ul class="svc-list">
+          <li>Landing zones, naming, and tagging that survive the first month</li>
+          <li>Cost visibility before the bill, not after it</li>
+          <li>Security baselines wired in from day one</li>
+          <li>Documented so the next engineer isn't guessing</li>
+        </ul>
+      </article>
+
+      <article class="svc-card" data-pos="1">
+        <div class="svc-icon">🤖</div>
+        <p class="svc-count">02 / 05</p>
+        <h3>AI Agents &amp; Automation</h3>
+        <p>Systems that finish the job, not chat windows.</p>
+        <span class="svc-badge">Runs at 2am</span>
+        <ul class="svc-list">
+          <li>Agentic workflows that call real tools and real APIs</li>
+          <li>RAG pipelines grounded in your own documents</li>
+          <li>Human-in-the-loop where the stakes need it</li>
+          <li>Every run logged and auditable</li>
+        </ul>
+      </article>
+
+      <article class="svc-card" data-pos="2">
+        <div class="svc-icon">⚙️</div>
+        <p class="svc-count">03 / 05</p>
+        <h3>DevOps &amp; CI/CD</h3>
+        <p>Deploys that stop being an event.</p>
+        <span class="svc-badge">Minutes, not hours</span>
+        <ul class="svc-list">
+          <li>Infrastructure as code, reusable across teams</li>
+          <li>Pipelines that test, scan, and ship on their own</li>
+          <li>Rollbacks that work when you need them</li>
+          <li>Compliance checks automated, not remembered</li>
+        </ul>
+      </article>
+
+      <article class="svc-card" data-pos="hidden">
+        <div class="svc-icon">💻</div>
+        <p class="svc-count">04 / 05</p>
+        <h3>Software Builds</h3>
+        <p>Applications shipped end to end.</p>
+        <span class="svc-badge">Code you keep</span>
+        <ul class="svc-list">
+          <li>Full-stack apps from data model to interface</li>
+          <li>APIs designed to be integrated, not worked around</li>
+          <li>Dashboards non-engineers can read</li>
+          <li>No template ceiling on what it can become</li>
+        </ul>
+      </article>
+
+      <article class="svc-card" data-pos="hidden">
+        <div class="svc-icon">🎤</div>
+        <p class="svc-count">05 / 05</p>
+        <h3>Talks &amp; Workshops</h3>
+        <p>Your team leaves with a working thing.</p>
+        <span class="svc-badge">Hands on keyboards</span>
+        <ul class="svc-list">
+          <li>Cloud and AI sessions pitched at your team's actual level</li>
+          <li>Live builds, not slide decks read aloud</li>
+          <li>Community events, campus talks, and internal enablement</li>
+          <li>Materials handed over afterwards</li>
+        </ul>
+      </article>
+
+    </div>
+
+    <div class="svc-controls reveal reveal-delay-2">
+      <button class="svc-arrow" id="svc-prev" aria-label="Previous service">←</button>
+      <div class="svc-dots" id="svc-dots"></div>
+      <button class="svc-arrow" id="svc-next" aria-label="Next service">→</button>
+    </div>
+  </div>
+</section>
+
 <!-- TALKS -->
 <section id="speaking">
   <div class="container">
     <div class="section-header reveal">
-      <p class="section-label">03 // Speaking</p>
+      <p class="section-label">06 // Speaking</p>
       <h2 class="section-title">Talks &amp; <span>Engagements</span></h2>
     </div>
+  </div>
+
+  <!-- Auto-scrolling photo reel — pauses on hover -->
+  <div class="talk-reel reveal" role="region" aria-label="Speaking engagement photos">
+    <div class="talk-reel-track" id="talk-reel-track">
+
+      <figure class="reel-item">
+        <div class="reel-media">
+        <img src="https://nik-1019.github.io/DevSite/source/talks/az:repo/az:repo.jpeg" alt="az:Repo agentic workshop at Microsoft HQ" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+        <div class="reel-fallback" style="display:none;">🤖</div>
+        </div>
+        <figcaption class="reel-cap">
+          <span class="reel-venue">Microsoft HQ, One Ayala · Nov 2025</span>
+          <span class="reel-desc">Agentic workflow patterns in Copilot Studio</span>
+        </figcaption>
+      </figure>
+
+      <figure class="reel-item">
+        <div class="reel-media">
+        <img src="https://nik-1019.github.io/DevSite/source/talks/SkillBuilder/Skillbuilder.jpeg" alt="SkillBuilder kick-off with AWS Cloud Club Philippines" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+        <div class="reel-fallback" style="display:none;">☁️</div>
+        </div>
+        <figcaption class="reel-cap">
+          <span class="reel-venue">AWS Cloud Club PH · 2024</span>
+          <span class="reel-desc">Cloud fundamentals &amp; career paths for students</span>
+        </figcaption>
+      </figure>
+
+      <figure class="reel-item">
+        <div class="reel-media">
+        <img src="https://nik-1019.github.io/DevSite/source/talks/beyondcode/beyondcode.jpeg" alt="Beyond Code talk on system design" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+        <div class="reel-fallback" style="display:none;">🏗️</div>
+        </div>
+        <figcaption class="reel-cap">
+          <span class="reel-venue">Beyond Code · 2024</span>
+          <span class="reel-desc">Designing systems beyond writing code</span>
+        </figcaption>
+      </figure>
+
+      <figure class="reel-item">
+        <div class="reel-media">
+        <img src="https://nik-1019.github.io/DevSite/source/talks/cloud-edu/1737959174654.jpeg" alt="Cloud Educators AWS EC2 workshop" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+        <div class="reel-fallback" style="display:none;">🎓</div>
+        </div>
+        <figcaption class="reel-cap">
+          <span class="reel-venue">Cloud Educators · 2024</span>
+          <span class="reel-desc">Hands-on: standing up infrastructure on AWS EC2</span>
+        </figcaption>
+      </figure>
+
+      <figure class="reel-item">
+        <div class="reel-media">
+        <img src="https://nik-1019.github.io/DevSite/source/talks/azure-ignite/1728614419270.jpeg" alt="Azure Ignite showcase" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+        <div class="reel-fallback" style="display:none;">⚡</div>
+        </div>
+        <figcaption class="reel-cap">
+          <span class="reel-venue">Azure Ignite · 2024</span>
+          <span class="reel-desc">What shipped in Azure, and what it changes</span>
+        </figcaption>
+      </figure>
+
+      <figure class="reel-item">
+        <div class="reel-media">
+        <img src="https://nik-1019.github.io/DevSite/source/talks/communityday-1/comday-1.jpeg" alt="AWS Community Day Philippines" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+        <div class="reel-fallback" style="display:none;">🌐</div>
+        </div>
+        <figcaption class="reel-cap">
+          <span class="reel-venue">AWS Community Day · 2024</span>
+          <span class="reel-desc">Growing tech communities across the Philippines</span>
+        </figcaption>
+      </figure>
+
+      <figure class="reel-item">
+        <div class="reel-media">
+        <div class="reel-fallback">🗺️</div>
+        </div>
+        <figcaption class="reel-cap">
+          <span class="reel-venue">CloudFest · 2024</span>
+          <span class="reel-desc">Know the way: navigating the cloud landscape</span>
+        </figcaption>
+      </figure>
+
+      <figure class="reel-item">
+        <div class="reel-media">
+        <img src="https://nik-1019.github.io/DevSite/source/talks/techtalk/1729649614977.jpeg" alt="Tech Talk series session" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+        <div class="reel-fallback" style="display:none;">💬</div>
+        </div>
+        <figcaption class="reel-cap">
+          <span class="reel-venue">Tech Talk Series · 2024</span>
+          <span class="reel-desc">Emerging tech and what it means for developers</span>
+        </figcaption>
+      </figure>
+
+    </div>
+  </div>
+
+  <div class="container">
     <div class="talks-timeline reveal">
       <div class="talks-track-wrap">
         <div class="talks-track" id="talks-track">
@@ -1516,11 +3190,148 @@
   </div>
 </section>
 
+<!-- COMMUNITY -->
+<section id="affiliations">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-label">07 // Community</p>
+      <h2 class="section-title">The rooms I <span>help build.</span></h2>
+      <p class="show-lede">Six communities. Real roles, not badges — here's what I actually run in each.</p>
+    </div>
+
+    <div class="show-grid">
+
+      <div class="show-card reveal">
+        <div class="show-top">
+          <span class="show-num">01</span>
+          <img src="./assets/nextwork.logo.png" alt="NextWork" class="show-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
+          <div class="show-logo-fallback" style="display:none;">🚀</div>
+        </div>
+        <p class="show-name">NextWork</p>
+        <p class="show-role">Community Lead · Strategist</p>
+        <p class="show-desc">Active contributor to cloud-native projects and advocate for building in public.</p>
+        <p class="show-tags">Cloud Native · Content · Build In Public</p>
+        <a href="https://www.facebook.com/profile.php?id=61566312267398" class="show-link" target="_blank" rel="noopener">Visit site →</a>
+      </div>
+
+      <div class="show-card reveal reveal-delay-1">
+        <div class="show-top">
+          <span class="show-num">02</span>
+          <img src="./assets/AWSCloudClub-logo.png" alt="AWS Cloud Club PH" class="show-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
+          <div class="show-logo-fallback" style="display:none;">☁️</div>
+        </div>
+        <p class="show-name">AWS Cloud Club — Philippines</p>
+        <p class="show-role">Director of SkillBuilder</p>
+        <p class="show-desc">Organizing monthly meetups and speaking on AWS best practices and new services.</p>
+        <p class="show-tags">Programs · Meetups · Speaking</p>
+        <a href="https://www.facebook.com/AWSCloudClubsPhilippines" class="show-link" target="_blank" rel="noopener">Visit site →</a>
+      </div>
+
+      <div class="show-card reveal reveal-delay-2">
+        <div class="show-top">
+          <span class="show-num">03</span>
+          <img src="./assets/AWS CC Haribon-logo.jpg" alt="AWS CC Haribon" class="show-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
+          <div class="show-logo-fallback" style="display:none;">🦅</div>
+        </div>
+        <p class="show-name">AWS CC — Haribon</p>
+        <p class="show-role">Chief Technology Officer</p>
+        <p class="show-desc">Promoting DevOps practices and culture transformation within the local tech community.</p>
+        <p class="show-tags">DevOps · Culture · Enablement</p>
+        <a href="https://www.facebook.com/AWSCloudClubHaribon" class="show-link" target="_blank" rel="noopener">Visit site →</a>
+      </div>
+
+      <div class="show-card reveal">
+        <div class="show-top">
+          <span class="show-num">04</span>
+          <img src="./assets/Microsoft Azure Developers-logo.jpg" alt="Azure PH" class="show-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
+          <div class="show-logo-fallback" style="display:none;">🔷</div>
+        </div>
+        <p class="show-name">Microsoft Azure Developers PH</p>
+        <p class="show-role">Co-Founder</p>
+        <p class="show-desc">Co-founded the community connecting Azure developers across the Philippines.</p>
+        <p class="show-tags">Azure · Founding Team · Events</p>
+        <a href="https://www.facebook.com/MicrosoftAzurePH" class="show-link" target="_blank" rel="noopener">Visit site →</a>
+      </div>
+
+      <div class="show-card reveal reveal-delay-1">
+        <div class="show-top">
+          <span class="show-num">05</span>
+          <img src="./assets/microsoftlearn-logo.png" alt="Microsoft Learn" class="show-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
+          <div class="show-logo-fallback" style="display:none;">🎓</div>
+        </div>
+        <p class="show-name">Microsoft Learn Program</p>
+        <p class="show-role">Microsoft Student Ambassador</p>
+        <p class="show-desc">Building projects that showcase Azure technologies and conducting technical workshops.</p>
+        <p class="show-tags">Workshops · Azure · Mentoring</p>
+        <a href="https://mvp.microsoft.com/en-US/studentambassadors/profile/04919813-a750-4e30-a541-18dfcdbac458" class="show-link" target="_blank" rel="noopener">Visit site →</a>
+      </div>
+
+      <div class="show-card reveal reveal-delay-2">
+        <div class="show-top">
+          <span class="show-num">06</span>
+          <img src="./assets/microsoft student community-logo.jpg" alt="MSC PLM" class="show-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
+          <div class="show-logo-fallback" style="display:none;">🤝</div>
+        </div>
+        <p class="show-name">Microsoft Student Community — PLM</p>
+        <p class="show-role">Chief Relations Officer</p>
+        <p class="show-desc">Bridging collaboration between student bodies and industry professionals.</p>
+        <p class="show-tags">Partnerships · Students · Industry</p>
+        <a href="https://www.facebook.com/plmmsc" class="show-link" target="_blank" rel="noopener">Visit site →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CLIENTS & COLLABORATIONS -->
+<!-- PLACEHOLDER: replace each .show-card.slot with a real card (copy the shape of a
+     .show-card in #affiliations above: logo, name, role, description, tags, link). -->
+<section id="clients">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-label">08 // Clients</p>
+      <h2 class="section-title">Clients &amp; <span>collaborations.</span></h2>
+      <p class="show-lede">Short list on purpose. The systems behind them are the point.</p>
+    </div>
+
+    <div class="show-grid">
+
+      <div class="show-card slot reveal">
+        <div class="slot-mark">01</div>
+        <div class="slot-line w70"></div>
+        <div class="slot-line w45"></div>
+        <div class="slot-line w90"></div>
+        <div class="slot-line w70"></div>
+        <p class="slot-note">// client one · <b>details incoming</b></p>
+      </div>
+
+      <div class="show-card slot reveal reveal-delay-1">
+        <div class="slot-mark">02</div>
+        <div class="slot-line w45"></div>
+        <div class="slot-line w90"></div>
+        <div class="slot-line w70"></div>
+        <div class="slot-line w45"></div>
+        <p class="slot-note">// client two · <b>details incoming</b></p>
+      </div>
+
+      <div class="show-card slot reveal reveal-delay-2">
+        <div class="slot-mark">03</div>
+        <div class="slot-line w90"></div>
+        <div class="slot-line w70"></div>
+        <div class="slot-line w45"></div>
+        <div class="slot-line w90"></div>
+        <p class="slot-note">// client three · <b>details incoming</b></p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- CERTIFICATIONS -->
 <section id="certifications">
   <div class="container">
     <div class="section-header reveal">
-      <p class="section-label">04 // Certifications</p>
+      <p class="section-label">09 // Certifications</p>
       <h2 class="section-title">Continuous <span>Learning</span></h2>
     </div>
     <div class="certs-grid">
@@ -1541,101 +3352,12 @@
 </section>
 
 <!-- AFFILIATIONS -->
-<section id="affiliations">
-  <div class="container">
-    <div class="section-header reveal">
-      <p class="section-label">05 // Community</p>
-      <h2 class="section-title">Professional <span>Affiliations</span></h2>
-    </div>
-    <div class="affiliations-grid">
-
-      <div class="affil-card reveal">
-        <div class="affil-header">
-          <img src="./assets/nextwork.logo.png" alt="NextWork" class="affil-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-          <div class="affil-logo-placeholder" style="display:none;">🚀</div>
-          <div>
-            <p class="affil-name">NextWork</p>
-            <p class="affil-role">Community Lead · Strategist</p>
-          </div>
-        </div>
-        <p class="affil-desc">Active contributor to cloud-native projects and advocate for building in public.</p>
-        <a href="https://www.facebook.com/profile.php?id=61566312267398" class="affil-link" target="_blank">Visit Site →</a>
-      </div>
-
-      <div class="affil-card reveal reveal-delay-1">
-        <div class="affil-header">
-          <img src="./assets/AWSCloudClub-logo.png" alt="AWS Cloud Club PH" class="affil-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-          <div class="affil-logo-placeholder" style="display:none;">☁️</div>
-          <div>
-            <p class="affil-name">AWS Cloud Club — Philippines</p>
-            <p class="affil-role">Director of SkillBuilder</p>
-          </div>
-        </div>
-        <p class="affil-desc">Organizing monthly meetups and speaking on AWS best practices and new services.</p>
-        <a href="https://www.facebook.com/AWSCloudClubsPhilippines" class="affil-link" target="_blank">Visit Site →</a>
-      </div>
-
-      <div class="affil-card reveal reveal-delay-2">
-        <div class="affil-header">
-          <img src="./assets/AWS CC Haribon-logo.jpg" alt="AWS CC Haribon" class="affil-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-          <div class="affil-logo-placeholder" style="display:none;">🦅</div>
-          <div>
-            <p class="affil-name">AWS CC — Haribon</p>
-            <p class="affil-role">Chief Technology Officer</p>
-          </div>
-        </div>
-        <p class="affil-desc">Promoting DevOps practices and culture transformation within the local tech community.</p>
-        <a href="https://www.facebook.com/AWSCloudClubHaribon" class="affil-link" target="_blank">Visit Site →</a>
-      </div>
-
-      <div class="affil-card reveal">
-        <div class="affil-header">
-          <img src="./assets/Microsoft Azure Developers-logo.jpg" alt="Azure PH" class="affil-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-          <div class="affil-logo-placeholder" style="display:none;">🔷</div>
-          <div>
-            <p class="affil-name">Microsoft Azure Developers PH</p>
-            <p class="affil-role">Co-Founder</p>
-          </div>
-        </div>
-        <p class="affil-desc">Co-founded the community connecting Azure developers across the Philippines.</p>
-        <a href="https://www.facebook.com/MicrosoftAzurePH" class="affil-link" target="_blank">Visit Site →</a>
-      </div>
-
-      <div class="affil-card reveal reveal-delay-1">
-        <div class="affil-header">
-          <img src="./assets/microsoftlearn-logo.png" alt="Microsoft Learn" class="affil-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-          <div class="affil-logo-placeholder" style="display:none;">🎓</div>
-          <div>
-            <p class="affil-name">Microsoft Learn Program</p>
-            <p class="affil-role">Microsoft Student Ambassador</p>
-          </div>
-        </div>
-        <p class="affil-desc">Building projects that showcase Azure technologies and conducting technical workshops.</p>
-        <a href="https://mvp.microsoft.com/en-US/studentambassadors/profile/04919813-a750-4e30-a541-18dfcdbac458" class="affil-link" target="_blank">Visit Site →</a>
-      </div>
-
-      <div class="affil-card reveal reveal-delay-2">
-        <div class="affil-header">
-          <img src="./assets/microsoft student community-logo.jpg" alt="MSC PLM" class="affil-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-          <div class="affil-logo-placeholder" style="display:none;">🤝</div>
-          <div>
-            <p class="affil-name">Microsoft Student Community — PLM</p>
-            <p class="affil-role">Chief Relations Officer</p>
-          </div>
-        </div>
-        <p class="affil-desc">Bridging collaboration between student bodies and industry professionals.</p>
-        <a href="https://www.facebook.com/plmmsc" class="affil-link" target="_blank">Visit Site →</a>
-      </div>
-
-    </div>
-  </div>
-</section>
 
 <!-- CONTACT -->
 <section id="contact">
   <div class="container">
     <div class="section-header reveal">
-      <p class="section-label">06 // Contact</p>
+      <p class="section-label">10 // Contact</p>
       <h2 class="section-title">Get In <span>Touch</span></h2>
     </div>
     <div class="contact-grid">
@@ -1686,6 +3408,15 @@
     </div>
   </div>
 </section>
+
+<!-- SCREENSHOT LIGHTBOX -->
+<div id="screen-lightbox" role="dialog" aria-modal="true" aria-label="Screenshot preview">
+  <button class="lb-close" id="lb-close">esc ✕</button>
+  <figure>
+    <img id="lb-img" src="" alt="" />
+    <figcaption id="lb-cap"></figcaption>
+  </figure>
+</div>
 
 <!-- TERMINAL FAB -->
 <div id="terminal-fab">
@@ -1999,6 +3730,131 @@
   document.getElementById('talks-next').addEventListener('click', () => goTo(current + VISIBLE));
 })();
 
+/* ─── TALKS REEL ─────────────────────────────────── */
+(function() {
+  const track = document.getElementById('talk-reel-track');
+  if (!track) return;
+  // Duplicate the items so the -50% keyframe lands on an identical frame.
+  [...track.children].forEach(item => {
+    const clone = item.cloneNode(true);
+    clone.setAttribute('aria-hidden', 'true');
+    track.appendChild(clone);
+  });
+})();
+
+/* ─── MARQUEES (tools + screens) ──────────────────── */
+/* Every [data-marquee] track holds its items twice, so the -50% keyframe
+   lands on a pixel-identical frame and the loop never shows a seam. */
+(function() {
+  document.querySelectorAll('[data-marquee]').forEach(track => {
+    [...track.children].forEach(item => {
+      const clone = item.cloneNode(true);
+      clone.setAttribute('aria-hidden', 'true');
+      clone.querySelectorAll('button, a').forEach(el => el.tabIndex = -1);
+      if (clone.tagName === 'BUTTON') clone.tabIndex = -1;
+      track.appendChild(clone);
+    });
+  });
+})();
+
+/* ─── SERVICES COVERFLOW ──────────────────────────── */
+(function() {
+  const stage = document.getElementById('svc-stage');
+  if (!stage) return;
+
+  const cards = [...stage.querySelectorAll('.svc-card')];
+  const dotsWrap = document.getElementById('svc-dots');
+  const prev = document.getElementById('svc-prev');
+  const next = document.getElementById('svc-next');
+  let active = 0;
+  let timer = null;
+
+  const dots = cards.map((_, i) => {
+    const b = document.createElement('button');
+    b.className = 'svc-dot' + (i === 0 ? ' active' : '');
+    b.setAttribute('aria-label', `Show service ${i + 1}`);
+    b.addEventListener('click', () => { go(i); rest(); });
+    dotsWrap.appendChild(b);
+    return b;
+  });
+
+  function go(i) {
+    active = (i + cards.length) % cards.length;
+    cards.forEach((card, idx) => {
+      // shortest signed distance around the ring
+      let d = idx - active;
+      if (d >  cards.length / 2) d -= cards.length;
+      if (d < -cards.length / 2) d += cards.length;
+      card.dataset.pos = Math.abs(d) <= 2 ? String(d) : 'hidden';
+      card.setAttribute('aria-hidden', d === 0 ? 'false' : 'true');
+    });
+    dots.forEach((dot, idx) => dot.classList.toggle('active', idx === active));
+  }
+
+  function rest() {
+    clearInterval(timer);
+    timer = setInterval(() => go(active + 1), 6000);
+  }
+
+  prev.addEventListener('click', () => { go(active - 1); rest(); });
+  next.addEventListener('click', () => { go(active + 1); rest(); });
+
+  // click a side card to bring it to the front
+  cards.forEach((card, i) => card.addEventListener('click', () => {
+    if (i !== active) { go(i); rest(); }
+  }));
+
+  stage.addEventListener('mouseenter', () => clearInterval(timer));
+  stage.addEventListener('mouseleave', rest);
+
+  document.addEventListener('keydown', e => {
+    if (!stage.getBoundingClientRect().top || document.activeElement.tagName === 'INPUT') return;
+    const box = stage.getBoundingClientRect();
+    const onScreen = box.top < innerHeight * 0.7 && box.bottom > innerHeight * 0.3;
+    if (!onScreen) return;
+    if (e.key === 'ArrowLeft')  { go(active - 1); rest(); }
+    if (e.key === 'ArrowRight') { go(active + 1); rest(); }
+  });
+
+  go(0);
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) rest();
+})();
+
+/* ─── SCREENSHOT LIGHTBOX ─────────────────────────── */
+(function() {
+  const box = document.getElementById('screen-lightbox');
+  if (!box) return;
+
+  const img = document.getElementById('lb-img');
+  const cap = document.getElementById('lb-cap');
+  const close = document.getElementById('lb-close');
+
+  function open(frame) {
+    const src = frame.dataset.shot;
+    const shot = frame.querySelector('img');
+    // nothing to enlarge until a real screenshot is dropped in
+    if (!shot || !shot.complete || shot.naturalWidth === 0) return;
+    img.src = src;
+    img.alt = frame.dataset.name || '';
+    cap.textContent = `${frame.dataset.kind} — ${frame.dataset.name}`;
+    box.classList.add('open');
+  }
+
+  function shut() {
+    box.classList.remove('open');
+    img.src = '';
+  }
+
+  document.addEventListener('click', e => {
+    const frame = e.target.closest('.screen-frame');
+    if (frame) open(frame);
+  });
+
+  close.addEventListener('click', shut);
+  box.addEventListener('click', e => { if (e.target === box) shut(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') shut(); });
+})();
+
 /* ─── SCROLL REVEAL ──────────────────────────────── */
 (function() {
   const els = document.querySelectorAll('.reveal');
@@ -2280,6 +4136,7 @@
       return [
         { t:'blank' },
         { t:'out', v:'  drwxr-xr-x  home/' },
+        { t:'out', v:'  drwxr-xr-x  reality/' },
         { t:'out', v:'  drwxr-xr-x  about/' },
         { t:'out', v:'  drwxr-xr-x  projects/' },
         { t:'out', v:'  drwxr-xr-x  talks/' },
