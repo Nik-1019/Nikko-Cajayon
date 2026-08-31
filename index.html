@@ -11,6 +11,17 @@
     /* ─── RESET & BASE ─────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* ───────────────────────────────────────────────
+       THEME — two grounds, one system.
+
+       dark  : "night terminal"  — ink-black, phosphor teal
+       light : "drafting paper"  — warm ivory, ink navy, pine teal
+
+       In light mode everything that represents a SCREEN
+       (the terminal, the workflow window, screenshot bodies)
+       deliberately stays dark, like devices sitting on paper.
+       That contrast is the idea — not a bug.
+       ─────────────────────────────────────────────── */
     :root {
       --bg:        #080c10;
       --bg2:       #0d1117;
@@ -18,13 +29,87 @@
       --surface:   #141d27;
       --border:    rgba(0,200,160,0.12);
       --accent:    #00c8a0;
+      --accent-hi: #00e8ba;
       --accent2:   #0ea5e9;
       --accent3:   #a78bfa;
       --text:      #e2eaf4;
       --muted:     #6b8099;
+      --on-accent: #000;
+
+      /* surfaces built from the ground up */
+      --nav-bg:    rgba(8,12,16,0.82);
+      --card-a:    #101a24;          /* panel gradient, top    */
+      --card-b:    #0b1119;          /* panel gradient, bottom */
+      --card-2a:   #131d28;
+      --card-2b:   #0d141c;
+      --well:      rgba(8,12,16,0.5); /* inset / recessed areas */
+      --chip-bg:   rgba(8,12,16,0.6);
+      --band:      linear-gradient(180deg, rgba(13,17,23,0.6), rgba(8,12,16,0.9));
+      --hero-fade: #8ab4d4;           /* far end of the name gradient */
+      --halo:      rgba(0,200,160,0.07);
+      --tint:      rgba(0,200,160,0.1);
+      --grid-dot:  rgba(107,128,153,0.22);
+      --hairline:  rgba(107,128,153,0.35);
+
+      --shadow-card: 0 -6px 40px rgba(0,0,0,0.5);
+      --shadow-lg:   0 20px 50px rgba(0,0,0,0.5);
+      --shadow-win:  0 24px 60px rgba(0,0,0,0.45);
+
+      /* particle field, as "r,g,b" triplets */
+      --pt-a:    0,200,160;
+      --pt-b:    14,165,233;
+      --pt-grid: 0,200,160;
+      --pt-grid-alpha: 0.04;
+      --pt-link-alpha: 0.06;
+
       --mono:      'Space Mono', monospace;
       --display:   'Syne', sans-serif;
       --body:      'IBM Plex Sans', sans-serif;
+
+      color-scheme: dark;
+    }
+
+    /* ─── LIGHT: DRAFTING PAPER ──────────────────── */
+    :root[data-theme="light"] {
+      --bg:        #f1ede4;   /* warm ivory, never #fff       */
+      --bg2:       #e9e4d8;   /* alternating band, one shade down */
+      --bg3:       #e2dccd;
+      --surface:   #fbf8f1;   /* cards lift LIGHTER than paper */
+      --border:    rgba(23,49,58,0.16);
+      --accent:    #05756a;   /* pine teal — holds on paper    */
+      --accent-hi: #04564e;
+      --accent2:   #0c6a92;
+      --accent3:   #5b46b8;
+      --text:      #14232c;   /* ink, not black                */
+      --muted:     #5d6f78;
+      --on-accent: #fbf8f1;
+
+      --nav-bg:    rgba(241,237,228,0.86);
+      --card-a:    #fdfbf6;
+      --card-b:    #f4f0e6;
+      --card-2a:   #fdfbf6;
+      --card-2b:   #f2ede1;
+      --well:      rgba(23,49,58,0.045);
+      --chip-bg:   rgba(255,255,255,0.7);
+      --band:      linear-gradient(180deg, rgba(233,228,216,0.9), rgba(241,237,228,0.7));
+      --hero-fade: #1f6f66;   /* ink bleeds into pine, not into grey */
+      --halo:      rgba(5,117,106,0.07);
+      --tint:      rgba(5,117,106,0.09);
+      --grid-dot:  rgba(23,49,58,0.16);
+      --hairline:  rgba(23,49,58,0.28);
+
+      /* paper doesn't glow — it casts. Tight, low, warm-grey. */
+      --shadow-card: 0 -2px 24px rgba(40,52,58,0.10);
+      --shadow-lg:   0 14px 34px rgba(40,52,58,0.13);
+      --shadow-win:  0 18px 44px rgba(40,52,58,0.18);
+
+      --pt-a:    5,117,106;
+      --pt-b:    12,106,146;
+      --pt-grid: 23,49,58;
+      --pt-grid-alpha: 0.05;
+      --pt-link-alpha: 0.05;
+
+      color-scheme: light;
     }
 
     html { scroll-behavior: smooth; }
@@ -38,7 +123,7 @@
       overflow-x: hidden;
     }
 
-    ::selection { background: var(--accent); color: #000; }
+    ::selection { background: var(--accent); color: var(--on-accent); }
 
     /* ─── SCROLLBAR ──────────────────────────────── */
     ::-webkit-scrollbar { width: 4px; }
@@ -64,7 +149,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 1.2rem 3rem;
-      background: rgba(8,12,16,0.82);
+      background: var(--nav-bg);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
       transition: all 0.3s;
@@ -247,7 +332,7 @@
       font-weight: 800;
       line-height: 1.05;
       margin-bottom: 0.5rem;
-      background: linear-gradient(135deg, var(--text) 0%, #8ab4d4 100%);
+      background: linear-gradient(135deg, var(--text) 0%, var(--hero-fade) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -260,7 +345,7 @@
       font-size: 0.97em;
       letter-spacing: -0.01em;
       transform: translateY(0.01em);
-      background: linear-gradient(135deg, var(--text) 0%, #8ab4d4 100%);
+      background: linear-gradient(135deg, var(--text) 0%, var(--hero-fade) 100%);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -315,7 +400,7 @@
       align-items: center;
       gap: 0.5rem;
       background: var(--accent);
-      color: #000;
+      color: var(--on-accent);
       padding: 0.75rem 1.8rem;
       border-radius: 4px;
       font-family: var(--mono);
@@ -330,7 +415,7 @@
     }
 
     .btn-primary:hover {
-      background: #00e8ba;
+      background: var(--accent-hi);
       transform: translateY(-2px);
       box-shadow: 0 8px 24px rgba(0,200,160,0.3);
     }
@@ -402,7 +487,7 @@
       padding: 2.2rem 0 2.6rem;
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(13,17,23,0.6), rgba(8,12,16,0.9));
+      background: var(--band);
       overflow: hidden;
     }
 
@@ -474,7 +559,7 @@
       font-size: 0.62rem;
       font-weight: 700;
       letter-spacing: 0.02em;
-      background: rgba(0,200,160,0.12);
+      background: var(--tint);
       color: var(--accent);
     }
 
@@ -500,7 +585,7 @@
       border-radius: 12px;
       overflow: hidden;
       background: var(--bg3);
-      box-shadow: 0 24px 60px rgba(0,0,0,0.45);
+      box-shadow: var(--shadow-win);
     }
 
     .sys-bar {
@@ -530,7 +615,7 @@
       position: relative;
       padding: 1.6rem 1rem 1.2rem;
       background-image:
-        radial-gradient(circle at 1px 1px, rgba(107,128,153,0.22) 1px, transparent 0);
+        radial-gradient(circle at 1px 1px, var(--grid-dot) 1px, transparent 0);
       background-size: 22px 22px;
       overflow-x: auto;
     }
@@ -592,7 +677,7 @@
     .reality-card {
       position: sticky;
       top: calc(120px + var(--i, 0) * 26px);
-      background: linear-gradient(145deg, #101a24, #0b1119);
+      background: linear-gradient(145deg, var(--card-a), var(--card-b));
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 2.6rem 2.4rem;
@@ -601,7 +686,7 @@
       grid-template-columns: 1.15fr 0.85fr;
       gap: 2rem;
       align-items: center;
-      box-shadow: 0 -6px 40px rgba(0,0,0,0.5);
+      box-shadow: var(--shadow-card);
       transition: border-color 0.3s;
       overflow: hidden;
     }
@@ -611,7 +696,7 @@
       position: absolute;
       inset: 0;
       border-radius: 16px;
-      background: radial-gradient(600px 200px at 85% 0%, rgba(0,200,160,0.07), transparent 70%);
+      background: radial-gradient(600px 200px at 85% 0%, var(--halo), transparent 70%);
       pointer-events: none;
     }
 
@@ -647,8 +732,8 @@
       position: relative;
       height: 200px;
       border-radius: 12px;
-      border: 1px dashed rgba(107,128,153,0.24);
-      background: rgba(8,12,16,0.5);
+      border: 1px dashed var(--grid-dot);
+      background: var(--well);
       display: grid;
       place-items: center;
       overflow: hidden;
@@ -824,7 +909,7 @@
       justify-content: center;
       font-size: 2.6rem;
       background:
-        radial-gradient(circle at 50% 40%, rgba(0,200,160,0.09), transparent 60%),
+        radial-gradient(circle at 50% 40%, var(--halo), transparent 60%),
         var(--bg3);
       opacity: 0.6;
     }
@@ -898,7 +983,7 @@
 
     .method-card {
       position: relative;
-      background: linear-gradient(160deg, #131d28, #0d141c);
+      background: linear-gradient(160deg, var(--card-2a), var(--card-2b));
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 2rem 1.8rem 1.8rem;
@@ -939,7 +1024,7 @@
       display: grid;
       place-items: center;
       border-radius: 10px;
-      background: rgba(0,200,160,0.1);
+      background: var(--tint);
       font-size: 1.15rem;
     }
 
@@ -975,7 +1060,7 @@
       padding: 0.32rem 0.7rem;
       border-radius: 999px;
       border: 1px solid var(--border);
-      background: rgba(8,12,16,0.6);
+      background: var(--chip-bg);
       color: var(--muted);
     }
 
@@ -985,7 +1070,7 @@
       top: 50%;
       width: 2.6rem;
       height: 1px;
-      background: rgba(107,128,153,0.3);
+      background: var(--grid-dot);
     }
 
     .method-arrow::after {
@@ -993,7 +1078,7 @@
       position: absolute;
       right: 0; top: -3px;
       border: 3.5px solid transparent;
-      border-left-color: rgba(107,128,153,0.55);
+      border-left-color: var(--hairline);
     }
 
     .method-arrow.a1 { left: calc(33.333% - 1.9rem); }
@@ -1241,8 +1326,8 @@
       padding: 2rem 1.8rem;
       border-radius: 16px;
       border: 1px solid var(--border);
-      background: linear-gradient(160deg, #141f2b, #0c131b);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      background: linear-gradient(160deg, var(--card-a), var(--card-b));
+      box-shadow: var(--shadow-lg);
       transition: transform 0.55s cubic-bezier(0.4,0,0.2,1), opacity 0.55s, filter 0.55s;
       will-change: transform;
     }
@@ -1259,7 +1344,7 @@
       border-radius: 12px;
       display: grid;
       place-items: center;
-      background: rgba(0,200,160,0.1);
+      background: var(--tint);
       font-size: 1.3rem;
       margin: 0 auto 1rem;
     }
@@ -1297,7 +1382,7 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--accent);
-      background: rgba(0,200,160,0.1);
+      background: var(--tint);
       border-radius: 999px;
       padding: 0.35rem 0.85rem;
     }
@@ -1346,7 +1431,7 @@
       width: 8px; height: 8px;
       border-radius: 999px;
       border: none;
-      background: rgba(107,128,153,0.35);
+      background: var(--hairline);
       cursor: pointer;
       transition: width 0.3s, background 0.3s;
     }
@@ -1393,7 +1478,7 @@
       position: absolute;
       font-family: var(--mono);
       font-size: 0.8rem;
-      color: rgba(107,128,153,0.35);
+      color: var(--hairline);
     }
     .show-card::before { top: 0.5rem; left: 0.6rem; }
     .show-card::after  { bottom: 0.5rem; right: 0.6rem; }
@@ -1428,7 +1513,7 @@
       display: grid;
       place-items: center;
       font-size: 1.4rem;
-      background: rgba(0,200,160,0.1);
+      background: var(--tint);
       border: 1px solid var(--border);
     }
 
@@ -1482,8 +1567,8 @@
 
     .show-card.slot {
       border-style: dashed;
-      border-color: rgba(107,128,153,0.28);
-      background: rgba(13,17,23,0.5);
+      border-color: var(--hairline);
+      background: var(--well);
       min-height: 260px;
       display: flex;
       flex-direction: column;
@@ -1497,7 +1582,7 @@
       border-radius: 12px;
       display: grid;
       place-items: center;
-      border: 1px dashed rgba(107,128,153,0.4);
+      border: 1px dashed var(--hairline);
       color: var(--muted);
       font-family: var(--mono);
       font-size: 1.1rem;
@@ -1674,7 +1759,7 @@
       align-self: flex-start;
     }
 
-    .affil-link:hover { color: #00e8ba; }
+    .affil-link:hover { color: var(--accent-hi); }
 
     /* ─── CONTACT ────────────────────────────────── */
     #contact { padding: 7rem 0; background: var(--bg2); }
@@ -1841,12 +1926,12 @@
       font-size: 1.3rem;
       box-shadow: 0 4px 24px rgba(0,200,160,0.35);
       transition: all 0.25s;
-      color: #000;
+      color: var(--on-accent);
       position: relative;
     }
 
     #terminal-toggle:hover {
-      background: #00e8ba;
+      background: var(--accent-hi);
       transform: scale(1.08);
       box-shadow: 0 6px 32px rgba(0,200,160,0.5);
     }
@@ -2067,7 +2152,137 @@
       #terminal-widget { width: calc(100vw - 1rem); right: 0.5rem; bottom: 5.5rem; }
       .term-resize-handle { display: none; }
     }
+
+    /* ═══════════════════════════════════════════════
+       LIGHT MODE — what the variables can't reach
+       ═══════════════════════════════════════════════ */
+
+    /* the theme switch itself */
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.34rem 0.7rem 0.34rem 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: color 0.25s, border-color 0.25s, background 0.25s;
+      margin-left: 1.6rem;
+    }
+
+    .theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+
+    .theme-toggle .tt-glyph {
+      display: grid;
+      place-items: center;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--tint);
+      color: var(--accent);
+      font-size: 0.62rem;
+      line-height: 1;
+    }
+
+    .theme-toggle .tt-on  { display: none; }
+    :root[data-theme="light"] .theme-toggle .tt-on  { display: inline; }
+    :root[data-theme="light"] .theme-toggle .tt-off { display: none; }
+
+    @media (max-width: 860px) {
+      .theme-toggle { margin-left: auto; }
+    }
+
+    /* paper needs a warmer press-in on hover, not a lighter one */
+    :root[data-theme="light"] .tm-item:hover { background: #ffffff; }
+
+    /* — screens stay dark on paper — */
+    :root[data-theme="light"] .sys-window {
+      background: #0d141c;
+      border-color: rgba(20,35,44,0.35);
+    }
+
+    :root[data-theme="light"] .sys-bar {
+      background: #16202b;
+      border-bottom-color: rgba(226,234,244,0.12);
+    }
+
+    :root[data-theme="light"] .sys-bar-title,
+    :root[data-theme="light"] .sys-tagline { color: #8296a8; }
+
+    :root[data-theme="light"] .sys-canvas {
+      background-image: radial-gradient(circle at 1px 1px, rgba(140,160,180,0.2) 1px, transparent 0);
+    }
+
+    :root[data-theme="light"] .sys-tagline b { color: #00c8a0; }
+
+    /* the client slots shimmer in paper greys, not ink */
+    :root[data-theme="light"] .slot-line {
+      background: linear-gradient(90deg, #e6e0d3 25%, #f3efe6 50%, #e6e0d3 75%);
+      background-size: 300% 100%;
+    }
+
+    /* rings and hairlines need more weight on a light ground */
+    :root[data-theme="light"] .method-rings span { border-color: rgba(5,117,106,0.22); }
+
+    :root[data-theme="light"] .btn-primary:hover {
+      box-shadow: 0 8px 20px rgba(5,117,106,0.28);
+    }
+
+    :root[data-theme="light"] .hero-photo-frame::after { border-color: rgba(5,117,106,0.28); }
+
+    /* photography reads heavy on paper — lift it */
+    :root[data-theme="light"] .reel-item img { filter: saturate(0.9) brightness(1); }
+
+    /* emoji stand-ins wash out on ivory at 60% */
+    :root[data-theme="light"] .reel-fallback,
+    :root[data-theme="light"] .reality-visual .rv-glyph { opacity: 0.85; }
+    :root[data-theme="light"] .hero-photo { filter: saturate(1) contrast(1); }
+
+    /* logo tiles: on ivory, a pure-white chip is the wrong white */
+    :root[data-theme="light"] .show-logo { background: #fff; }
+
+    /* the FAB keeps its glow but scaled for a light ground */
+    :root[data-theme="light"] #terminal-toggle { box-shadow: 0 4px 18px rgba(5,117,106,0.3); }
+    :root[data-theme="light"] #terminal-toggle:hover { box-shadow: 0 6px 24px rgba(5,117,106,0.42); }
+
+    /* card recede on scroll: fade rather than dim */
+    :root[data-theme="light"] .reality-card { border-color: rgba(23,49,58,0.12); }
+
+    /* form fields sit INTO the paper instead of on top of it */
+    :root[data-theme="light"] .form-group input,
+    :root[data-theme="light"] .form-group textarea {
+      background: #fffdf8;
+      box-shadow: inset 0 1px 2px rgba(40,52,58,0.06);
+    }
+
+    /* theme crossfade — kept to the properties that actually change */
+    body, nav, section, footer,
+    .reality-card, .method-card, .svc-card, .show-card,
+    .cert-card, .reel-item, .screen-frame, .tm-item {
+      transition: background-color 0.45s ease, border-color 0.45s ease, color 0.45s ease;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body, nav, section, footer,
+      .reality-card, .method-card, .svc-card, .show-card,
+      .cert-card, .reel-item, .screen-frame, .tm-item { transition: none; }
+    }
   </style>
+
+  <!-- Resolve the theme before first paint so the page never flashes the wrong ground. -->
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('nk-theme'); } catch (e) {}
+      var theme = saved || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
 </head>
 <body>
 
@@ -2087,6 +2302,10 @@
     <li><a href="#clients">Clients</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch colour theme">
+    <span class="tt-glyph" aria-hidden="true"><span class="tt-off">☾</span><span class="tt-on">☀</span></span>
+    <span class="tt-off">dark</span><span class="tt-on">paper</span>
+  </button>
 </nav>
 
 <!-- HERO -->
@@ -3021,6 +3240,36 @@
 </footer>
 
 <script>
+/* ─── THEME SWITCH ─────────────────────────────────── */
+/* The pre-paint script in <head> has already set data-theme.
+   This only handles the toggle, persistence, and telling the
+   canvas to re-read its colours. */
+(function() {
+  const root = document.documentElement;
+  const btn = document.getElementById('theme-toggle');
+  if (!btn) return;
+
+  function apply(theme, persist) {
+    root.setAttribute('data-theme', theme);
+    btn.setAttribute('aria-pressed', theme === 'light' ? 'true' : 'false');
+    if (persist) { try { localStorage.setItem('nk-theme', theme); } catch (e) {} }
+    window.dispatchEvent(new CustomEvent('themechange', { detail: { theme } }));
+  }
+
+  apply(root.getAttribute('data-theme') || 'dark', false);
+
+  btn.addEventListener('click', () => {
+    apply(root.getAttribute('data-theme') === 'light' ? 'dark' : 'light', true);
+  });
+
+  // Follow the OS until the visitor states a preference of their own.
+  matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
+    let saved = null;
+    try { saved = localStorage.getItem('nk-theme'); } catch (err) {}
+    if (!saved) apply(e.matches ? 'light' : 'dark', false);
+  });
+})();
+
 /* ─── PARTICLE BACKGROUND ──────────────────────────── */
 (function() {
   const canvas = document.getElementById('particle-canvas');
@@ -3035,8 +3284,20 @@
   window.addEventListener('resize', resize);
 
   const PARTICLE_COUNT = 90;
-  const ACCENT = '0,200,160';
-  const ACCENT2 = '14,165,233';
+
+  // Colours come from the theme variables, so the field re-tints on switch.
+  const palette = { a: '0,200,160', b: '14,165,233', grid: '0,200,160', gridAlpha: 0.04, linkAlpha: 0.06 };
+
+  function readPalette() {
+    const cs = getComputedStyle(document.documentElement);
+    const get = (name, fallback) => (cs.getPropertyValue(name).trim() || fallback);
+    palette.a = get('--pt-a', palette.a);
+    palette.b = get('--pt-b', palette.b);
+    palette.grid = get('--pt-grid', palette.grid);
+    palette.gridAlpha = parseFloat(get('--pt-grid-alpha', palette.gridAlpha));
+    palette.linkAlpha = parseFloat(get('--pt-link-alpha', palette.linkAlpha));
+    particles.forEach((p, i) => { p.color = i % 2 ? palette.a : palette.b; });
+  }
 
   for (let i = 0; i < PARTICLE_COUNT; i++) {
     particles.push({
@@ -3045,10 +3306,13 @@
       r: Math.random() * 1.4 + 0.4,
       vx: (Math.random() - 0.5) * 0.3,
       vy: (Math.random() - 0.5) * 0.3,
-      color: Math.random() > 0.5 ? ACCENT : ACCENT2,
+      color: i % 2 ? palette.a : palette.b,
       opacity: Math.random() * 0.5 + 0.1
     });
   }
+
+  readPalette();
+  window.addEventListener('themechange', readPalette);
 
   window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
 
@@ -3056,7 +3320,7 @@
     ctx.clearRect(0, 0, W, H);
 
     // Grid
-    ctx.strokeStyle = 'rgba(0,200,160,0.04)';
+    ctx.strokeStyle = `rgba(${palette.grid},${palette.gridAlpha})`;
     ctx.lineWidth = 1;
     const grid = 80;
     for (let x = 0; x < W; x += grid) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
@@ -3090,7 +3354,7 @@
         const d = Math.sqrt((a.x-b.x)**2 + (a.y-b.y)**2);
         if (d < 130) {
           ctx.beginPath();
-          ctx.strokeStyle = `rgba(0,200,160,${0.06 * (1 - d/130)})`;
+          ctx.strokeStyle = `rgba(${palette.grid},${palette.linkAlpha * (1 - d/130)})`;
           ctx.lineWidth = 0.5;
           ctx.moveTo(a.x, a.y);
           ctx.lineTo(b.x, b.y);
