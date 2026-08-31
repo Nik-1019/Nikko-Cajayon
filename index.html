@@ -445,30 +445,26 @@
     }
 
     /* ─── SECTION HEADERS ────────────────────────── */
+    /* With the numbered eyebrows gone, a short rule carries the
+       rhythm that used to come from the label. */
     .section-header {
       margin-bottom: 4rem;
     }
 
-    .section-label {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--accent);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
+    .section-header::before,
+    .sys-intro::before,
+    .svc-head::before,
+    .method-head::before {
+      content: '';
+      display: block;
+      width: 44px;
+      height: 2px;
+      background: var(--accent);
+      margin-bottom: 1.6rem;
     }
 
-    .section-label::after {
-      content: '';
-      flex: 1;
-      max-width: 60px;
-      height: 1px;
-      background: var(--accent);
-      opacity: 0.4;
-    }
+    .sys-intro::before,
+    .svc-head::before { margin-left: auto; margin-right: auto; }
 
     .section-title {
       font-family: var(--display);
@@ -571,8 +567,6 @@
 
     .sys-intro { text-align: center; max-width: 720px; margin: 0 auto 3rem; }
 
-    .sys-intro .section-label { justify-content: center; }
-
     .sys-intro p {
       color: var(--muted);
       font-size: 0.95rem;
@@ -636,7 +630,6 @@
     .node-box.alt   { stroke: rgba(14,165,233,0.3); }
     .node-box.warn  { stroke: rgba(167,139,250,0.32); }
     .node-box.start { fill: #12242a; stroke: var(--accent); stroke-width: 1.6; }
-    .node-glyph { font-size: 17px; }
     .node-label { fill: #e2eaf4; font-family: 'Space Mono', monospace; font-size: 11px; text-anchor: middle; }
     .node-sub   { fill: #6b8099; font-family: 'IBM Plex Sans', sans-serif; font-size: 9.5px; text-anchor: middle; }
     .wire { fill: none; stroke: rgba(107,128,153,0.42); stroke-width: 1.3; }
@@ -702,14 +695,6 @@
 
     .reality-card:hover { border-color: rgba(0,200,160,0.32); }
 
-    .reality-num {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--accent);
-      letter-spacing: 0.2em;
-      margin-bottom: 1.1rem;
-    }
-
     .reality-card h3 {
       font-family: var(--display);
       font-size: clamp(1.5rem, 3vw, 2.15rem);
@@ -728,21 +713,21 @@
       max-width: 46ch;
     }
 
+    /* image slots with nothing in them yet — hatched, so they read
+       as reserved space rather than a hole in the layout */
     .reality-visual {
       position: relative;
       height: 200px;
       border-radius: 12px;
       border: 1px dashed var(--grid-dot);
-      background: var(--well);
+      background:
+        repeating-linear-gradient(45deg, transparent, transparent 9px,
+                                  var(--grid-dot) 9px, var(--grid-dot) 10px),
+        var(--well);
       display: grid;
       place-items: center;
       overflow: hidden;
-    }
-
-    .reality-visual .rv-glyph {
-      font-size: 3.4rem;
       opacity: 0.5;
-      filter: grayscale(0.3);
     }
 
     .reality-visual::before {
@@ -907,11 +892,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.6rem;
       background:
-        radial-gradient(circle at 50% 40%, var(--halo), transparent 60%),
+        repeating-linear-gradient(45deg, transparent, transparent 9px,
+                                  var(--grid-dot) 9px, var(--grid-dot) 10px),
         var(--bg3);
-      opacity: 0.6;
+      opacity: 0.5;
     }
 
     /* thin accent rule tying the photo to its caption */
@@ -1016,25 +1001,6 @@
     .method-rings span:nth-child(1) { width: 80px;  height: 80px;  }
     .method-rings span:nth-child(2) { width: 140px; height: 140px; }
     .method-rings span:nth-child(3) { width: 200px; height: 200px; }
-
-    .method-icon {
-      position: absolute;
-      top: 1.6rem; right: 1.6rem;
-      width: 40px; height: 40px;
-      display: grid;
-      place-items: center;
-      border-radius: 10px;
-      background: var(--tint);
-      font-size: 1.15rem;
-    }
-
-    .method-num {
-      font-family: var(--mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.2em;
-      color: var(--accent);
-      margin-bottom: 1.4rem;
-    }
 
     .method-card h3 {
       font-family: var(--display);
@@ -1307,7 +1273,6 @@
     #services { padding: 7rem 0; background: var(--bg2); }
 
     .svc-head { text-align: center; max-width: 640px; margin: 0 auto; }
-    .svc-head .section-label { justify-content: center; }
     .svc-head p { color: var(--muted); margin-top: 0.9rem; font-size: 0.94rem; }
 
     .svc-stage {
@@ -1338,25 +1303,6 @@
     .svc-card[data-pos="-2"] { transform: translateX(-500px) scale(0.74) rotateY(24deg);  opacity: 0.08; z-index: 3; filter: blur(4px); }
     .svc-card[data-pos="2"]  { transform: translateX(500px)  scale(0.74) rotateY(-24deg); opacity: 0.08; z-index: 3; filter: blur(4px); }
     .svc-card[data-pos="hidden"] { transform: scale(0.6); opacity: 0; z-index: 1; pointer-events: none; }
-
-    .svc-icon {
-      width: 46px; height: 46px;
-      border-radius: 12px;
-      display: grid;
-      place-items: center;
-      background: var(--tint);
-      font-size: 1.3rem;
-      margin: 0 auto 1rem;
-    }
-
-    .svc-count {
-      text-align: center;
-      font-family: var(--mono);
-      font-size: 0.64rem;
-      letter-spacing: 0.2em;
-      color: var(--accent);
-      margin-bottom: 0.6rem;
-    }
 
     .svc-card h3 {
       font-family: var(--display);
@@ -1488,14 +1434,6 @@
       align-items: flex-start;
       justify-content: space-between;
       margin-bottom: 1.4rem;
-    }
-
-    .show-num {
-      font-family: var(--display);
-      font-size: 2.6rem;
-      font-weight: 800;
-      line-height: 1;
-      color: rgba(107,128,153,0.22);
     }
 
     .show-logo {
@@ -1645,11 +1583,6 @@
     .cert-card:hover {
       border-color: rgba(0,200,160,0.3);
       transform: translateY(-3px);
-    }
-
-    .cert-icon {
-      font-size: 2.2rem;
-      margin-bottom: 1rem;
     }
 
     .cert-title {
@@ -2174,22 +2107,15 @@
       cursor: pointer;
       transition: color 0.25s, border-color 0.25s, background 0.25s;
       margin-left: 1.6rem;
+      padding: 0.34rem 0.85rem;
     }
 
     .theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
 
-    .theme-toggle .tt-glyph {
-      display: grid;
-      place-items: center;
-      width: 18px; height: 18px;
-      border-radius: 50%;
-      background: var(--tint);
-      color: var(--accent);
-      font-size: 0.62rem;
-      line-height: 1;
-    }
+    .theme-toggle .tt-slash { color: var(--accent); margin-right: 0.35rem; }
 
-    .theme-toggle .tt-on  { display: none; }
+    /* the label names the ground you're standing on */
+    .theme-toggle .tt-on { display: none; }
     :root[data-theme="light"] .theme-toggle .tt-on  { display: inline; }
     :root[data-theme="light"] .theme-toggle .tt-off { display: none; }
 
@@ -2238,9 +2164,6 @@
     /* photography reads heavy on paper — lift it */
     :root[data-theme="light"] .reel-item img { filter: saturate(0.9) brightness(1); }
 
-    /* emoji stand-ins wash out on ivory at 60% */
-    :root[data-theme="light"] .reel-fallback,
-    :root[data-theme="light"] .reality-visual .rv-glyph { opacity: 0.85; }
     :root[data-theme="light"] .hero-photo { filter: saturate(1) contrast(1); }
 
     /* logo tiles: on ivory, a pure-white chip is the wrong white */
@@ -2303,8 +2226,7 @@
     <li><a href="#contact">Contact</a></li>
   </ul>
   <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch colour theme">
-    <span class="tt-glyph" aria-hidden="true"><span class="tt-off">☾</span><span class="tt-on">☀</span></span>
-    <span class="tt-off">dark</span><span class="tt-on">paper</span>
+    <span class="tt-slash" aria-hidden="true">//</span><span class="tt-off">dark</span><span class="tt-on">paper</span>
   </button>
 </nav>
 
@@ -2392,7 +2314,6 @@
 <section id="system">
   <div class="container">
     <div class="sys-intro reveal">
-      <p class="section-label">00 // Live System</p>
       <h2 class="section-title">One trigger fires.<br /><span>The system runs itself.</span></h2>
       <p>
         A real agentic pipeline shape I build — an event comes in, the system validates it,
@@ -2431,31 +2352,26 @@
           <!-- top row -->
           <g>
             <rect class="node-box start" x="108" y="66" width="60" height="60" rx="14" />
-            <text class="node-glyph" x="138" y="104" text-anchor="middle">⚡</text>
             <text class="node-label" x="138" y="148">Event Trigger</text>
             <text class="node-sub"   x="138" y="163">Webhook · form · queue</text>
           </g>
           <g>
             <rect class="node-box" x="270" y="66" width="60" height="60" rx="14" />
-            <text class="node-glyph" x="300" y="104" text-anchor="middle">🛡️</text>
             <text class="node-label" x="300" y="148">Validate</text>
             <text class="node-sub"   x="300" y="163">Schema + auth check</text>
           </g>
           <g>
             <rect class="node-box alt" x="450" y="66" width="60" height="60" rx="14" />
-            <text class="node-glyph" x="480" y="104" text-anchor="middle">🧩</text>
             <text class="node-label" x="480" y="148">Enrich</text>
             <text class="node-sub"   x="480" y="163">Context from source data</text>
           </g>
           <g>
             <rect class="node-box alt" x="630" y="66" width="60" height="60" rx="14" />
-            <text class="node-glyph" x="660" y="104" text-anchor="middle">🤖</text>
             <text class="node-label" x="660" y="148">AI Agent</text>
             <text class="node-sub"   x="660" y="163">Reason · plan · call tools</text>
           </g>
           <g>
             <rect class="node-box warn" x="810" y="66" width="60" height="60" rx="14" />
-            <text class="node-glyph" x="840" y="104" text-anchor="middle">🔀</text>
             <text class="node-label" x="840" y="148">Decision</text>
             <text class="node-sub"   x="840" y="163">Confidence routing</text>
           </g>
@@ -2463,19 +2379,16 @@
           <!-- bottom row -->
           <g>
             <rect class="node-box" x="198" y="300" width="60" height="60" rx="14" />
-            <text class="node-glyph" x="228" y="338" text-anchor="middle">✅</text>
             <text class="node-label" x="228" y="382">Auto-Execute</text>
             <text class="node-sub"   x="228" y="397">High confidence · no human</text>
           </g>
           <g>
             <rect class="node-box warn" x="510" y="300" width="60" height="60" rx="14" />
-            <text class="node-glyph" x="540" y="338" text-anchor="middle">👤</text>
             <text class="node-label" x="540" y="382">Human Review</text>
             <text class="node-sub"   x="540" y="397">Edge case · needs a call</text>
           </g>
           <g>
             <rect class="node-box alt" x="810" y="300" width="60" height="60" rx="14" />
-            <text class="node-glyph" x="840" y="338" text-anchor="middle">📊</text>
             <text class="node-label" x="840" y="382">Log &amp; Store</text>
             <text class="node-sub"   x="840" y="397">Every run, auditable</text>
           </g>
@@ -2521,7 +2434,6 @@
 <section id="reality">
   <div class="container">
     <div class="section-header reveal">
-      <p class="section-label">01 // The Reality</p>
       <h2 class="section-title">Before the tools,<br /><span>the problem.</span></h2>
     </div>
 
@@ -2529,38 +2441,35 @@
 
       <div class="reality-card" style="--i:0">
         <div>
-          <p class="reality-num">01</p>
           <h3>The same <span>manual work</span>, every week?</h3>
           <p>
             Copy-pasting between tools. Reports rebuilt by hand every Monday. Follow-ups
             nobody sends. Hours a week spent on work a workflow could run at 2am.
           </p>
         </div>
-        <div class="reality-visual"><span class="rv-glyph">🗂️</span></div>
+        <div class="reality-visual" aria-hidden="true"></div>
       </div>
 
       <div class="reality-card" style="--i:1">
         <div>
-          <p class="reality-num">02</p>
           <h3>Cloud that <span>nobody owns</span>?</h3>
           <p>
             Resources spun up in a hurry and never revisited. No naming, no structure,
             no one sure what breaks if it gets deleted. It works — until it doesn't.
           </p>
         </div>
-        <div class="reality-visual"><span class="rv-glyph">☁️</span></div>
+        <div class="reality-visual" aria-hidden="true"></div>
       </div>
 
       <div class="reality-card" style="--i:2">
         <div>
-          <p class="reality-num">03</p>
           <h3>AI pilots that <span>never ship</span>?</h3>
           <p>
             A demo that impressed everyone once, then stalled. Teams finish the course
             and the certification, but still have no working system at the end of it.
           </p>
         </div>
-        <div class="reality-visual"><span class="rv-glyph">🧪</span></div>
+        <div class="reality-visual" aria-hidden="true"></div>
       </div>
 
     </div>
@@ -2577,7 +2486,6 @@
     <div class="about-grid">
       <div>
         <div class="section-header reveal">
-          <p class="section-label">02 // About</p>
           <h2 class="section-title">Technologist.<br /><span>Builder.</span> Speaker.</h2>
         </div>
         <div class="about-text">
@@ -2610,7 +2518,6 @@
 <section id="method">
   <div class="container">
     <div class="method-head reveal">
-      <p class="section-label">03 // The Method</p>
       <h2 class="section-title">Learn. Build. Lead.<br /><span>Always in that order.</span></h2>
       <p class="method-sub">
         Skip a step and it falls apart. Learn without building and it stays theory.
@@ -2625,8 +2532,6 @@
 
       <div class="method-card reveal">
         <div class="method-rings" aria-hidden="true"><span></span><span></span><span></span></div>
-        <div class="method-icon">📡</div>
-        <p class="method-num">01</p>
         <h3>Learn.</h3>
         <p>
           Go deep before going loud. Certifications, labs, docs, and breaking things
@@ -2642,8 +2547,6 @@
 
       <div class="method-card reveal reveal-delay-1">
         <div class="method-rings" aria-hidden="true"><span></span><span></span><span></span></div>
-        <div class="method-icon">🛠️</div>
-        <p class="method-num">02</p>
         <h3>Build.</h3>
         <p>
           Turn the theory into something that runs in production. Cloud infrastructure,
@@ -2659,8 +2562,6 @@
 
       <div class="method-card reveal reveal-delay-2">
         <div class="method-rings" aria-hidden="true"><span></span><span></span><span></span></div>
-        <div class="method-icon">🎤</div>
-        <p class="method-num">03</p>
         <h3>Lead.</h3>
         <p>
           Hand the map to the next person. Talks, workshops, and communities so the
@@ -2782,7 +2683,6 @@
 <section id="services">
   <div class="container">
     <div class="svc-head reveal">
-      <p class="section-label">04 // Services</p>
       <h2 class="section-title">What I can do <span>for you.</span></h2>
       <p>Pick one. Stack a few. Build the whole system.</p>
     </div>
@@ -2790,8 +2690,6 @@
     <div class="svc-stage reveal reveal-delay-1" id="svc-stage">
 
       <article class="svc-card" data-pos="0">
-        <div class="svc-icon">☁️</div>
-        <p class="svc-count">01 / 05</p>
         <h3>Cloud Architecture</h3>
         <p>Infrastructure that someone actually owns.</p>
         <span class="svc-badge">Built to be handed over</span>
@@ -2804,8 +2702,6 @@
       </article>
 
       <article class="svc-card" data-pos="1">
-        <div class="svc-icon">🤖</div>
-        <p class="svc-count">02 / 05</p>
         <h3>AI Agents &amp; Automation</h3>
         <p>Systems that finish the job, not chat windows.</p>
         <span class="svc-badge">Runs at 2am</span>
@@ -2818,8 +2714,6 @@
       </article>
 
       <article class="svc-card" data-pos="2">
-        <div class="svc-icon">⚙️</div>
-        <p class="svc-count">03 / 05</p>
         <h3>DevOps &amp; CI/CD</h3>
         <p>Deploys that stop being an event.</p>
         <span class="svc-badge">Minutes, not hours</span>
@@ -2832,8 +2726,6 @@
       </article>
 
       <article class="svc-card" data-pos="hidden">
-        <div class="svc-icon">💻</div>
-        <p class="svc-count">04 / 05</p>
         <h3>Software Builds</h3>
         <p>Applications shipped end to end.</p>
         <span class="svc-badge">Code you keep</span>
@@ -2846,8 +2738,6 @@
       </article>
 
       <article class="svc-card" data-pos="hidden">
-        <div class="svc-icon">🎤</div>
-        <p class="svc-count">05 / 05</p>
         <h3>Talks &amp; Workshops</h3>
         <p>Your team leaves with a working thing.</p>
         <span class="svc-badge">Hands on keyboards</span>
@@ -2873,7 +2763,6 @@
 <section id="speaking">
   <div class="container">
     <div class="section-header reveal">
-      <p class="section-label">05 // Speaking</p>
       <h2 class="section-title">Talks &amp; <span>Engagements</span></h2>
     </div>
   </div>
@@ -2885,7 +2774,7 @@
       <figure class="reel-item">
         <div class="reel-media">
         <img src="https://nik-1019.github.io/DevSite/source/talks/az:repo/az:repo.jpeg" alt="az:Repo agentic workshop at Microsoft HQ" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-        <div class="reel-fallback" style="display:none;">🤖</div>
+        <div class="reel-fallback" style="display:none;"></div>
         </div>
         <figcaption class="reel-cap">
           <span class="reel-venue">Microsoft HQ, One Ayala · Nov 2025</span>
@@ -2896,7 +2785,7 @@
       <figure class="reel-item">
         <div class="reel-media">
         <img src="https://nik-1019.github.io/DevSite/source/talks/SkillBuilder/Skillbuilder.jpeg" alt="SkillBuilder kick-off with AWS Cloud Club Philippines" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-        <div class="reel-fallback" style="display:none;">☁️</div>
+        <div class="reel-fallback" style="display:none;"></div>
         </div>
         <figcaption class="reel-cap">
           <span class="reel-venue">AWS Cloud Club PH · 2024</span>
@@ -2907,7 +2796,7 @@
       <figure class="reel-item">
         <div class="reel-media">
         <img src="https://nik-1019.github.io/DevSite/source/talks/beyondcode/beyondcode.jpeg" alt="Beyond Code talk on system design" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-        <div class="reel-fallback" style="display:none;">🏗️</div>
+        <div class="reel-fallback" style="display:none;"></div>
         </div>
         <figcaption class="reel-cap">
           <span class="reel-venue">Beyond Code · 2024</span>
@@ -2918,7 +2807,7 @@
       <figure class="reel-item">
         <div class="reel-media">
         <img src="https://nik-1019.github.io/DevSite/source/talks/cloud-edu/1737959174654.jpeg" alt="Cloud Educators AWS EC2 workshop" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-        <div class="reel-fallback" style="display:none;">🎓</div>
+        <div class="reel-fallback" style="display:none;"></div>
         </div>
         <figcaption class="reel-cap">
           <span class="reel-venue">Cloud Educators · 2024</span>
@@ -2929,7 +2818,7 @@
       <figure class="reel-item">
         <div class="reel-media">
         <img src="https://nik-1019.github.io/DevSite/source/talks/azure-ignite/1728614419270.jpeg" alt="Azure Ignite showcase" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-        <div class="reel-fallback" style="display:none;">⚡</div>
+        <div class="reel-fallback" style="display:none;"></div>
         </div>
         <figcaption class="reel-cap">
           <span class="reel-venue">Azure Ignite · 2024</span>
@@ -2940,7 +2829,7 @@
       <figure class="reel-item">
         <div class="reel-media">
         <img src="https://nik-1019.github.io/DevSite/source/talks/communityday-1/comday-1.jpeg" alt="AWS Community Day Philippines" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-        <div class="reel-fallback" style="display:none;">🌐</div>
+        <div class="reel-fallback" style="display:none;"></div>
         </div>
         <figcaption class="reel-cap">
           <span class="reel-venue">AWS Community Day · 2024</span>
@@ -2950,7 +2839,7 @@
 
       <figure class="reel-item">
         <div class="reel-media">
-        <div class="reel-fallback">🗺️</div>
+        <div class="reel-fallback"></div>
         </div>
         <figcaption class="reel-cap">
           <span class="reel-venue">CloudFest · 2024</span>
@@ -2961,7 +2850,7 @@
       <figure class="reel-item">
         <div class="reel-media">
         <img src="https://nik-1019.github.io/DevSite/source/talks/techtalk/1729649614977.jpeg" alt="Tech Talk series session" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-        <div class="reel-fallback" style="display:none;">💬</div>
+        <div class="reel-fallback" style="display:none;"></div>
         </div>
         <figcaption class="reel-cap">
           <span class="reel-venue">Tech Talk Series · 2024</span>
@@ -2978,7 +2867,6 @@
 <section id="affiliations">
   <div class="container">
     <div class="section-header reveal">
-      <p class="section-label">06 // Community</p>
       <h2 class="section-title">The rooms I <span>help build.</span></h2>
       <p class="show-lede">Six communities. Real roles, not badges — here's what I actually run in each.</p>
     </div>
@@ -2987,9 +2875,8 @@
 
       <div class="show-card reveal">
         <div class="show-top">
-          <span class="show-num">01</span>
           <img src="./assets/nextwork.logo.png" alt="NextWork" class="show-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
-          <div class="show-logo-fallback" style="display:none;">🚀</div>
+          <div class="show-logo-fallback" style="display:none;"></div>
         </div>
         <p class="show-name">NextWork</p>
         <p class="show-role">Community Lead · Strategist</p>
@@ -3000,9 +2887,8 @@
 
       <div class="show-card reveal reveal-delay-1">
         <div class="show-top">
-          <span class="show-num">02</span>
           <img src="./assets/AWSCloudClub-logo.png" alt="AWS Cloud Club PH" class="show-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
-          <div class="show-logo-fallback" style="display:none;">☁️</div>
+          <div class="show-logo-fallback" style="display:none;"></div>
         </div>
         <p class="show-name">AWS Cloud Club — Philippines</p>
         <p class="show-role">Director of SkillBuilder</p>
@@ -3013,9 +2899,8 @@
 
       <div class="show-card reveal reveal-delay-2">
         <div class="show-top">
-          <span class="show-num">03</span>
           <img src="./assets/AWS CC Haribon-logo.jpg" alt="AWS CC Haribon" class="show-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
-          <div class="show-logo-fallback" style="display:none;">🦅</div>
+          <div class="show-logo-fallback" style="display:none;"></div>
         </div>
         <p class="show-name">AWS CC — Haribon</p>
         <p class="show-role">Chief Technology Officer</p>
@@ -3026,9 +2911,8 @@
 
       <div class="show-card reveal">
         <div class="show-top">
-          <span class="show-num">04</span>
           <img src="./assets/Microsoft Azure Developers-logo.jpg" alt="Azure PH" class="show-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
-          <div class="show-logo-fallback" style="display:none;">🔷</div>
+          <div class="show-logo-fallback" style="display:none;"></div>
         </div>
         <p class="show-name">Microsoft Azure Developers PH</p>
         <p class="show-role">Co-Founder</p>
@@ -3039,9 +2923,8 @@
 
       <div class="show-card reveal reveal-delay-1">
         <div class="show-top">
-          <span class="show-num">05</span>
           <img src="./assets/microsoftlearn-logo.png" alt="Microsoft Learn" class="show-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
-          <div class="show-logo-fallback" style="display:none;">🎓</div>
+          <div class="show-logo-fallback" style="display:none;"></div>
         </div>
         <p class="show-name">Microsoft Learn Program</p>
         <p class="show-role">Microsoft Student Ambassador</p>
@@ -3052,9 +2935,8 @@
 
       <div class="show-card reveal reveal-delay-2">
         <div class="show-top">
-          <span class="show-num">06</span>
           <img src="./assets/microsoft student community-logo.jpg" alt="MSC PLM" class="show-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
-          <div class="show-logo-fallback" style="display:none;">🤝</div>
+          <div class="show-logo-fallback" style="display:none;"></div>
         </div>
         <p class="show-name">Microsoft Student Community — PLM</p>
         <p class="show-role">Chief Relations Officer</p>
@@ -3073,7 +2955,6 @@
 <section id="clients">
   <div class="container">
     <div class="section-header reveal">
-      <p class="section-label">07 // Clients</p>
       <h2 class="section-title">Clients &amp; <span>collaborations.</span></h2>
       <p class="show-lede">Short list on purpose. The systems behind them are the point.</p>
     </div>
@@ -3081,7 +2962,7 @@
     <div class="show-grid">
 
       <div class="show-card slot reveal">
-        <div class="slot-mark">01</div>
+        <div class="slot-mark" aria-hidden="true"></div>
         <div class="slot-line w70"></div>
         <div class="slot-line w45"></div>
         <div class="slot-line w90"></div>
@@ -3090,7 +2971,7 @@
       </div>
 
       <div class="show-card slot reveal reveal-delay-1">
-        <div class="slot-mark">02</div>
+        <div class="slot-mark" aria-hidden="true"></div>
         <div class="slot-line w45"></div>
         <div class="slot-line w90"></div>
         <div class="slot-line w70"></div>
@@ -3099,7 +2980,7 @@
       </div>
 
       <div class="show-card slot reveal reveal-delay-2">
-        <div class="slot-mark">03</div>
+        <div class="slot-mark" aria-hidden="true"></div>
         <div class="slot-line w90"></div>
         <div class="slot-line w70"></div>
         <div class="slot-line w45"></div>
@@ -3115,18 +2996,15 @@
 <section id="certifications">
   <div class="container">
     <div class="section-header reveal">
-      <p class="section-label">08 // Certifications</p>
       <h2 class="section-title">Continuous <span>Learning</span></h2>
     </div>
     <div class="certs-grid">
       <div class="cert-card reveal">
-        <div class="cert-icon">☁️</div>
         <h3 class="cert-title">AWS Certified Cloud Practitioner</h3>
         <p class="cert-issuer">Amazon Web Services</p>
         <p class="cert-validity">Valid until: Dec 2027</p>
       </div>
       <div class="cert-card reveal reveal-delay-1">
-        <div class="cert-icon">🔷</div>
         <h3 class="cert-title">AZ-900: Azure Fundamentals</h3>
         <p class="cert-issuer">Microsoft Azure</p>
         <p class="cert-validity">Valid until: Oct 2026</p>
@@ -3141,7 +3019,6 @@
 <section id="contact">
   <div class="container">
     <div class="section-header reveal">
-      <p class="section-label">09 // Contact</p>
       <h2 class="section-title">Get In <span>Touch</span></h2>
     </div>
     <div class="contact-grid">
@@ -3157,11 +3034,11 @@
             linkedin.com/in/nikko-cajayon
           </a>
           <a href="https://github.com/Nik-1019" class="social-link" target="_blank">
-            <span class="social-icon">⌥</span>
+            <span class="social-icon">gh</span>
             github.com/Nik-1019
           </a>
           <a href="https://instagram.com/iamnikko_01/" class="social-link" target="_blank">
-            <span class="social-icon">✦</span>
+            <span class="social-icon">ig</span>
             @iamnikko_01
           </a>
           <a href="https://www.facebook.com/cajayonnikko" class="social-link" target="_blank">
@@ -3195,7 +3072,7 @@
 
 <!-- SCREENSHOT LIGHTBOX -->
 <div id="screen-lightbox" role="dialog" aria-modal="true" aria-label="Screenshot preview">
-  <button class="lb-close" id="lb-close">esc ✕</button>
+  <button class="lb-close" id="lb-close">esc</button>
   <figure>
     <img id="lb-img" src="" alt="" />
     <figcaption id="lb-cap"></figcaption>
@@ -3750,7 +3627,7 @@
         { t:'success', v:'  Tagline   : Learn, Build, Lead' },
         { t:'out',     v:'  Location  : Philippines 🇵🇭' },
         { t:'out',     v:'  Focus     : AI Automation · Cloud Infra · Agentic Workflows' },
-        { t:'out',     v:'  Status    : 🟢 Open to speaking engagements' },
+        { t:'out',     v:'  Status    : Open to speaking engagements' },
         { t:'blank' },
         { t:'dim',     v:'  "As an emerging technologist, I build practical solutions' },
         { t:'dim',     v:'   across cloud and AI — then teach others to do the same."' },
@@ -3836,7 +3713,7 @@
       ];
       data.forEach((t, i) => {
         lines.push({ t:'success', v:`  ${String(i+1).padStart(2,'0')}.  ${t.title}` });
-        lines.push({ t:'out',    v:`       📍 ${t.venue}  ·  ${t.date}` });
+        lines.push({ t:'out',    v:`       ${t.venue}  ·  ${t.date}` });
         lines.push({ t:'dim',    v:`       "${t.topic}"` });
         lines.push({ t:'blank' });
       });
@@ -3845,13 +3722,13 @@
 
     affiliations() {
       const data = [
-        { org:'NextWork',                          role:'Community Lead · Strategist',        emoji:'🚀' },
-        { org:'AWS Cloud Club — Philippines',      role:'Director of SkillBuilder',           emoji:'☁️' },
-        { org:'AWS CC — Haribon',                  role:'Chief Technology Officer',           emoji:'🦅' },
-        { org:'Microsoft Azure Developers PH',     role:'Co-Founder',                         emoji:'🔷' },
-        { org:'Microsoft Learn Program',           role:'Microsoft Student Ambassador',       emoji:'🎓' },
-        { org:'Cloud Educators Community',         role:'Learner · Mentor',                   emoji:'📚' },
-        { org:'Microsoft Student Community — PLM', role:'Chief Relations Officer',            emoji:'🤝' },
+        { org:'NextWork',                          role:'Community Lead · Strategist',        },
+        { org:'AWS Cloud Club — Philippines',      role:'Director of SkillBuilder',           },
+        { org:'AWS CC — Haribon',                  role:'Chief Technology Officer',           },
+        { org:'Microsoft Azure Developers PH',     role:'Co-Founder',                         },
+        { org:'Microsoft Learn Program',           role:'Microsoft Student Ambassador',       },
+        { org:'Cloud Educators Community',         role:'Learner · Mentor',                   },
+        { org:'Microsoft Student Community — PLM', role:'Chief Relations Officer',            },
       ];
       const lines = [
         { t:'blank' },
@@ -3859,7 +3736,7 @@
         { t:'blank' },
       ];
       data.forEach(a => {
-        lines.push({ t:'accent3', v:`  ${a.emoji}  ${a.org}` });
+        lines.push({ t:'accent3', v:`  ${a.org}` });
         lines.push({ t:'dim',    v:`      Role: ${a.role}` });
         lines.push({ t:'blank' });
       });
@@ -3871,11 +3748,11 @@
         { t:'blank' },
         { t:'accent2', v:'  // CERTIFICATIONS' },
         { t:'blank' },
-        { t:'success', v:'  ☁️  AWS Certified Cloud Practitioner' },
+        { t:'success', v:'  AWS Certified Cloud Practitioner' },
         { t:'out',     v:'      Issuer : Amazon Web Services' },
         { t:'out',     v:'      Valid  : Until Dec 2027' },
         { t:'blank' },
-        { t:'success', v:'  🔷  AZ-900: Azure Fundamentals' },
+        { t:'success', v:'  AZ-900: Azure Fundamentals' },
         { t:'out',     v:'      Issuer : Microsoft Azure' },
         { t:'out',     v:'      Valid  : Until Oct 2026' },
         { t:'blank' },
@@ -4008,11 +3885,11 @@
         { t:'blank' },
         { t:'warn',    v:'  Unlocking NIKKO CAJAYON — FULL POWER MODE...' },
         { t:'blank' },
-        { t:'accent2', v:'  💥  CloudFormation stacks deploying...' },
-        { t:'accent2', v:'  🤖  Agentic workflows initializing...' },
-        { t:'accent2', v:'  ☁️   Multi-cloud orchestration: ONLINE' },
-        { t:'accent2', v:'  🧠  AI pipelines: ACTIVE' },
-        { t:'accent2', v:'  🎤  Speaker mode: ENGAGED' },
+        { t:'accent2', v:'  CloudFormation stacks deploying...' },
+        { t:'accent2', v:'  Agentic workflows initializing...' },
+        { t:'accent2', v:'  Multi-cloud orchestration: ONLINE' },
+        { t:'accent2', v:'  AI pipelines: ACTIVE' },
+        { t:'accent2', v:'  Speaker mode: ENGAGED' },
         { t:'blank' },
         { t:'success', v:'  All systems operational. Nikko is ready to build.' },
         { t:'blank' },
@@ -4090,7 +3967,7 @@
       { t:'dim',  v:'  Type  help  to see all available commands.' },
       { t:'dim',  v:'  Use ↑ ↓ to navigate history. Tab to autocomplete.' },
       { t:'blank' },
-      { t:'success', v:'  🟢 System online. Ready.' },
+      { t:'success', v:'  System online. Ready.' },
       { t:'blank' },
     ]);
     renderChips();
