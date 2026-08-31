@@ -746,253 +746,14 @@
       display: block;
     }
 
-    /* ─── PROJECTS ───────────────────────────────── */
-    #portfolio { padding: 7rem 0; background: var(--bg2); }
-
-    .filter-tabs {
-      display: flex;
-      gap: 0.6rem;
-      flex-wrap: wrap;
-      margin-bottom: 3rem;
-    }
-
-    .filter-tab {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      padding: 0.45rem 1.1rem;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      background: transparent;
-      color: var(--muted);
-      cursor: pointer;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      transition: all 0.2s;
-    }
-
-    .filter-tab:hover, .filter-tab.active {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: rgba(0,200,160,0.06);
-    }
-
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1.4rem;
-    }
-
-    .project-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1.6rem;
-      transition: all 0.3s;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .project-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 3px;
-      height: 0;
-      background: var(--accent);
-      transition: height 0.3s;
-    }
-
-    .project-card:hover {
-      border-color: rgba(0,200,160,0.3);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 36px rgba(0,0,0,0.4);
-    }
-
-    .project-card:hover::before { height: 100%; }
-
-    .project-cat {
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      color: var(--accent2);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 0.7rem;
-    }
-
-    .project-title {
-      font-family: var(--display);
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 0.6rem;
-      line-height: 1.3;
-    }
-
-    .project-desc {
-      font-size: 0.83rem;
-      color: var(--muted);
-      line-height: 1.65;
-      margin-bottom: 1rem;
-    }
-
-    .project-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-    }
-
-    .tag {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      padding: 0.25rem 0.6rem;
-      background: rgba(14,165,233,0.1);
-      border: 1px solid rgba(14,165,233,0.2);
-      border-radius: 3px;
-      color: var(--accent2);
-      letter-spacing: 0.06em;
-    }
-
-    .project-card[style*="display: none"] { display: none !important; }
-
     /* ─── TALKS ──────────────────────────────────── */
     #speaking { padding: 7rem 0; }
-
-    .talks-timeline {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .talks-track-wrap {
-      overflow: hidden;
-    }
-
-    .talks-track {
-      display: flex;
-      gap: 1.6rem;
-      transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
-      will-change: transform;
-    }
-
-    .talk-card {
-      flex: 0 0 340px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-      transition: all 0.3s;
-    }
-
-    .talk-card:hover {
-      border-color: rgba(0,200,160,0.3);
-      transform: translateY(-4px);
-    }
-
-    .talk-img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      display: block;
-      filter: saturate(0.8);
-      transition: filter 0.3s;
-    }
-
-    .talk-img-placeholder {
-      width: 100%;
-      height: 180px;
-      background: var(--bg3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3rem;
-    }
-
-    .talk-card:hover .talk-img { filter: saturate(1); }
-
-    .talk-body { padding: 1.3rem; }
-
-    .talk-venue {
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      color: var(--accent);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-    }
-
-    .talk-title {
-      font-family: var(--display);
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 0.4rem;
-      line-height: 1.3;
-    }
-
-    .talk-topic {
-      font-size: 0.8rem;
-      color: var(--muted);
-      line-height: 1.55;
-    }
-
-    .talks-controls {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 2rem;
-    }
-
-    .talks-nav {
-      display: flex;
-      gap: 0.8rem;
-    }
-
-    .nav-arrow {
-      width: 42px;
-      height: 42px;
-      border: 1px solid var(--border);
-      border-radius: 50%;
-      background: transparent;
-      color: var(--muted);
-      cursor: pointer;
-      font-size: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-    }
-
-    .nav-arrow:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    .talks-dots {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--border);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .dot.active {
-      background: var(--accent);
-      width: 20px;
-      border-radius: 3px;
-    }
 
     /* ─── TALKS REEL (auto-scrolling marquee) ────── */
     .talk-reel {
       position: relative;
       width: 100vw;
       margin-left: calc(50% - 50vw);
-      margin-bottom: 3.5rem;
       overflow: hidden;
       /* fade both edges so the loop never shows a seam */
       -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
@@ -2319,7 +2080,7 @@
     <li><a href="#system">System</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#method">Method</a></li>
-    <li><a href="#portfolio">Projects</a></li>
+    <li><a href="#screens">Work</a></li>
     <li><a href="#services">Services</a></li>
     <li><a href="#speaking">Talks</a></li>
     <li><a href="#affiliations">Community</a></li>
@@ -2361,7 +2122,7 @@
           others navigate the next era of tech.
         </p>
         <div class="hero-ctas">
-          <a href="#portfolio" class="btn-primary">View My Work →</a>
+          <a href="#screens" class="btn-primary">View My Work →</a>
           <a href="#contact" class="btn-outline">Get In Touch</a>
         </div>
       </div>
@@ -2697,107 +2458,6 @@
   </div>
 </section>
 
-<!-- PROJECTS -->
-<section id="portfolio">
-  <div class="container">
-    <div class="section-header reveal">
-      <p class="section-label">04 // Projects</p>
-      <h2 class="section-title">Things I've <span>Built</span></h2>
-    </div>
-    <div class="filter-tabs reveal">
-      <button class="filter-tab active" data-filter="all">All</button>
-      <button class="filter-tab" data-filter="cloud">Cloud</button>
-      <button class="filter-tab" data-filter="ai">AI / ML</button>
-      <button class="filter-tab" data-filter="automation">Automation</button>
-      <button class="filter-tab" data-filter="devops">DevOps</button>
-    </div>
-    <div class="projects-grid" id="projects-grid">
-
-      <div class="project-card reveal" data-cat="ai">
-        <p class="project-cat">AI / ML</p>
-        <h3 class="project-title">Seekurity — CV Security Monitor</h3>
-        <p class="project-desc">Computer vision system for real-time security monitoring and violence pattern detection trained on AWS SageMaker.</p>
-        <div class="project-tags">
-          <span class="tag">AWS SageMaker</span><span class="tag">Python</span><span class="tag">React</span>
-        </div>
-      </div>
-
-      <div class="project-card reveal reveal-delay-1" data-cat="automation">
-        <p class="project-cat">Automation</p>
-        <h3 class="project-title">Autonomous Agentic Workflow</h3>
-        <p class="project-desc">Automating repetitive workflows leveraging agentic design patterns in Copilot Studio on Azure.</p>
-        <div class="project-tags">
-          <span class="tag">Copilot Studio</span><span class="tag">Azure</span><span class="tag">Python</span>
-        </div>
-      </div>
-
-      <div class="project-card reveal reveal-delay-2" data-cat="cloud">
-        <p class="project-cat">Cloud</p>
-        <h3 class="project-title">Serverless Data Pipeline</h3>
-        <p class="project-desc">Real-time processing pipeline handling 100K+ events/day with 98.9% uptime using AWS serverless stack.</p>
-        <div class="project-tags">
-          <span class="tag">Lambda</span><span class="tag">API Gateway</span><span class="tag">DynamoDB</span>
-        </div>
-      </div>
-
-      <div class="project-card reveal" data-cat="cloud">
-        <p class="project-cat">Cloud</p>
-        <h3 class="project-title">Visualize Relational Database</h3>
-        <p class="project-desc">Producing digestible insights from raw data using AWS Databases and Amazon QuickSight.</p>
-        <div class="project-tags">
-          <span class="tag">Amazon RDS</span><span class="tag">QuickSight</span><span class="tag">IAM</span>
-        </div>
-      </div>
-
-      <div class="project-card reveal reveal-delay-1" data-cat="devops">
-        <p class="project-cat">DevOps</p>
-        <h3 class="project-title">Infrastructure as Code Framework</h3>
-        <p class="project-desc">Reusable IaC framework standardizing cloud deployments across teams — reduced deploy time from hours to minutes.</p>
-        <div class="project-tags">
-          <span class="tag">Terraform</span><span class="tag">Ansible</span><span class="tag">GitLab CI</span>
-        </div>
-      </div>
-
-      <div class="project-card reveal reveal-delay-2" data-cat="ai">
-        <p class="project-cat">AI / ML</p>
-        <h3 class="project-title">AI Azure Event Workflows</h3>
-        <p class="project-desc">Intelligent event-driven workflows using Azure AI services for automated processing and decision-making.</p>
-        <div class="project-tags">
-          <span class="tag">Azure AI</span><span class="tag">Event Grid</span><span class="tag">Logic Apps</span>
-        </div>
-      </div>
-
-      <div class="project-card reveal" data-cat="devops">
-        <p class="project-cat">DevOps</p>
-        <h3 class="project-title">Cloud Security Automation</h3>
-        <p class="project-desc">Automated security scanning ensuring 100% compliance with industry standards across all cloud resources.</p>
-        <div class="project-tags">
-          <span class="tag">Security Hub</span><span class="tag">CloudTrail</span><span class="tag">Python</span>
-        </div>
-      </div>
-
-      <div class="project-card reveal reveal-delay-1" data-cat="ai">
-        <p class="project-cat">AI / ML</p>
-        <h3 class="project-title">AI DevOps API</h3>
-        <p class="project-desc">AI-powered DevOps automation API for intelligent pipeline management and deployment optimization.</p>
-        <div class="project-tags">
-          <span class="tag">Azure DevOps</span><span class="tag">AI/ML</span><span class="tag">REST API</span>
-        </div>
-      </div>
-
-      <div class="project-card reveal reveal-delay-2" data-cat="automation">
-        <p class="project-cat">Automation</p>
-        <h3 class="project-title">AI FinOps — Cost Optimizer</h3>
-        <p class="project-desc">AI-driven financial operations optimization for cloud deployments with intelligent cost analysis.</p>
-        <div class="project-tags">
-          <span class="tag">FinOps</span><span class="tag">AI Analytics</span><span class="tag">Vercel</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
 <!-- REAL SCREENS FROM THE WORK -->
 <section id="screens">
   <p class="screens-caption reveal">Real screens from the <b>systems I build</b> — cloud, software, DevOps, AI agents.</p>
@@ -2903,7 +2563,7 @@
 <section id="services">
   <div class="container">
     <div class="svc-head reveal">
-      <p class="section-label">05 // Services</p>
+      <p class="section-label">04 // Services</p>
       <h2 class="section-title">What I can do <span>for you.</span></h2>
       <p>Pick one. Stack a few. Build the whole system.</p>
     </div>
@@ -2994,7 +2654,7 @@
 <section id="speaking">
   <div class="container">
     <div class="section-header reveal">
-      <p class="section-label">06 // Speaking</p>
+      <p class="section-label">05 // Speaking</p>
       <h2 class="section-title">Talks &amp; <span>Engagements</span></h2>
     </div>
   </div>
@@ -3093,108 +2753,13 @@
     </div>
   </div>
 
-  <div class="container">
-    <div class="talks-timeline reveal">
-      <div class="talks-track-wrap">
-        <div class="talks-track" id="talks-track">
-
-          <div class="talk-card">
-            <img src="https://nik-1019.github.io/DevSite/source/talks/az:repo/az:repo.jpeg" alt="az:Repo Workshop" class="talk-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-            <div class="talk-img-placeholder" style="display:none;">🤖</div>
-            <div class="talk-body">
-              <p class="talk-venue">Microsoft HQ, One Ayala · Nov 2025</p>
-              <h3 class="talk-title">az:Repo — Code & Cloud Agentic Workshop</h3>
-              <p class="talk-topic">"Build Autonomous Workflow" — agentic design patterns in Copilot Studio</p>
-            </div>
-          </div>
-
-          <div class="talk-card">
-            <img src="https://nik-1019.github.io/DevSite/source/talks/SkillBuilder/Skillbuilder.jpeg" alt="SkillBuilder" class="talk-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-            <div class="talk-img-placeholder" style="display:none;">☁️</div>
-            <div class="talk-body">
-              <p class="talk-venue">AWS Cloud Club Philippines · 2024</p>
-              <h3 class="talk-title">SkillBuilder Kick-off</h3>
-              <p class="talk-topic">"Introducing Cloud Computing and Career Development" for aspiring cloud professionals</p>
-            </div>
-          </div>
-
-          <div class="talk-card">
-            <img src="https://nik-1019.github.io/DevSite/source/talks/beyondcode/beyondcode.jpeg" alt="Beyond Code" class="talk-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-            <div class="talk-img-placeholder" style="display:none;">🏗️</div>
-            <div class="talk-body">
-              <p class="talk-venue">Tech Community · 2024</p>
-              <h3 class="talk-title">Beyond Code</h3>
-              <p class="talk-topic">"Building System Applications Beyond Code" — system design and architecture principles</p>
-            </div>
-          </div>
-
-          <div class="talk-card">
-            <img src="https://nik-1019.github.io/DevSite/source/talks/cloud-edu/1737959174654.jpeg" alt="Cloud Educators" class="talk-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-            <div class="talk-img-placeholder" style="display:none;">🎓</div>
-            <div class="talk-body">
-              <p class="talk-venue">Cloud Educators Community · 2024</p>
-              <h3 class="talk-title">Cloud Educators</h3>
-              <p class="talk-topic">"Navigating and Starting Your Infrastructure with AWS EC2" — hands-on workshop</p>
-            </div>
-          </div>
-
-          <div class="talk-card">
-            <img src="https://nik-1019.github.io/DevSite/source/talks/azure-ignite/1728614419270.jpeg" alt="Azure Ignite" class="talk-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-            <div class="talk-img-placeholder" style="display:none;">⚡</div>
-            <div class="talk-body">
-              <p class="talk-venue">Microsoft Community · 2024</p>
-              <h3 class="talk-title">Azure Ignite</h3>
-              <p class="talk-topic">"Microsoft Azure Innovation Showcase" — latest Azure services and announcements</p>
-            </div>
-          </div>
-
-          <div class="talk-card">
-            <img src="https://nik-1019.github.io/DevSite/source/talks/communityday-1/comday-1.jpeg" alt="Community Day" class="talk-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-            <div class="talk-img-placeholder" style="display:none;">🌐</div>
-            <div class="talk-body">
-              <p class="talk-venue">AWS Community · 2024</p>
-              <h3 class="talk-title">AWS Community Day</h3>
-              <p class="talk-topic">"Cloud Community Building" — building and nurturing tech communities across the Philippines</p>
-            </div>
-          </div>
-
-          <div class="talk-card">
-            <div class="talk-img-placeholder">🗺️</div>
-            <div class="talk-body">
-              <p class="talk-venue">CloudFest · 2024</p>
-              <h3 class="talk-title">CloudFest: Know the Way</h3>
-              <p class="talk-topic">"Navigating Cloud Technologies" — guiding developers through the cloud landscape</p>
-            </div>
-          </div>
-
-          <div class="talk-card">
-            <img src="https://nik-1019.github.io/DevSite/source/talks/techtalk/1729649614977.jpeg" alt="Tech Talk" class="talk-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-            <div class="talk-img-placeholder" style="display:none;">💬</div>
-            <div class="talk-body">
-              <p class="talk-venue">Tech Community · 2024</p>
-              <h3 class="talk-title">Tech Talk Series</h3>
-              <p class="talk-topic">"Emerging Technologies Discussion" — impact of emerging tech on software development</p>
-            </div>
-          </div>
-
-        </div>
-      </div>
-      <div class="talks-controls">
-        <div class="talks-dots" id="talks-dots"></div>
-        <div class="talks-nav">
-          <button class="nav-arrow" id="talks-prev">←</button>
-          <button class="nav-arrow" id="talks-next">→</button>
-        </div>
-      </div>
-    </div>
-  </div>
 </section>
 
 <!-- COMMUNITY -->
 <section id="affiliations">
   <div class="container">
     <div class="section-header reveal">
-      <p class="section-label">07 // Community</p>
+      <p class="section-label">06 // Community</p>
       <h2 class="section-title">The rooms I <span>help build.</span></h2>
       <p class="show-lede">Six communities. Real roles, not badges — here's what I actually run in each.</p>
     </div>
@@ -3289,7 +2854,7 @@
 <section id="clients">
   <div class="container">
     <div class="section-header reveal">
-      <p class="section-label">08 // Clients</p>
+      <p class="section-label">07 // Clients</p>
       <h2 class="section-title">Clients &amp; <span>collaborations.</span></h2>
       <p class="show-lede">Short list on purpose. The systems behind them are the point.</p>
     </div>
@@ -3331,7 +2896,7 @@
 <section id="certifications">
   <div class="container">
     <div class="section-header reveal">
-      <p class="section-label">09 // Certifications</p>
+      <p class="section-label">08 // Certifications</p>
       <h2 class="section-title">Continuous <span>Learning</span></h2>
     </div>
     <div class="certs-grid">
@@ -3357,7 +2922,7 @@
 <section id="contact">
   <div class="container">
     <div class="section-header reveal">
-      <p class="section-label">10 // Contact</p>
+      <p class="section-label">09 // Contact</p>
       <h2 class="section-title">Get In <span>Touch</span></h2>
     </div>
     <div class="contact-grid">
@@ -3666,68 +3231,6 @@
     requestAnimationFrame(drawRadar);
   }
   drawRadar();
-})();
-
-/* ─── PROJECT FILTERS ────────────────────────────── */
-(function() {
-  const tabs = document.querySelectorAll('.filter-tab');
-  const cards = document.querySelectorAll('.project-card');
-
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      const filter = tab.dataset.filter;
-
-      cards.forEach(card => {
-        const cat = card.dataset.cat;
-        const show = filter === 'all' || cat === filter;
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        if (!show) {
-          card.style.display = 'none';
-        } else {
-          card.style.display = 'block';
-          setTimeout(() => {
-            card.style.transition = 'opacity 0.4s, transform 0.4s';
-            card.style.opacity = '1';
-            card.style.transform = 'none';
-          }, 30);
-        }
-      });
-    });
-  });
-})();
-
-/* ─── TALKS CAROUSEL ─────────────────────────────── */
-(function() {
-  const track = document.getElementById('talks-track');
-  const dotsContainer = document.getElementById('talks-dots');
-  const CARD_WIDTH = 340 + 24; // width + gap
-  const VISIBLE = Math.floor(window.innerWidth / CARD_WIDTH) || 1;
-  const totalCards = track.children.length;
-  const maxOffset = totalCards - VISIBLE;
-  let current = 0;
-
-  // Create dots
-  const dotCount = Math.ceil(totalCards / VISIBLE);
-  for (let i = 0; i < dotCount; i++) {
-    const d = document.createElement('div');
-    d.className = 'dot' + (i === 0 ? ' active' : '');
-    d.addEventListener('click', () => goTo(i * VISIBLE));
-    dotsContainer.appendChild(d);
-  }
-
-  function goTo(idx) {
-    current = Math.max(0, Math.min(idx, maxOffset));
-    track.style.transform = `translateX(-${current * CARD_WIDTH}px)`;
-    document.querySelectorAll('.dot').forEach((d, i) => {
-      d.classList.toggle('active', i === Math.floor(current / VISIBLE));
-    });
-  }
-
-  document.getElementById('talks-prev').addEventListener('click', () => goTo(current - VISIBLE));
-  document.getElementById('talks-next').addEventListener('click', () => goTo(current + VISIBLE));
 })();
 
 /* ─── TALKS REEL ─────────────────────────────────── */
