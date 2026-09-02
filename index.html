@@ -157,12 +157,114 @@
       visibility: hidden;
       pointer-events: none;
     }
-    #boot-canvas {
+    body.pre-boot { overflow: hidden; }
+    .boot-stage {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: translateY(34px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+      pointer-events: none;
+    }
+    .boot-stage.active { opacity: 1; transform: none; }
+    .boot-stage.passed { transform: translateY(-34px); }
+    .boot-stage canvas {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
     }
+    .boot-frame { position: absolute; inset: 0; pointer-events: none; }
+    .boot-copy {
+      position: absolute;
+      left: 3rem;
+      bottom: 7rem;
+      max-width: 560px;
+    }
+    .boot-copy.center {
+      left: 50%;
+      right: auto;
+      top: 50%;
+      bottom: auto;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      width: max-content;
+      max-width: 90vw;
+    }
+    .boot-eyebrow {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #00c8a0;
+      margin-bottom: 1.1rem;
+    }
+    .boot-title {
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      line-height: 1;
+      text-transform: uppercase;
+      color: #e2eaf4;
+    }
+    .boot-sub {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: rgba(140,165,190,0.9);
+      margin-top: 1.1rem;
+    }
+    .boot-mantra {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1em;
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: clamp(2.6rem, 8vw, 5.6rem);
+      line-height: 0.95;
+      text-transform: uppercase;
+      color: #e2eaf4;
+    }
+    .boot-mantra span {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .boot-mantra span:nth-child(2) { color: #00c8a0; transition-delay: 0.15s; }
+    .boot-mantra span:nth-child(3) { transition-delay: 0.3s; }
+    .boot-stage.active .boot-mantra span { opacity: 1; transform: none; }
+    .boot-meter {
+      position: absolute;
+      bottom: 1.65rem;
+      left: 3rem;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      color: rgba(140,165,190,0.8);
+    }
+    .boot-hint {
+      position: absolute;
+      bottom: 1.6rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(140,165,190,0.85);
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+    #boot.scrollable .boot-hint { opacity: 1; }
+    .boot-hint::after {
+      content: '↓';
+      color: #00c8a0;
+      animation: hint-bob 1.4s ease-in-out infinite;
+    }
+    @keyframes hint-bob { 50% { transform: translateY(4px); } }
     .boot-hud {
       position: absolute;
       inset: 0;
@@ -260,6 +362,8 @@
       .boot-hud { font-size: 8px; }
       .boot-log { bottom: 8rem; }
       #boot-skip { right: 1.5rem; }
+      .boot-copy { left: 1.5rem; right: 1.5rem; bottom: 6rem; }
+      .boot-meter { left: 1.5rem; }
     }
 
     /* ─── HERO ENTRANCE (fires when boot completes) ── */
@@ -2368,31 +2472,62 @@
 </head>
 <body>
 
-<!-- BOOT SEQUENCE / LAUNCH CONSOLE -->
+<!-- BOOT SEQUENCE / LAUNCH CONSOLE — 3 scroll-driven stages -->
 <div id="boot" aria-hidden="true">
-  <canvas id="boot-canvas"></canvas>
-  <div class="boot-hud">
-    <div class="boot-corners"><span></span><span></span><span></span><span></span></div>
-    <div class="boot-id">
-      <div class="boot-bright">nikko.cajayon <span class="boot-accent">//</span> ops console</div>
-      <div class="boot-dim">boot sequence v2.6 — learn · build · lead</div>
-    </div>
-    <div class="boot-mission">
-      <div class="boot-dim">mission</div>
-      <div class="boot-bright">AUTOMATE-01</div>
-    </div>
-    <div class="boot-log" id="boot-log"></div>
-    <div class="boot-progress">
-      <div class="boot-progress-row">
-        <span class="boot-dim">initializing portfolio</span>
-        <span class="boot-bright" id="boot-pct">0%</span>
+
+  <!-- stage 01 · ops console -->
+  <div class="boot-stage active" id="boot-s1">
+    <canvas id="boot-canvas"></canvas>
+    <div class="boot-hud">
+      <div class="boot-id">
+        <div class="boot-bright">nikko.cajayon <span class="boot-accent">//</span> ops console</div>
+        <div class="boot-dim">boot sequence v2.6 — learn · build · lead</div>
       </div>
-      <div class="boot-track"><div id="boot-bar"></div></div>
+      <div class="boot-mission">
+        <div class="boot-dim">mission</div>
+        <div class="boot-bright">AUTOMATE-01</div>
+      </div>
+      <div class="boot-log" id="boot-log"></div>
+      <div class="boot-progress">
+        <div class="boot-progress-row">
+          <span class="boot-dim">initializing portfolio</span>
+          <span class="boot-bright" id="boot-pct">0%</span>
+        </div>
+        <div class="boot-track"><div id="boot-bar"></div></div>
+      </div>
     </div>
+  </div>
+
+  <!-- stage 02 · second brain (obsidian-style vault graph) -->
+  <div class="boot-stage" id="boot-s2">
+    <canvas id="obsidian-canvas"></canvas>
+    <div class="boot-copy">
+      <p class="boot-eyebrow">02 // second brain</p>
+      <h2 class="boot-title">Everything connects</h2>
+      <p class="boot-sub">cloud · ai · automation · community — one vault. every note feeds the next build.</p>
+    </div>
+  </div>
+
+  <!-- stage 03 · ignition -->
+  <div class="boot-stage" id="boot-s3">
+    <canvas id="warp-canvas"></canvas>
+    <div class="boot-copy center">
+      <p class="boot-eyebrow">03 // ignition</p>
+      <h2 class="boot-mantra"><span>Learn.</span><span>Build.</span><span>Lead.</span></h2>
+      <p class="boot-sub">all systems online — entering portfolio</p>
+    </div>
+  </div>
+
+  <!-- persistent frame -->
+  <div class="boot-frame">
+    <div class="boot-corners"><span></span><span></span><span></span><span></span></div>
     <div class="boot-scan"></div>
   </div>
+  <div class="boot-meter" id="boot-meter">01 / 03</div>
+  <div class="boot-hint" id="boot-hint">scroll to continue</div>
   <button id="boot-skip" type="button">skip intro</button>
 </div>
+<script>document.body.classList.add('pre-boot');</script>
 <noscript><style>#boot { display: none; }</style></noscript>
 
 <canvas id="particle-canvas"></canvas>
@@ -3520,30 +3655,277 @@ window.nkGraph = function(canvas, opts) {
   };
 };
 
-/* ─── BOOT SEQUENCE ────────────────────────────────── */
+/* ─── OBSIDIAN VAULT GRAPH (intro stage 02) ────────── */
+/* A "second brain" graph view: labelled notes clustered
+   around four hubs — the domains this portfolio is made
+   of — with cross-links between vault areas. */
+window.nkObsidian = function(canvas) {
+  const ctx = canvas.getContext('2d');
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let W = 0, H = 0, stopped = false;
+
+  const CLUSTERS = [
+    { label: 'cloud',           color: '0,200,160',   fx: 0.30, fy: 0.30,
+      items: ['aws', 'azure', 'lambda', 'terraform', 'docker', 'iam', 'sagemaker'] },
+    { label: 'ai · automation', color: '167,139,250', fx: 0.68, fy: 0.26,
+      items: ['claude', 'n8n', 'rag', 'agents', 'copilot studio', 'python', 'pipelines'] },
+    { label: 'community',       color: '14,165,233',  fx: 0.54, fy: 0.60,
+      items: ['nextwork', 'aws cloud club', 'mlsa', 'meetups', 'mentoring'] },
+    { label: 'leadership',      color: '244,114,182', fx: 0.80, fy: 0.62,
+      items: ['speaking', 'workshops', 'team building', 'vision'] }
+  ];
+
+  function prand(seed) { const x = Math.sin(seed * 311.7) * 43758.5453; return x - Math.floor(x); }
+
+  let hubs = [], notes = [], cross = [], t0 = performance.now();
+
+  function layout() {
+    W = canvas.clientWidth; H = canvas.clientHeight;
+    if (!W || !H) return;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    hubs = []; notes = []; cross = [];
+    CLUSTERS.forEach((c, ci) => {
+      const hub = { x: c.fx * W, y: c.fy * H, color: c.color, label: c.label };
+      hubs.push(hub);
+      const spread = Math.min(W, H) * 0.22;
+      c.items.forEach((item, i) => {
+        const ang = (i / c.items.length) * Math.PI * 2 + prand(ci * 31 + i) * 1.2;
+        const dist = spread * (0.45 + prand(ci * 17 + i) * 0.55);
+        notes.push({
+          hub, label: item, color: c.color,
+          x: hub.x + Math.cos(ang) * dist,
+          y: hub.y + Math.sin(ang) * dist * 0.75,
+          r: 2.4 + prand(ci * 7 + i) * 2,
+          phase: prand(ci * 13 + i) * Math.PI * 2,
+          born: (ci * c.items.length + i) * 55,
+          glow: 0
+        });
+      });
+      // Anonymous stray notes give the vault its depth.
+      for (let s = 0; s < 7; s++) {
+        const ang = prand(ci * 97 + s) * Math.PI * 2;
+        const dist = spread * (0.7 + prand(ci * 53 + s) * 0.8);
+        notes.push({
+          hub, label: null, color: c.color,
+          x: hub.x + Math.cos(ang) * dist,
+          y: hub.y + Math.sin(ang) * dist * 0.8,
+          r: 1 + prand(ci * 41 + s) * 1.4,
+          phase: prand(ci * 23 + s) * Math.PI * 2,
+          born: 600 + s * 90, glow: 0
+        });
+      }
+    });
+    // A few links across vault areas — the point of a second brain.
+    for (let i = 0; i < 8; i++) {
+      const a = notes[Math.floor(prand(i * 3 + 1) * notes.length)];
+      const b = notes[Math.floor(prand(i * 5 + 2) * notes.length)];
+      if (a !== b && a.hub !== b.hub) cross.push([a, b]);
+    }
+  }
+  layout();
+  window.addEventListener('resize', layout);
+
+  let lastFlash = 0;
+
+  function draw(now) {
+    if (stopped || !canvas.isConnected) { stopped = true; return; }
+    requestAnimationFrame(draw);
+    if (document.hidden || !W) return;
+    const age = now - t0;
+    ctx.clearRect(0, 0, W, H);
+
+    // Random note "lights up", like following a link in the vault.
+    if (now - lastFlash > 700) {
+      lastFlash = now;
+      notes[Math.floor(Math.random() * notes.length)].glow = 1;
+    }
+
+    const pos = n => ({
+      x: n.x + Math.sin(now / 1300 + n.phase) * 4,
+      y: n.y + Math.cos(now / 1500 + n.phase) * 4
+    });
+    const vis = n => Math.max(0, Math.min(1, (age - n.born) / 500));
+
+    // Edges: note → its hub, plus cross-vault links.
+    notes.forEach(n => {
+      const p = pos(n), a = vis(n);
+      ctx.beginPath();
+      ctx.moveTo(n.hub.x, n.hub.y);
+      ctx.lineTo(p.x, p.y);
+      ctx.strokeStyle = `rgba(148,163,184,${0.14 * a})`;
+      ctx.lineWidth = 0.6;
+      ctx.stroke();
+    });
+    cross.forEach(([a, b]) => {
+      const pa = pos(a), pb = pos(b);
+      const al = Math.min(vis(a), vis(b));
+      ctx.beginPath();
+      ctx.moveTo(pa.x, pa.y);
+      ctx.lineTo(pb.x, pb.y);
+      ctx.strokeStyle = `rgba(148,163,184,${0.1 * al})`;
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    });
+    hubs.forEach((h, i) => {
+      hubs.forEach((g, j) => {
+        if (j <= i) return;
+        ctx.beginPath();
+        ctx.moveTo(h.x, h.y);
+        ctx.lineTo(g.x, g.y);
+        ctx.strokeStyle = 'rgba(148,163,184,0.08)';
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      });
+    });
+
+    // Notes
+    notes.forEach(n => {
+      const p = pos(n), a = vis(n);
+      if (!a) return;
+      n.glow *= 0.95;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, n.r * (0.6 + 0.4 * a) + n.glow * 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${n.color},${(0.55 + n.glow * 0.45) * a})`;
+      if (n.glow > 0.05) {
+        ctx.shadowColor = `rgba(${n.color},${n.glow})`;
+        ctx.shadowBlur = 14;
+      }
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      if (n.label) {
+        ctx.font = '9px "Space Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = `rgba(196,210,224,${(0.4 + n.glow * 0.5) * a})`;
+        ctx.fillText(n.label, p.x, p.y + n.r + 12);
+      }
+    });
+
+    // Hubs
+    hubs.forEach(h => {
+      ctx.beginPath();
+      ctx.arc(h.x, h.y, 6, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${h.color},0.9)`;
+      ctx.shadowColor = `rgba(${h.color},0.5)`;
+      ctx.shadowBlur = 18;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.font = '10px "Space Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = 'rgba(226,234,244,0.85)';
+      ctx.fillText(h.label, h.x, h.y - 14);
+    });
+  }
+  requestAnimationFrame(draw);
+
+  return { stop() { stopped = true; } };
+};
+
+/* ─── WARP STARFIELD (intro stage 03) ──────────────── */
+window.nkWarp = function(canvas) {
+  const ctx = canvas.getContext('2d');
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let W = 0, H = 0, stopped = false;
+  const t0 = performance.now();
+
+  function layout() {
+    W = canvas.clientWidth; H = canvas.clientHeight;
+    if (!W || !H) return;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  layout();
+  window.addEventListener('resize', layout);
+
+  const stars = [];
+  for (let i = 0; i < 260; i++) {
+    stars.push({
+      x: Math.random() * 2 - 1,
+      y: Math.random() * 2 - 1,
+      z: 0.05 + Math.random() * 0.95,
+      teal: Math.random() < 0.25
+    });
+  }
+
+  function draw(now) {
+    if (stopped || !canvas.isConnected) { stopped = true; return; }
+    requestAnimationFrame(draw);
+    if (document.hidden || !W) return;
+    ctx.clearRect(0, 0, W, H);
+    const cx = W / 2, cy = H / 2;
+    const scale = Math.min(W, H) * 0.9;
+    // Ease into warp over the first 3 seconds.
+    const ramp = Math.min(1, (now - t0) / 3000);
+    const speed = 0.004 + ramp * 0.014;
+
+    stars.forEach(s => {
+      const pz = s.z;
+      s.z -= speed * s.z * 4;
+      if (s.z < 0.03) {
+        s.x = Math.random() * 2 - 1;
+        s.y = Math.random() * 2 - 1;
+        s.z = 1;
+        return;
+      }
+      const x1 = cx + (s.x / pz) * scale, y1 = cy + (s.y / pz) * scale;
+      const x2 = cx + (s.x / s.z) * scale, y2 = cy + (s.y / s.z) * scale;
+      const a = Math.min(1, (1 - s.z) * 1.2) * (0.35 + ramp * 0.65);
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.strokeStyle = s.teal ? `rgba(0,200,160,${a})` : `rgba(226,234,244,${a * 0.8})`;
+      ctx.lineWidth = Math.max(0.4, (1 - s.z) * 2);
+      ctx.stroke();
+    });
+
+    // Soft core glow behind the mantra.
+    const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, scale * 0.4);
+    g.addColorStop(0, `rgba(0,200,160,${0.08 * ramp})`);
+    g.addColorStop(1, 'rgba(0,200,160,0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+  }
+  requestAnimationFrame(draw);
+
+  return { stop() { stopped = true; } };
+};
+
+/* ─── BOOT SEQUENCE (scroll-driven, 3 stages) ──────── */
 (function() {
   const boot = document.getElementById('boot');
   const bar = document.getElementById('boot-bar');
   const pct = document.getElementById('boot-pct');
   const log = document.getElementById('boot-log');
   const skip = document.getElementById('boot-skip');
+  const meter = document.getElementById('boot-meter');
+  const hint = document.getElementById('boot-hint');
+  const stageEls = [
+    document.getElementById('boot-s1'),
+    document.getElementById('boot-s2'),
+    document.getElementById('boot-s3')
+  ];
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   let skipSaved = false;
   try { skipSaved = sessionStorage.getItem('nk-skip-intro') === '1'; } catch (e) {}
 
-  let graph = null;
+  const renderers = [null, null, null];
 
   function finish(instant) {
     if (boot.classList.contains('done')) return;
     if (instant) boot.style.transition = 'none';
     boot.classList.add('done');
+    document.body.classList.remove('pre-boot');
     document.body.classList.add('booted');
     window.dispatchEvent(new Event('nk:booted'));
-    setTimeout(() => { if (graph) graph.stop(); boot.remove(); }, instant ? 0 : 800);
+    setTimeout(() => {
+      renderers.forEach(r => { if (r) r.stop(); });
+      boot.remove();
+    }, instant ? 0 : 800);
   }
 
   if (reduced || skipSaved) { finish(true); return; }
 
+  /* stage 01 — console boot (plays on its own, then waits) */
   const LINES = [
     '> mounting cloud stack ........ <span class="ok">aws · azure ok</span>',
     '> loading agent runtime ....... <span class="ok">claude · n8n · copilot ok</span>',
@@ -3553,7 +3935,7 @@ window.nkGraph = function(canvas, opts) {
     '> rendering portfolio ......... <span class="ok">ok</span>'
   ];
 
-  graph = window.nkGraph(document.getElementById('boot-canvas'), { mode: 'boot' });
+  renderers[0] = window.nkGraph(document.getElementById('boot-canvas'), { mode: 'boot' });
 
   const DURATION = 2800;
   const t0 = performance.now();
@@ -3565,7 +3947,7 @@ window.nkGraph = function(canvas, opts) {
     const eased = 1 - Math.pow(1 - p, 3);
     bar.style.width = (eased * 100) + '%';
     pct.textContent = Math.round(eased * 100) + '%';
-    graph.setProgress(eased);
+    renderers[0].setProgress(eased);
     const want = Math.floor(eased * LINES.length + 0.0001);
     while (lineIdx < Math.min(want, LINES.length)) {
       const div = document.createElement('div');
@@ -3573,9 +3955,57 @@ window.nkGraph = function(canvas, opts) {
       log.appendChild(div);
     }
     if (p < 1) requestAnimationFrame(frame);
-    else setTimeout(() => finish(false), 400);
+    else boot.classList.add('scrollable'); // "scroll to continue" appears
   }
   requestAnimationFrame(frame);
+
+  /* stage navigation */
+  let stage = 0, lastNav = 0;
+
+  function enter(n) {
+    stage = n;
+    stageEls.forEach((el, i) => {
+      el.classList.toggle('active', i === n);
+      el.classList.toggle('passed', i < n);
+    });
+    meter.textContent = '0' + (n + 1) + ' / 03';
+    hint.textContent = n === 2 ? 'scroll to launch' : 'scroll to continue';
+    boot.classList.add('scrollable');
+    if (n === 1 && !renderers[1]) renderers[1] = window.nkObsidian(document.getElementById('obsidian-canvas'));
+    if (n === 2 && !renderers[2]) renderers[2] = window.nkWarp(document.getElementById('warp-canvas'));
+  }
+
+  function nav(dir) {
+    const now = performance.now();
+    if (boot.classList.contains('done') || now - lastNav < 750) return;
+    lastNav = now;
+    if (dir > 0) {
+      if (stage < 2) enter(stage + 1);
+      else finish(false);
+    } else if (stage > 0) {
+      enter(stage - 1);
+    }
+  }
+
+  window.addEventListener('wheel', e => {
+    if (boot.classList.contains('done')) return;
+    if (Math.abs(e.deltaY) > 12) nav(e.deltaY > 0 ? 1 : -1);
+  }, { passive: true });
+
+  window.addEventListener('keydown', e => {
+    if (boot.classList.contains('done')) return;
+    if (['ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); nav(1); }
+    if (['ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); nav(-1); }
+  });
+
+  let touchY = null;
+  window.addEventListener('touchstart', e => { touchY = e.touches[0].clientY; }, { passive: true });
+  window.addEventListener('touchend', e => {
+    if (touchY === null || boot.classList.contains('done')) return;
+    const dy = e.changedTouches[0].clientY - touchY;
+    if (Math.abs(dy) > 40) nav(dy < 0 ? 1 : -1);
+    touchY = null;
+  }, { passive: true });
 
   skip.addEventListener('click', () => {
     try { sessionStorage.setItem('nk-skip-intro', '1'); } catch (e) {}
