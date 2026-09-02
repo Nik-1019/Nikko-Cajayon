@@ -140,6 +140,165 @@
       opacity: 0.45;
     }
 
+    /* ─── BOOT SEQUENCE ──────────────────────────────
+       "Ops console" intro. Like every SCREEN in this
+       design, the boot terminal stays dark in both
+       themes — it's a device, not the page. */
+    #boot {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: #080c10;
+      overflow: hidden;
+      transition: opacity 0.7s ease, visibility 0.7s ease;
+    }
+    #boot.done {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    #boot-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .boot-hud {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(226,234,244,0.5);
+    }
+    .boot-corners { position: absolute; inset: 1.5rem; }
+    .boot-corners span {
+      position: absolute;
+      width: 26px; height: 26px;
+      border-color: rgba(0,200,160,0.4);
+      border-style: solid;
+      border-width: 0;
+    }
+    .boot-corners span:nth-child(1) { top: 0; left: 0; border-top-width: 2px; border-left-width: 2px; }
+    .boot-corners span:nth-child(2) { top: 0; right: 0; border-top-width: 2px; border-right-width: 2px; }
+    .boot-corners span:nth-child(3) { bottom: 0; left: 0; border-bottom-width: 2px; border-left-width: 2px; }
+    .boot-corners span:nth-child(4) { bottom: 0; right: 0; border-bottom-width: 2px; border-right-width: 2px; }
+    .boot-id { position: absolute; top: 3rem; left: 3rem; max-width: 60%; }
+    .boot-mission { position: absolute; top: 3rem; right: 3rem; text-align: right; }
+    .boot-bright { color: #e2eaf4; }
+    .boot-accent { color: #00c8a0; }
+    .boot-dim { color: rgba(107,128,153,0.9); margin-top: 0.3rem; }
+    .boot-log {
+      position: absolute;
+      left: 3rem;
+      bottom: 7.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      text-transform: none;
+      letter-spacing: 0.08em;
+      color: rgba(140,165,190,0.85);
+    }
+    .boot-log div { animation: boot-line-in 0.35s ease both; }
+    .boot-log .ok { color: #00c8a0; }
+    @keyframes boot-line-in {
+      from { opacity: 0; transform: translateX(-8px); }
+      to   { opacity: 1; transform: none; }
+    }
+    .boot-progress { position: absolute; left: 3rem; right: 3rem; bottom: 4rem; }
+    .boot-progress-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.6rem;
+    }
+    .boot-track {
+      height: 2px;
+      width: 100%;
+      background: rgba(107,128,153,0.25);
+      overflow: hidden;
+    }
+    #boot-bar {
+      height: 100%;
+      width: 0%;
+      background: #00c8a0;
+      box-shadow: 0 0 12px rgba(0,200,160,0.8);
+    }
+    .boot-scan {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent 0px, transparent 2px,
+        rgba(0,0,0,0.28) 3px, rgba(0,0,0,0.28) 4px
+      );
+      opacity: 0.3;
+    }
+    #boot-skip {
+      position: absolute;
+      bottom: 1.4rem;
+      right: 3rem;
+      z-index: 2;
+      background: none;
+      border: 1px solid rgba(107,128,153,0.35);
+      border-radius: 999px;
+      padding: 0.4rem 1rem;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(140,165,190,0.9);
+      cursor: pointer;
+      transition: color 0.25s, border-color 0.25s;
+    }
+    #boot-skip:hover { color: #00c8a0; border-color: #00c8a0; }
+    @media (max-width: 640px) {
+      .boot-id, .boot-mission { top: 2rem; }
+      .boot-id, .boot-log, .boot-progress { left: 1.5rem; }
+      .boot-mission, .boot-progress { right: 1.5rem; }
+      .boot-hud { font-size: 8px; }
+      .boot-log { bottom: 8rem; }
+      #boot-skip { right: 1.5rem; }
+    }
+
+    /* ─── HERO ENTRANCE (fires when boot completes) ── */
+    @keyframes hero-rise {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes hero-wipe {
+      from { clip-path: inset(0 100% 0 0); }
+      to   { clip-path: inset(0 -5% 0 0); }
+    }
+    body.booted .hero-label      { animation: hero-rise 0.6s 0.05s both; }
+    body.booted .hero-name       { animation: hero-wipe 0.9s 0.2s cubic-bezier(0.77,0,0.18,1) both; }
+    body.booted .hero-tagline    { animation: hero-rise 0.6s 0.55s both; }
+    body.booted .typewriter-wrap { animation: hero-rise 0.6s 0.7s both; }
+    body.booted .hero-desc       { animation: hero-rise 0.6s 0.85s both; }
+    body.booted .hero-ctas       { animation: hero-rise 0.6s 1s both; }
+    body.booted .hero-photo-wrap { animation: hero-rise 0.8s 0.35s both; }
+    @media (prefers-reduced-motion: reduce) {
+      #boot { display: none; }
+      body.booted .hero-label, body.booted .hero-name,
+      body.booted .hero-tagline, body.booted .typewriter-wrap,
+      body.booted .hero-desc, body.booted .hero-ctas,
+      body.booted .hero-photo-wrap { animation: none; }
+    }
+
+    /* ─── AUTOMATION NEURO-GRAPH (hero backdrop) ───── */
+    #neuro-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.55;
+    }
+    :root[data-theme="light"] #neuro-canvas { opacity: 0.4; }
+    #home { overflow: hidden; }
+    #home .container { position: relative; z-index: 1; }
+
     /* ─── NAV ────────────────────────────────────── */
     nav {
       position: fixed;
@@ -2209,6 +2368,33 @@
 </head>
 <body>
 
+<!-- BOOT SEQUENCE / LAUNCH CONSOLE -->
+<div id="boot" aria-hidden="true">
+  <canvas id="boot-canvas"></canvas>
+  <div class="boot-hud">
+    <div class="boot-corners"><span></span><span></span><span></span><span></span></div>
+    <div class="boot-id">
+      <div class="boot-bright">nikko.cajayon <span class="boot-accent">//</span> ops console</div>
+      <div class="boot-dim">boot sequence v2.6 — learn · build · lead</div>
+    </div>
+    <div class="boot-mission">
+      <div class="boot-dim">mission</div>
+      <div class="boot-bright">AUTOMATE-01</div>
+    </div>
+    <div class="boot-log" id="boot-log"></div>
+    <div class="boot-progress">
+      <div class="boot-progress-row">
+        <span class="boot-dim">initializing portfolio</span>
+        <span class="boot-bright" id="boot-pct">0%</span>
+      </div>
+      <div class="boot-track"><div id="boot-bar"></div></div>
+    </div>
+    <div class="boot-scan"></div>
+  </div>
+  <button id="boot-skip" type="button">skip intro</button>
+</div>
+<noscript><style>#boot { display: none; }</style></noscript>
+
 <canvas id="particle-canvas"></canvas>
 
 <!-- NAV -->
@@ -2232,6 +2418,7 @@
 
 <!-- HERO -->
 <section id="home">
+  <canvas id="neuro-canvas"></canvas>
   <div class="container">
     <div class="hero-inner">
       <div class="hero-photo-wrap reveal">
@@ -3117,6 +3304,288 @@
 </footer>
 
 <script>
+/* ─── AUTOMATION NEURO-GRAPH ENGINE ────────────────── */
+/* One engine, two screens: the boot console (bright,
+   fixed phosphor palette — it's a device) and the hero
+   backdrop (subtle, re-tints with the theme).
+
+   The graph is the pipeline this portfolio is actually
+   about: trigger → validate → enrich → agent ↔ rag →
+   route → { auto-run | human | log }. Satellites hang
+   off each hub so the whole thing reads as a brain. */
+window.nkGraph = function(canvas, opts) {
+  const o = Object.assign({ mode: 'hero' }, opts);
+  const ctx = canvas.getContext('2d');
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let W = 0, H = 0, progress = o.mode === 'boot' ? 0 : 1, stopped = false;
+
+  const pal = {
+    node: '0,200,160',
+    alt:  '14,165,233',
+    line: '0,200,160',
+    text: '140,165,190'
+  };
+  function readPalette() {
+    if (o.mode === 'boot') return; // the console never re-tints
+    const cs = getComputedStyle(document.documentElement);
+    const get = (n, f) => (cs.getPropertyValue(n).trim() || f);
+    pal.node = get('--pt-a', pal.node);
+    pal.alt  = get('--pt-b', pal.alt);
+    pal.line = get('--pt-grid', pal.line);
+  }
+  readPalette();
+  window.addEventListener('themechange', readPalette);
+
+  const HUBS = [
+    { id: 'trigger',  label: 'TRIGGER',  fx: 0.08, fy: 0.52 },
+    { id: 'webhook',  label: 'WEBHOOK',  fx: 0.16, fy: 0.24 },
+    { id: 'validate', label: 'VALIDATE', fx: 0.28, fy: 0.62 },
+    { id: 'enrich',   label: 'ENRICH',   fx: 0.42, fy: 0.36 },
+    { id: 'rag',      label: 'RAG',      fx: 0.55, fy: 0.15 },
+    { id: 'agent',    label: 'AGENT',    fx: 0.58, fy: 0.55 },
+    { id: 'route',    label: 'ROUTE',    fx: 0.74, fy: 0.40 },
+    { id: 'deploy',   label: 'AUTO-RUN', fx: 0.90, fy: 0.22 },
+    { id: 'human',    label: 'HUMAN-OK', fx: 0.92, fy: 0.55 },
+    { id: 'log',      label: 'LOG',      fx: 0.82, fy: 0.78 }
+  ];
+  const FLOW = [
+    ['trigger','validate'], ['webhook','validate'], ['validate','enrich'],
+    ['enrich','agent'], ['agent','rag'], ['agent','route'],
+    ['route','deploy'], ['route','human'], ['route','log']
+  ];
+  const ROUTES = [
+    ['trigger','validate','enrich','agent','route','deploy'],
+    ['webhook','validate','enrich','agent','route','human'],
+    ['trigger','validate','enrich','agent','rag','agent','route','log'],
+    ['webhook','validate','enrich','agent','route','deploy']
+  ];
+
+  let hubs = {}, sats = [], pulses = [], t = 0;
+
+  // Deterministic pseudo-random so satellites don't jump on resize.
+  function prand(seed) { const x = Math.sin(seed * 127.1) * 43758.5453; return x - Math.floor(x); }
+
+  function layout() {
+    W = canvas.clientWidth; H = canvas.clientHeight;
+    if (!W || !H) return;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    hubs = {}; sats = [];
+    HUBS.forEach((h, i) => {
+      hubs[h.id] = {
+        label: h.label,
+        x: h.fx * (W - 120) + 60,
+        y: h.fy * (H - 160) + 90,
+        glow: 0, idx: i
+      };
+      const n = 2 + Math.floor(prand(i * 3 + 1) * 3);
+      for (let s = 0; s < n; s++) {
+        const ang = prand(i * 7 + s) * Math.PI * 2;
+        const dist = 26 + prand(i * 11 + s) * 42;
+        sats.push({
+          hub: h.id,
+          x: hubs[h.id].x + Math.cos(ang) * dist,
+          y: hubs[h.id].y + Math.sin(ang) * dist * 0.8,
+          r: 1 + prand(i * 13 + s) * 1.6,
+          phase: prand(i * 17 + s) * Math.PI * 2
+        });
+      }
+    });
+  }
+  layout();
+  window.addEventListener('resize', layout);
+
+  function online(id) {
+    return (hubs[id].idx + 1) / HUBS.length <= progress + 0.001;
+  }
+
+  function edgePath(a, b) {
+    // Quadratic curve with a slight perpendicular bow.
+    const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+    const dx = b.x - a.x, dy = b.y - a.y;
+    const len = Math.sqrt(dx * dx + dy * dy) || 1;
+    const bow = Math.min(24, len * 0.14);
+    return { cx: mx - (dy / len) * bow, cy: my + (dx / len) * bow };
+  }
+  function pointOn(a, b, c, tt) {
+    const u = 1 - tt;
+    return {
+      x: u * u * a.x + 2 * u * tt * c.cx + tt * tt * b.x,
+      y: u * u * a.y + 2 * u * tt * c.cy + tt * tt * b.y
+    };
+  }
+
+  function spawnPulse() {
+    const route = ROUTES[Math.floor(Math.random() * ROUTES.length)];
+    if (!online(route[route.length - 1])) return;
+    pulses.push({ route, seg: 0, t: 0, speed: 0.016 + Math.random() * 0.012 });
+  }
+
+  let lastSpawn = 0;
+  const spawnEvery = o.mode === 'boot' ? 420 : 1100;
+
+  function draw(now) {
+    if (stopped || !canvas.isConnected) { stopped = true; return; }
+    requestAnimationFrame(draw);
+    if (document.hidden || !W) return;
+    t = now;
+    ctx.clearRect(0, 0, W, H);
+
+    if (now - lastSpawn > spawnEvery) { lastSpawn = now; spawnPulse(); }
+
+    // Dendrites + satellites
+    sats.forEach(s => {
+      const h = hubs[s.hub];
+      const on = online(s.hub);
+      const wob = Math.sin(now / 900 + s.phase) * 2.5;
+      const a = on ? 0.35 : 0.08;
+      ctx.beginPath();
+      ctx.moveTo(h.x, h.y);
+      ctx.lineTo(s.x + wob, s.y - wob);
+      ctx.strokeStyle = `rgba(${pal.line},${a * 0.4})`;
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(s.x + wob, s.y - wob, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${pal.alt},${a})`;
+      ctx.fill();
+    });
+
+    // Flow edges
+    FLOW.forEach(([ai, bi]) => {
+      const a = hubs[ai], b = hubs[bi];
+      const on = online(ai) && online(bi);
+      const c = edgePath(a, b);
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.quadraticCurveTo(c.cx, c.cy, b.x, b.y);
+      ctx.strokeStyle = `rgba(${pal.line},${on ? 0.28 : 0.07})`;
+      ctx.lineWidth = on ? 1 : 0.5;
+      ctx.stroke();
+    });
+
+    // Pulses
+    pulses = pulses.filter(p => {
+      const a = hubs[p.route[p.seg]], b = hubs[p.route[p.seg + 1]];
+      if (!a || !b) return false;
+      const c = edgePath(a, b);
+      const pos = pointOn(a, b, c, p.t);
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, 2.4, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${pal.node},0.95)`;
+      ctx.shadowColor = `rgba(${pal.node},0.9)`;
+      ctx.shadowBlur = 10;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      p.t += p.speed;
+      if (p.t >= 1) {
+        b.glow = 1;
+        p.t = 0; p.seg++;
+        if (p.seg >= p.route.length - 1) return false;
+      }
+      return true;
+    });
+
+    // Hubs
+    for (const id in hubs) {
+      const h = hubs[id];
+      const on = online(id);
+      h.glow *= 0.94;
+      const base = on ? 0.85 : 0.18;
+      ctx.beginPath();
+      ctx.arc(h.x, h.y, 3.2 + h.glow * 2, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${pal.node},${base})`;
+      if (h.glow > 0.05) {
+        ctx.shadowColor = `rgba(${pal.node},${h.glow})`;
+        ctx.shadowBlur = 16;
+      }
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.beginPath();
+      ctx.arc(h.x, h.y, 7 + h.glow * 4, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(${pal.node},${on ? 0.3 + h.glow * 0.5 : 0.08})`;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.font = '9px "Space Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = `rgba(${pal.text},${on ? 0.75 : 0.15})`;
+      ctx.fillText(h.label, h.x, h.y - 15 - h.glow * 2);
+    }
+  }
+  requestAnimationFrame(draw);
+
+  return {
+    setProgress(p) { progress = p; },
+    stop() { stopped = true; }
+  };
+};
+
+/* ─── BOOT SEQUENCE ────────────────────────────────── */
+(function() {
+  const boot = document.getElementById('boot');
+  const bar = document.getElementById('boot-bar');
+  const pct = document.getElementById('boot-pct');
+  const log = document.getElementById('boot-log');
+  const skip = document.getElementById('boot-skip');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let skipSaved = false;
+  try { skipSaved = sessionStorage.getItem('nk-skip-intro') === '1'; } catch (e) {}
+
+  let graph = null;
+
+  function finish(instant) {
+    if (boot.classList.contains('done')) return;
+    if (instant) boot.style.transition = 'none';
+    boot.classList.add('done');
+    document.body.classList.add('booted');
+    window.dispatchEvent(new Event('nk:booted'));
+    setTimeout(() => { if (graph) graph.stop(); boot.remove(); }, instant ? 0 : 800);
+  }
+
+  if (reduced || skipSaved) { finish(true); return; }
+
+  const LINES = [
+    '> mounting cloud stack ........ <span class="ok">aws · azure ok</span>',
+    '> loading agent runtime ....... <span class="ok">claude · n8n · copilot ok</span>',
+    '> wiring automation graph ..... <span class="ok">10 nodes linked</span>',
+    '> syncing communities ......... <span class="ok">nextwork · aws cc · mlsa ok</span>',
+    '> persona check ............... <span class="ok">learn · build · lead ✓</span>',
+    '> rendering portfolio ......... <span class="ok">ok</span>'
+  ];
+
+  graph = window.nkGraph(document.getElementById('boot-canvas'), { mode: 'boot' });
+
+  const DURATION = 2800;
+  const t0 = performance.now();
+  let lineIdx = 0;
+
+  function frame(now) {
+    if (boot.classList.contains('done')) return;
+    const p = Math.min(1, (now - t0) / DURATION);
+    const eased = 1 - Math.pow(1 - p, 3);
+    bar.style.width = (eased * 100) + '%';
+    pct.textContent = Math.round(eased * 100) + '%';
+    graph.setProgress(eased);
+    const want = Math.floor(eased * LINES.length + 0.0001);
+    while (lineIdx < Math.min(want, LINES.length)) {
+      const div = document.createElement('div');
+      div.innerHTML = LINES[lineIdx++];
+      log.appendChild(div);
+    }
+    if (p < 1) requestAnimationFrame(frame);
+    else setTimeout(() => finish(false), 400);
+  }
+  requestAnimationFrame(frame);
+
+  skip.addEventListener('click', () => {
+    try { sessionStorage.setItem('nk-skip-intro', '1'); } catch (e) {}
+    finish(false);
+  });
+})();
+
+/* ─── HERO NEURO-GRAPH BACKDROP ────────────────────── */
+window.nkGraph(document.getElementById('neuro-canvas'));
+
 /* ─── THEME SWITCH ─────────────────────────────────── */
 /* The pre-paint script in <head> has already set data-theme.
    This only handles the toggle, persistence, and telling the
@@ -3268,7 +3737,9 @@
     }
     setTimeout(tick, deleting ? 40 : 65);
   }
-  tick();
+  // Wait for the boot reveal so the first phrase types on-camera.
+  if (document.body.classList.contains('booted')) setTimeout(tick, 800);
+  else window.addEventListener('nk:booted', () => setTimeout(tick, 800), { once: true });
 })();
 
 /* ─── SKILL RADAR / ORBIT ────────────────────────── */
@@ -4212,8 +4683,10 @@
   boot();
   renderChips();
 
-  // Auto-open on load after short delay so visitors see it
-  setTimeout(openTerminal, 800);
+  // Auto-open once the boot reveal and hero entrance have played out.
+  function scheduleAutoOpen() { setTimeout(openTerminal, 2200); }
+  if (document.body.classList.contains('booted')) scheduleAutoOpen();
+  else window.addEventListener('nk:booted', scheduleAutoOpen, { once: true });
 
 })();
 </script>
