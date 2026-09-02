@@ -2054,7 +2054,7 @@
     'affiliations','certs','contact',
     'open linkedin','open github','open instagram','open facebook','open portfolio',
     'facebook','fb','linkedin','insta','instagram','intagram','nextwork','claude','gpt','chatgpt',
-    'nexus','sbd','skillbuilder',
+    'nexus','sbd','skillbuilder','cloud-ptc',
     'hire me','sudo nikko','sudo rm -rf /',
     'clear','ls','pwd','date','uname'
   ];
@@ -2087,6 +2087,7 @@
         { t:'out',     v:'  nexus           →  Open the NEXUS page (NEXUS.html)' },
         { t:'out',     v:'  sbd             →  Open SkillBuilder (Skillbuilder.html)' },
         { t:'out',     v:'  skillbuilder    →  Open SkillBuilder (Skillbuilder.html)' },
+        { t:'out',     v:'  cloud-ptc       →  Open Cloud PTC (cloud-ptc.html)' },
         { t:'blank' },
         { t:'accent2', v:'  QUICK LINKS' },
         { t:'dim',     v:'  ──────────────────────────────────────' },
@@ -2354,6 +2355,17 @@
         { t:'accent2', v:'  // SKILLBUILDER' },
         { t:'success', v:'  Linking to SkillBuilder...' },
         { t:'dim',     v:'  Redirecting to Skillbuilder.html' },
+        { t:'blank' },
+      ];
+    },
+
+    'cloud-ptc'() {
+      setTimeout(() => { window.location.href = 'cloud-ptc.html'; }, 400);
+      return [
+        { t:'blank' },
+        { t:'accent2', v:'  // CLOUD-PTC' },
+        { t:'success', v:'  Linking to Cloud PTC...' },
+        { t:'dim',     v:'  Redirecting to cloud-ptc.html' },
         { t:'blank' },
       ];
     },
