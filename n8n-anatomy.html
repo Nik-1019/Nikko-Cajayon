@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anatomy of a Workflow — Choosing the Right One</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#E7EAEC;
+  --paper-deep:#D5DBDE;
+  --ink:#101724;
+  --ink-soft:#4A5563;
+  --artery:#B01F3C;
+  --vein:#33608E;
+  --hair:rgba(16,23,36,.22);
+  --hair-faint:rgba(16,23,36,.10);
+
+  --display:'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;
+  --body:'Newsreader',Georgia,'Times New Roman',serif;
+  --util:'IBM Plex Mono','SFMono-Regular',Consolas,monospace;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* specimen paper grain */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(var(--hair-faint) 1px,transparent 1px);
+  background-size:26px 26px;opacity:.55;
+}
+
+.deck{position:relative;z-index:1;height:100vh;height:100dvh;width:100%}
+
+.plate{
+  position:absolute;inset:0;
+  display:none;
+  flex-direction:column;
+  padding:clamp(28px,5vw,72px);
+  padding-bottom:clamp(64px,8vh,96px);
+}
+.plate.is-live{display:flex}
+.plate.is-live .rise{animation:rise .5s cubic-bezier(.2,.7,.3,1) both}
+.plate.is-live .rise:nth-child(2){animation-delay:.06s}
+.plate.is-live .rise:nth-child(3){animation-delay:.12s}
+.plate.is-live .rise:nth-child(4){animation-delay:.18s}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* plate frame */
+.frame{
+  position:fixed;inset:clamp(14px,2.2vw,26px);
+  border:1px solid var(--hair);pointer-events:none;z-index:2;
+}
+.frame::after{
+  content:"";position:absolute;left:0;right:0;top:clamp(30px,4.6vh,46px);
+  border-top:1px solid var(--hair-faint);
+}
+
+/* running head */
+.runhead{
+  position:fixed;z-index:3;top:clamp(20px,3.1vw,36px);
+  left:clamp(26px,3.6vw,42px);right:clamp(26px,3.6vw,42px);
+  display:flex;justify-content:space-between;gap:16px;
+  font-family:var(--util);font-size:clamp(9px,1vw,11px);
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);
+}
+.runhead b{font-weight:500;color:var(--ink)}
+
+/* type scale */
+.eyebrow{
+  font-family:var(--util);font-size:clamp(10px,1.05vw,12px);
+  letter-spacing:.2em;text-transform:uppercase;color:var(--artery);
+  margin-bottom:clamp(14px,2vh,22px);
+}
+.eyebrow.vein{color:var(--vein)}
+h1{
+  font-family:var(--display);font-weight:800;
+  font-size:clamp(38px,7.4vw,104px);line-height:.94;
+  letter-spacing:-.03em;
+}
+h2{
+  font-family:var(--display);font-weight:600;
+  font-size:clamp(28px,4.9vw,64px);line-height:1.02;letter-spacing:-.02em;
+}
+h3{
+  font-family:var(--display);font-weight:600;
+  font-size:clamp(20px,2.5vw,32px);line-height:1.12;letter-spacing:-.01em;
+}
+.lede{
+  font-family:var(--body);font-weight:300;
+  font-size:clamp(17px,2vw,27px);line-height:1.42;color:var(--ink-soft);
+  max-width:24ch;
+}
+.lede.wide{max-width:38ch}
+.small{
+  font-family:var(--util);font-size:clamp(11px,1.15vw,13px);
+  line-height:1.6;color:var(--ink-soft);letter-spacing:.01em;
+}
+
+.mid{flex:1;display:flex;flex-direction:column;justify-content:center;min-height:0}
+.mid.top{justify-content:flex-start;padding-top:clamp(12px,3vh,32px)}
+.hold{max-width:1180px;width:100%;margin:0 auto}
+
+/* ---- title plate ---- */
+.title-meta{
+  margin-top:clamp(24px,4.4vh,48px);display:flex;flex-wrap:wrap;gap:10px 26px;
+  font-family:var(--util);font-size:clamp(11px,1.15vw,13px);
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);
+}
+.rule{height:1px;background:var(--ink);opacity:.85;margin:clamp(18px,3vh,30px) 0;max-width:180px}
+.sub-title{
+  font-family:var(--body);font-style:italic;font-weight:300;
+  font-size:clamp(22px,3.4vw,46px);line-height:1.16;color:var(--ink-soft);
+  margin-top:clamp(8px,1.6vh,16px);
+}
+
+/* ---- big statement ---- */
+.statement{
+  font-family:var(--display);font-weight:800;
+  font-size:clamp(34px,6.6vw,92px);line-height:.98;letter-spacing:-.03em;
+  max-width:16ch;
+}
+.statement em{font-family:var(--body);font-style:italic;font-weight:300;letter-spacing:-.01em}
+
+/* ---- the two numbers ---- */
+.ledger{display:grid;grid-template-columns:1fr;gap:clamp(20px,3.4vh,40px)}
+@media(min-width:860px){.ledger{grid-template-columns:1fr 1fr;gap:0}}
+.ledger-col{padding:clamp(18px,2.6vw,34px) 0}
+@media(min-width:860px){
+  .ledger-col+.ledger-col{border-left:1px solid var(--hair);padding-left:clamp(28px,4vw,56px)}
+  .ledger-col:first-child{padding-right:clamp(28px,4vw,56px)}
+}
+.figure{
+  font-family:var(--display);font-weight:800;
+  font-size:clamp(52px,9.4vw,128px);line-height:.86;letter-spacing:-.045em;
+}
+.figure.a{color:var(--artery)}
+.figure.v{color:var(--vein)}
+.figure-tag{
+  font-family:var(--util);font-size:clamp(11px,1.2vw,14px);
+  letter-spacing:.16em;text-transform:uppercase;margin-top:14px;
+}
+.figure-note{font-family:var(--body);font-weight:300;font-size:clamp(15px,1.6vw,20px);color:var(--ink-soft);margin-top:8px}
+
+/* ---- checklist table ---- */
+.checks{width:100%;border-collapse:collapse;font-family:var(--body)}
+.checks tr{border-top:1px solid var(--hair-faint)}
+.checks tr:last-child{border-bottom:1px solid var(--hair-faint)}
+.checks td{padding:clamp(11px,1.9vh,20px) 0;vertical-align:baseline}
+.checks .k{
+  font-family:var(--util);font-weight:500;font-size:clamp(11px,1.25vw,15px);
+  letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;
+  padding-right:clamp(18px,3vw,44px);width:1%;
+}
+.checks .q{font-weight:300;font-size:clamp(15px,1.9vw,26px);line-height:1.3;color:var(--ink-soft)}
+.checks .n{
+  font-family:var(--util);font-size:clamp(10px,1vw,12px);color:var(--artery);
+  padding-right:clamp(12px,1.8vw,22px);width:1%;
+}
+
+/* ---- verdict cards ---- */
+.verdicts{display:grid;grid-template-columns:1fr;gap:clamp(16px,2.4vh,26px)}
+@media(min-width:860px){.verdicts{grid-template-columns:1fr 1fr;gap:clamp(20px,2.6vw,36px)}}
+.verdict{border:1px solid var(--hair);padding:clamp(18px,2.6vw,32px);background:rgba(255,255,255,.34)}
+.verdict.pass{border-color:var(--artery)}
+.verdict.fail{border-color:var(--vein)}
+.verdict-tag{
+  font-family:var(--util);font-size:clamp(10px,1.05vw,12px);
+  letter-spacing:.18em;text-transform:uppercase;margin-bottom:14px;
+}
+.verdict.pass .verdict-tag{color:var(--artery)}
+.verdict.fail .verdict-tag{color:var(--vein)}
+.verdict-body{font-family:var(--body);font-weight:300;font-size:clamp(17px,2.1vw,28px);line-height:1.26}
+.verdict-why{
+  font-family:var(--util);font-size:clamp(10px,1.05vw,12.5px);color:var(--ink-soft);
+  margin-top:16px;letter-spacing:.06em;line-height:1.7;
+}
+
+/* ---- plain lists ---- */
+.stack{list-style:none;display:flex;flex-direction:column}
+.stack li{
+  border-top:1px solid var(--hair-faint);
+  padding:clamp(10px,1.7vh,18px) 0;
+  font-family:var(--body);font-weight:300;
+  font-size:clamp(17px,2.35vw,32px);line-height:1.22;
+}
+.stack li:last-child{border-bottom:1px solid var(--hair-faint)}
+.stack .cue{
+  display:block;font-family:var(--util);font-size:clamp(10px,1vw,12px);
+  letter-spacing:.14em;text-transform:uppercase;color:var(--vein);margin-top:8px;
+}
+
+/* ---- ladder ---- */
+.ladder{display:grid;grid-template-columns:1fr;gap:clamp(12px,1.8vh,18px)}
+@media(min-width:760px){.ladder{grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,24px)}}
+.rung{border:1px solid var(--hair);padding:clamp(16px,2.2vw,28px);position:relative;background:rgba(255,255,255,.3)}
+.rung.here{border-color:var(--artery);background:rgba(176,31,60,.06)}
+.rung-n{font-family:var(--util);font-size:clamp(10px,1vw,12px);letter-spacing:.18em;color:var(--ink-soft)}
+.rung h3{margin:10px 0 8px}
+.rung p{font-family:var(--body);font-weight:300;font-size:clamp(14px,1.5vw,19px);line-height:1.35;color:var(--ink-soft)}
+.rung.here .rung-n{color:var(--artery)}
+
+/* ---- specimen diagram ---- */
+.specimen{width:100%;max-width:1080px;margin:0 auto;display:block}
+.specimen text{font-family:var(--util);letter-spacing:.13em}
+.legend{
+  display:flex;flex-wrap:wrap;gap:12px 30px;justify-content:center;
+  margin-top:clamp(16px,2.6vh,28px);
+  font-family:var(--util);font-size:clamp(10px,1.05vw,12px);
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);
+}
+.swatch{display:inline-flex;align-items:center;gap:9px}
+.swatch i{width:26px;height:0;border-top:2px solid var(--artery);display:inline-block}
+.swatch.v i{border-top:2px dashed var(--vein)}
+
+/* ---- split layout ---- */
+.split{display:grid;grid-template-columns:1fr;gap:clamp(20px,3.2vh,34px);align-items:start}
+@media(min-width:900px){.split{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(34px,5vw,80px)}}
+.trap{
+  border-left:2px solid var(--vein);padding:clamp(12px,1.6vw,18px) 0 clamp(12px,1.6vw,18px) clamp(16px,2vw,24px);
+  margin-top:clamp(18px,2.6vh,30px);
+}
+.trap-tag{
+  font-family:var(--util);font-size:clamp(10px,1vw,12px);letter-spacing:.16em;
+  text-transform:uppercase;color:var(--vein);margin-bottom:9px;
+}
+.trap p{font-family:var(--body);font-weight:300;font-size:clamp(15px,1.7vw,22px);line-height:1.34}
+
+.quote{
+  font-family:var(--body);font-style:italic;font-weight:300;
+  font-size:clamp(20px,2.9vw,42px);line-height:1.24;
+}
+.pill-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:clamp(16px,2.4vh,26px)}
+.pill{
+  font-family:var(--util);font-size:clamp(10px,1.1vw,13px);letter-spacing:.14em;
+  text-transform:uppercase;border:1px solid var(--hair);padding:9px 15px;color:var(--ink-soft);
+}
+
+/* ---- section divider ---- */
+.divider-num{
+  font-family:var(--display);font-weight:800;
+  font-size:clamp(90px,20vw,260px);line-height:.78;letter-spacing:-.05em;
+  color:var(--artery);opacity:.16;
+}
+.divider-body{margin-top:clamp(-26px,-3vh,-14px)}
+
+/* ---- ask list ---- */
+.asks{list-style:none}
+.asks li{
+  font-family:var(--display);font-weight:600;
+  font-size:clamp(20px,3vw,42px);line-height:1.16;letter-spacing:-.015em;
+  padding:clamp(8px,1.3vh,14px) 0;
+}
+.asks li::before{content:"→ ";color:var(--artery);font-family:var(--util);font-size:.62em;vertical-align:middle}
+
+/* ---- animated mini diagrams ---- */
+.mini{width:100%;max-width:430px;display:block;margin-top:clamp(18px,3vh,32px);overflow:visible}
+.mini text{font-family:var(--util);font-size:11px;letter-spacing:.12em;fill:var(--ink)}
+.mini .nd{fill:rgba(255,255,255,.5);stroke:var(--ink);stroke-width:1.5}
+.mini .cn{fill:none;stroke:var(--artery);stroke-width:2}
+.mini .cv{fill:none;stroke:var(--vein);stroke-width:2;stroke-dasharray:6 5}
+.mini .pk{fill:var(--artery)}
+.mini .pkv{fill:var(--vein)}
+.mini .ndv{fill:rgba(255,255,255,.5);stroke:var(--vein);stroke-width:1.5;stroke-dasharray:6 5}
+.mini .ring{fill:none;stroke:var(--artery);stroke-width:1.5;transform-box:fill-box;transform-origin:center}
+.is-live .ring{animation:ringOut 2.6s ease-out infinite}
+.is-live .d-tg{animation:tgFlow 2.6s ease-in-out infinite}
+.is-live .d-acA{animation:acA 3s ease-in-out infinite}
+.is-live .d-acB{animation:acB 3s ease-in-out infinite}
+.is-live .d-lgA{animation:lgA 3.4s ease-in-out infinite}
+.is-live .d-lgB{animation:lgB 3.4s ease-in-out infinite}
+.is-live .d-erA{animation:erA 4.2s ease-in-out infinite}
+.is-live .d-erB{animation:erB 4.2s ease-in-out infinite}
+.is-live .fails{animation:failFlash 4.2s ease-in-out infinite}
+@keyframes ringOut{0%{transform:scale(.55);opacity:.65}100%{transform:scale(2.3);opacity:0}}
+@keyframes tgFlow{0%{transform:translateX(0);opacity:0}12%{opacity:1}62%{transform:translateX(92px);opacity:1}74%{transform:translateX(92px);opacity:0}100%{transform:translateX(92px);opacity:0}}
+@keyframes acA{0%{transform:translateX(0);opacity:0}8%{opacity:1}38%{transform:translateX(28px);opacity:1}46%,100%{transform:translateX(28px);opacity:0}}
+@keyframes acB{0%,46%{transform:translateX(0);opacity:0}54%{opacity:1}84%{transform:translateX(28px);opacity:1}92%,100%{transform:translateX(28px);opacity:0}}
+@keyframes lgA{0%{transform:translate(0,0);opacity:0}6%{opacity:1}44%{transform:translate(104px,-27px);opacity:1}52%{opacity:0}100%{transform:translate(104px,-27px);opacity:0}}
+@keyframes lgB{0%,50%{transform:translate(0,0);opacity:0}56%{opacity:1}94%{transform:translate(104px,27px);opacity:1}100%{opacity:0}}
+@keyframes erA{0%{transform:translateX(0);opacity:0}8%{opacity:1}30%{transform:translateX(28px);opacity:1}38%,100%{transform:translateX(28px);opacity:0}}
+@keyframes erB{0%,52%{transform:translateY(0);opacity:0}58%{opacity:1}86%{transform:translateY(20px);opacity:1}94%,100%{transform:translateY(20px);opacity:0}}
+@keyframes failFlash{0%,30%{stroke:var(--ink)}40%,64%{stroke:var(--vein)}74%,100%{stroke:var(--ink)}}
+
+/* ---- animated specimen (slide 11) ---- */
+.specimen .dot{offset-rotate:0deg;opacity:0}
+.sp-a{offset-path:path("M196,180 C226,180 226,180 252,180")}
+.sp-b{offset-path:path("M400,180 C430,180 430,180 456,180")}
+.sp-c{offset-path:path("M604,158 C640,158 640,120 676,120")}
+.sp-d{offset-path:path("M604,202 C640,202 640,244 676,244")}
+.sp-e{offset-path:path("M528,214 C528,326 596,343 668,343")}
+.is-live .sp-a{animation:spA 9s linear infinite}
+.is-live .sp-b{animation:spB 9s linear infinite}
+.is-live .sp-c{animation:spC 9s linear infinite}
+.is-live .sp-d{animation:spD 9s linear infinite}
+.is-live .sp-e{animation:spE 9s linear infinite}
+.is-live .sp-alert{animation:spAlert 9s linear infinite}
+@keyframes spA{0%{offset-distance:0%;opacity:0}2%{opacity:1}8%{offset-distance:100%;opacity:1}10%{offset-distance:100%;opacity:0}36%{offset-distance:0%;opacity:0}38%{opacity:1}44%{offset-distance:100%;opacity:1}46%,100%{offset-distance:100%;opacity:0}}
+@keyframes spB{0%,11%{offset-distance:0%;opacity:0}13%{opacity:1}19%{offset-distance:100%;opacity:1}21%{offset-distance:100%;opacity:0}47%{offset-distance:0%;opacity:0}49%{opacity:1}55%{offset-distance:100%;opacity:1}57%,100%{offset-distance:100%;opacity:0}}
+@keyframes spC{0%,22%{offset-distance:0%;opacity:0}24%{opacity:1}33%{offset-distance:100%;opacity:1}36%,100%{offset-distance:100%;opacity:0}}
+@keyframes spD{0%,58%{offset-distance:0%;opacity:0}60%{opacity:1}69%{offset-distance:100%;opacity:1}72%,100%{offset-distance:100%;opacity:0}}
+@keyframes spE{0%,74%{offset-distance:0%;opacity:0}76%{opacity:1}90%{offset-distance:100%;opacity:1}94%,100%{offset-distance:100%;opacity:0}}
+@keyframes spAlert{0%,86%{stroke-width:1.5}91%{stroke-width:3.5}97%,100%{stroke-width:1.5}}
+
+/* ---- HUD ---- */
+.hud{
+  position:fixed;z-index:4;left:clamp(26px,3.6vw,42px);right:clamp(26px,3.6vw,42px);
+  bottom:clamp(20px,3vw,34px);
+  display:flex;align-items:center;gap:clamp(12px,2vw,22px);
+  font-family:var(--util);font-size:clamp(9px,1vw,11px);
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);
+}
+.track{flex:1;height:1px;background:var(--hair-faint);position:relative}
+.track span{position:absolute;inset:0 auto 0 0;background:var(--artery);width:0;transition:width .4s cubic-bezier(.2,.7,.3,1)}
+.hud button{
+  font:inherit;letter-spacing:.14em;text-transform:uppercase;
+  background:none;border:1px solid var(--hair);color:var(--ink-soft);
+  padding:7px 12px;cursor:pointer;
+}
+.hud button:hover{color:var(--ink);border-color:var(--ink)}
+:focus-visible{outline:2px solid var(--artery);outline-offset:3px}
+
+/* ---- notes ---- */
+.notes{
+  position:fixed;z-index:6;right:0;top:0;bottom:0;width:min(400px,88vw);
+  background:var(--ink);color:var(--paper);
+  padding:clamp(28px,4vw,44px);
+  transform:translateX(101%);transition:transform .34s cubic-bezier(.2,.7,.3,1);
+  overflow-y:auto;
+}
+.notes.open{transform:none}
+.notes h4{
+  font-family:var(--util);font-weight:500;font-size:11px;letter-spacing:.2em;
+  text-transform:uppercase;color:#E08094;margin-bottom:22px;
+}
+.notes p{font-family:var(--body);font-weight:300;font-size:17px;line-height:1.6;margin-bottom:15px;opacity:.94}
+.notes .clock{
+  font-family:var(--util);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:#8FB4DA;border-top:1px solid rgba(231,234,236,.2);border-bottom:1px solid rgba(231,234,236,.2);
+  padding:12px 0;margin-bottom:20px;
+}
+.notes .cuehead{
+  font-family:var(--util);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:#8FB4DA;margin:26px 0 10px;
+}
+
+/* ---- edge click zones ---- */
+.zone{position:fixed;top:0;bottom:64px;width:16vw;z-index:3;cursor:pointer;border:0;background:none;padding:0}
+.zone.prev{left:0}
+.zone.next{right:0}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+@media(max-width:640px){
+  .frame{display:none}
+  .zone{display:none}
+  .lede{max-width:100%}
+  .statement{max-width:100%}
+}
+</style>
+</head>
+<body>
+
+<div class="frame" aria-hidden="true"></div>
+
+<div class="runhead" aria-hidden="true">
+  <div><b>Anatomy of a Workflow</b> &nbsp;/&nbsp; n8n Community</div>
+</div>
+
+<main class="deck" id="deck">
+
+  <!-- 1 TITLE -->
+  <section class="plate" data-time="-" data-len="-" data-notes="Do not start talking over the room. Wait for quiet. Read the title once, then say: this is a twenty minute talk in two halves. First we pick the right task. Then we open one up and see what is inside.">
+    <div class="mid"><div class="hold">
+      <div class="eyebrow rise">n8n Community · 20 minutes</div>
+      <h1 class="rise">Anatomy of<br>a Workflow</h1>
+      <div class="sub-title rise">Choosing the right one</div>
+      <div class="rule rise"></div>
+      <div class="title-meta rise">
+        <span>Nyx · Nikko Cajayon</span>
+        <span>Automations &amp; AI Integration</span>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- 2 HOOK -->
+  <section class="plate" data-time="0:00" data-len="1:30" data-notes="Hold your own hand up the whole time and play along, or half the room won't join in. Five questions, read from the script, one at a time. Questions one and two are free and get everyone playing. Question four is the biggest laugh, so let it finish. Question five is the real one. Do not put the questions on screen, the surprise is the joke.">
+    <div class="mid"><div class="hold">
+      <div class="eyebrow rise">Everybody hold up five fingers</div>
+      <p class="statement rise">Put a finger <em>down</em> if&hellip;</p>
+      <p class="lede wide rise" style="margin-top:clamp(20px,3vh,34px)">Automation edition. Five questions. No lying.</p>
+    </div></div>
+  </section>
+
+  <!-- 3 THE TWO NUMBERS -->
+  <section class="plate" data-time="1:30" data-len="0:25" data-notes="The pause between the two numbers is the whole slide. Say the impressive one, stop, then say the one that hurts. Optional story: the weekend spent on a file renaming workflow while 200 form responses got copied by hand three times that same month.">
+    <div class="mid"><div class="hold">
+      <div class="eyebrow rise">Same person. Same month.</div>
+      <div class="ledger rise">
+        <div class="ledger-col">
+          <div class="figure a">4 min</div>
+          <div class="figure-tag">Saved per month</div>
+          <p class="figure-note">The workflow I spent a weekend building.</p>
+        </div>
+        <div class="ledger-col">
+          <div class="figure v">6 hrs</div>
+          <div class="figure-tag">Spent per week</div>
+          <p class="figure-note">The task I never touched.</p>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- 4 PIVOT -->
+  <section class="plate" data-time="1:55" data-len="0:15" data-notes="Slow down here. This is the thesis of the first half. Say it, then stop for two full seconds before moving on.">
+    <div class="mid"><div class="hold">
+      <p class="statement rise">Annoyance is not the same as cost.</p>
+      <p class="lede wide rise" style="margin-top:clamp(20px,3vh,34px)">Most people automate what irritates them, not what drains them.</p>
+    </div></div>
+  </section>
+
+  <!-- 5 MAP -->
+  <section class="plate" data-time="2:10" data-len="0:15" data-notes="Set expectations out loud so nobody is guessing where you are going. Say the last line exactly: that is the whole talk.">
+    <div class="mid"><div class="hold">
+      <div class="eyebrow rise">What we are doing</div>
+      <ul class="stack rise" style="margin-top:clamp(10px,2vh,20px)">
+        <li>Pick the right task to automate.</li>
+        <li>Open one up and see what is inside.</li>
+      </ul>
+      <p class="lede rise" style="margin-top:clamp(20px,3vh,32px)">That's the whole talk.</p>
+    </div></div>
+  </section>
+
+  <!-- 6 PART 1 -->
+  <section class="plate" data-time="2:25" data-len="0:05" data-notes="Short divider. Do not linger. Six minutes for this whole section, so keep moving.">
+    <div class="mid"><div class="hold">
+      <div class="divider-num rise">01</div>
+      <div class="divider-body rise">
+        <h2>Choosing the right one</h2>
+        <p class="lede" style="margin-top:16px">Before you drag a single node.</p>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- 7 FIVE CHECKS -->
+  <section class="plate" data-time="2:30" data-len="1:20" data-notes="One slide, no build animation. Read each check as a question the room can answer about their own work. Land the rule: a good first automation passes all five, not three out of five.">
+    <div class="mid top"><div class="hold">
+      <div class="eyebrow rise">The filter</div>
+      <h3 class="rise" style="margin-bottom:clamp(16px,2.6vh,28px)">A good first automation passes all five.</h3>
+      <table class="checks rise">
+        <tr><td class="n">01</td><td class="k">Repetitive</td><td class="q">Do I do this the same way every time?</td></tr>
+        <tr><td class="n">02</td><td class="k">Rule-based</td><td class="q">Can I write the decision as if this, then that?</td></tr>
+        <tr><td class="n">03</td><td class="k">High volume</td><td class="q">Does it happen often enough to matter?</td></tr>
+        <tr><td class="n">04</td><td class="k">Low stakes</td><td class="q">If it breaks quietly for a day, is anyone harmed?</td></tr>
+        <tr><td class="n">05</td><td class="k">Stable</td><td class="q">Has this process stayed the same for months?</td></tr>
+      </table>
+    </div></div>
+  </section>
+
+  <!-- 8 TWO EXAMPLES -->
+  <section class="plate" data-time="3:50" data-len="0:55" data-notes="Run both live against the five checks on the previous slide. Two examples only, not three. The failing one teaches more, so spend the extra thirty seconds there.">
+    <div class="mid"><div class="hold">
+      <div class="eyebrow rise">Run two through the filter</div>
+      <div class="verdicts rise">
+        <div class="verdict pass">
+          <div class="verdict-tag">Passes all five</div>
+          <p class="verdict-body">New form response → log to a sheet → post to the team channel.</p>
+          <p class="verdict-why">Same every time · clear rules · daily · nobody harmed if it stalls</p>
+        </div>
+        <div class="verdict fail">
+          <div class="verdict-tag">Fails two</div>
+          <p class="verdict-body">Deciding which client complaint gets a refund.</p>
+          <p class="verdict-why">Not rule-based · two reasonable people decide differently<br>Not low stakes · real money, real relationship</p>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- 9 NEVER LIST -->
+  <section class="plate" data-time="4:45" data-len="1:10" data-notes="Say the list fast, it is a list not a lecture. This is the part that earns trust, because you are the automation person telling them not to automate. Land the multiplier line, then add the ladder verbally: notify, draft, act. Most first automations belong on the first two rungs. Let AI write the draft, do not let it press send. No slide for the ladder, it is a spoken beat.">
+    <div class="mid top"><div class="hold">
+      <div class="eyebrow rise">The never list</div>
+      <ul class="stack rise">
+        <li>Judgment calls.</li>
+        <li>Money or legal weight, unsupervised.</li>
+        <li>Processes that change every week.</li>
+        <li>One-off tasks. Just do the task.</li>
+        <li>Broken processes.</li>
+      </ul>
+      <p class="quote rise" style="margin-top:clamp(20px,3.2vh,34px)">Automation multiplies whatever you point it at. Point it at something good.</p>
+    </div></div>
+  </section>
+
+  <!-- 11 PART 2 -->
+  <section class="plate" data-time="5:55" data-len="0:05" data-notes="Transition line: you have picked a task. Now let's see what it actually looks like. Have the finished workflow open in the next tab.">
+    <div class="mid"><div class="hold">
+      <div class="divider-num rise">02</div>
+      <div class="divider-body rise">
+        <h2>The anatomy</h2>
+        <p class="lede" style="margin-top:16px">Four parts. Every workflow, every time.</p>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- 12 SPECIMEN -->
+  <section class="plate" data-time="6:00" data-len="1:15" data-notes="This is the anchor image for the whole second half. The diagram runs a nine second loop: data flows in, routes up one branch, then the next pass routes down the other, then the error path fires and the alert box pulses. Let one full loop play before you speak. Then point at each label and say the four names out loud before explaining any of them.">
+    <div class="mid"><div class="hold">
+      <div class="eyebrow rise" style="text-align:center">Plate 01 · The four parts</div>
+      <svg class="specimen rise" viewBox="0 0 1000 420" role="img" aria-label="Diagram of a workflow labelled with its four parts: trigger, action, logic and error path">
+        <defs>
+          <marker id="tipA" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L9,4.5 L0,9 z" fill="#B01F3C"/>
+          </marker>
+          <marker id="tipV" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L9,4.5 L0,9 z" fill="#33608E"/>
+          </marker>
+        </defs>
+
+        <!-- happy path connections -->
+        <g fill="none" stroke="#B01F3C" stroke-width="2" marker-end="url(#tipA)">
+          <path d="M196,180 C226,180 226,180 252,180"/>
+          <path d="M400,180 C430,180 430,180 456,180"/>
+          <path d="M604,158 C640,158 640,120 676,120"/>
+        </g>
+        <path d="M604,202 C640,202 640,244 676,244" fill="none" stroke="#B01F3C" stroke-width="2" marker-end="url(#tipA)"/>
+
+        <!-- error path -->
+        <path d="M528,214 C528,326 596,343 668,343" fill="none" stroke="#33608E" stroke-width="2" stroke-dasharray="7 6" marker-end="url(#tipV)"/>
+
+        <!-- nodes -->
+        <g stroke="#101724" stroke-width="1.5" fill="#F3F5F6">
+          <rect x="76" y="146" width="120" height="68" rx="34"/>
+          <rect x="252" y="146" width="148" height="68" rx="6"/>
+          <rect x="456" y="146" width="148" height="68" rx="6"/>
+          <rect x="676" y="86" width="148" height="68" rx="6"/>
+          <rect x="676" y="210" width="148" height="68" rx="6"/>
+        </g>
+        <rect class="sp-alert" x="676" y="310" width="164" height="66" rx="6" fill="#F3F5F6" stroke="#33608E" stroke-width="1.5" stroke-dasharray="7 6"/>
+
+        <!-- node labels -->
+        <g fill="#101724" font-size="12.5" text-anchor="middle">
+          <text x="136" y="185">FORM</text>
+          <text x="326" y="185">GET DATA</text>
+          <text x="530" y="185">IF · NEW?</text>
+          <text x="750" y="125">ADD ROW</text>
+          <text x="750" y="249">POST MSG</text>
+        </g>
+        <text x="758" y="348" fill="#33608E" font-size="12.5" text-anchor="middle">ALERT ME</text>
+
+        <!-- leader lines -->
+        <g stroke="#101724" stroke-width="1" opacity=".5">
+          <path d="M136,146 L136,72 L188,72" fill="none"/>
+          <path d="M326,214 L326,290 L272,290" fill="none"/>
+          <path d="M530,146 L530,64 L586,64" fill="none"/>
+          <path d="M758,376 L758,398 L694,398" fill="none"/>
+        </g>
+        <g stroke="#101724" fill="#101724" opacity=".5">
+          <circle cx="136" cy="146" r="2.6"/><circle cx="326" cy="214" r="2.6"/>
+          <circle cx="530" cy="146" r="2.6"/><circle cx="758" cy="376" r="2.6"/>
+        </g>
+
+        <!-- callout labels -->
+        <g font-size="13" font-weight="500">
+          <text x="196" y="76" fill="#B01F3C">TRIGGER</text>
+          <text x="264" y="294" fill="#B01F3C" text-anchor="end">ACTION</text>
+          <text x="594" y="68" fill="#B01F3C">LOGIC</text>
+          <text x="686" y="402" fill="#33608E" text-anchor="end">ERROR PATH</text>
+        </g>
+
+        <g>
+          <circle class="dot sp-a" cx="0" cy="0" r="5.5" fill="#B01F3C"/>
+          <circle class="dot sp-b" cx="0" cy="0" r="5.5" fill="#B01F3C"/>
+          <circle class="dot sp-c" cx="0" cy="0" r="5.5" fill="#B01F3C"/>
+          <circle class="dot sp-d" cx="0" cy="0" r="5.5" fill="#B01F3C"/>
+          <circle class="dot sp-e" cx="0" cy="0" r="5.5" fill="#33608E"/>
+        </g>
+      </svg>
+      <div class="legend rise">
+        <span class="swatch"><i></i> The happy path</span>
+        <span class="swatch v"><i></i> When it breaks</span>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- 13 TRIGGER -->
+  <section class="plate" data-time="7:15" data-len="1:10" data-notes="Two minutes. The teaching point under the surface: the trigger decides your cost and your reliability. Polling every minute is not the same as a webhook.">
+    <div class="mid"><div class="hold">
+      <div class="split">
+        <div>
+          <div class="eyebrow rise">Part one of four</div>
+          <h2 class="rise">Trigger</h2>
+          <p class="lede rise" style="margin-top:14px">What wakes it up.</p>
+          <svg class="mini rise" viewBox="0 0 430 110" role="img" aria-label="Something outside pings a trigger node, which wakes the workflow up">
+            <circle class="ring" cx="34" cy="55" r="13"/>
+            <circle cx="34" cy="55" r="8" fill="var(--artery)"/>
+            <line x1="48" y1="55" x2="156" y2="55" class="cn"/>
+            <rect class="nd" x="162" y="30" width="180" height="50" rx="6"/>
+            <text x="252" y="59" text-anchor="middle">TRIGGER</text>
+            <g class="d-tg"><circle cx="58" cy="55" r="4.5" class="pk"/></g>
+          </svg>
+        </div>
+        <div>
+          <ul class="stack rise">
+            <li>Schedule<span class="cue">Runs on a clock, whether anything happened or not</span></li>
+            <li>Event<span class="cue">Something outside pokes it. A webhook, a new email</span></li>
+            <li>Manual<span class="cue">You press play. Mostly for testing</span></li>
+          </ul>
+          <div class="trap rise">
+            <div class="trap-tag">Common trap</div>
+            <p>Building on a schedule when an event trigger existed all along.</p>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- 14 ACTION -->
+  <section class="plate" data-time="8:25" data-len="1:20" data-notes="Say the API line out loud, it unlocks a lot for the technical half of the room. Then switch to the app and show the input panel and output panel side by side, slowly. This is the single most clarifying visual in the talk. Do not rush it.">
+    <div class="mid"><div class="hold">
+      <div class="split">
+        <div>
+          <div class="eyebrow rise">Part two of four</div>
+          <h2 class="rise">Action</h2>
+          <p class="lede rise" style="margin-top:14px">What it actually does.</p>
+          <div class="pill-row rise">
+            <span class="pill">Send</span><span class="pill">Create</span>
+            <span class="pill">Update</span><span class="pill">Fetch</span>
+          </div>
+          <svg class="mini rise" viewBox="0 0 430 110" role="img" aria-label="Data moving forward through three action nodes in a row">
+            <line x1="122" y1="55" x2="158" y2="55" class="cn"/>
+            <line x1="272" y1="55" x2="308" y2="55" class="cn"/>
+            <rect class="nd" x="8" y="31" width="114" height="48" rx="6"/>
+            <rect class="nd" x="158" y="31" width="114" height="48" rx="6"/>
+            <rect class="nd" x="308" y="31" width="114" height="48" rx="6"/>
+            <text x="65" y="59" text-anchor="middle">FETCH</text>
+            <text x="215" y="59" text-anchor="middle">UPDATE</text>
+            <text x="365" y="59" text-anchor="middle">SEND</text>
+            <g class="d-acA"><circle cx="126" cy="55" r="4.5" class="pk"/></g>
+            <g class="d-acB"><circle cx="276" cy="55" r="4.5" class="pk"/></g>
+          </svg>
+        </div>
+        <div>
+          <p class="quote rise">Every action node is an API call wearing a friendly interface.</p>
+          <div class="trap rise">
+            <div class="trap-tag">The thing to remember</div>
+            <p>Data flows forward. Each node only knows what the node before it handed over.</p>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- 15 LOGIC -->
+  <section class="plate" data-time="9:45" data-len="1:10" data-notes="Add one IF node live so the room watches a straight line become a fork. That single moment teaches logic better than any slide. Mention the n8n specific trap: it loops over items automatically, so most people add a loop node they never needed.">
+    <div class="mid"><div class="hold">
+      <div class="split">
+        <div>
+          <div class="eyebrow rise">Part three of four</div>
+          <h2 class="rise">Logic</h2>
+          <p class="lede rise" style="margin-top:14px">The decisions in between.</p>
+          <svg class="mini rise" viewBox="0 0 430 140" role="img" aria-label="An IF node forking into two branches, with data alternating between them">
+            <line x1="134" y1="60" x2="243" y2="33" class="cn"/>
+            <line x1="134" y1="80" x2="243" y2="107" class="cn"/>
+            <rect class="nd" x="8" y="46" width="122" height="48" rx="6"/>
+            <text x="69" y="74" text-anchor="middle">IF</text>
+            <rect class="nd" x="246" y="10" width="176" height="46" rx="6"/>
+            <rect class="nd" x="246" y="84" width="176" height="46" rx="6"/>
+            <text x="334" y="37" text-anchor="middle">PATH A</text>
+            <text x="334" y="111" text-anchor="middle">PATH B</text>
+            <g class="d-lgA"><circle cx="138" cy="60" r="4.5" class="pk"/></g>
+            <g class="d-lgB"><circle cx="138" cy="80" r="4.5" class="pk"/></g>
+          </svg>
+        </div>
+        <div>
+          <ul class="stack rise">
+            <li>Branch<span class="cue">Different paths for different data</span></li>
+            <li>Loop<span class="cue">Do it once per item</span></li>
+            <li>Merge<span class="cue">Bring the paths back together</span></li>
+            <li>Wait<span class="cue">Pause, rate limit, or hold for a reply</span></li>
+          </ul>
+          <p class="quote rise" style="margin-top:clamp(18px,2.6vh,28px)">Logic is where a workflow stops being a script and starts being a process.</p>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- 16 ERROR PATH -->
+  <section class="plate" data-time="10:55" data-len="1:20" data-notes="Ask the question and actually wait. Someone will say nothing happens. Say: right, and nothing is the problem. Beginners hear a habit, engineers hear production discipline. THEN STOP PRESENTING. Switch to the app, open a messy workflow they have not seen, and run the four read-it-back questions for two minutes. Come back to the deck for the close.">
+    <div class="mid"><div class="hold">
+      <div class="split">
+        <div>
+          <div class="eyebrow vein rise">Part four of four · the one everyone skips</div>
+          <h2 class="rise">What happens at 3am?</h2>
+          <p class="lede rise" style="margin-top:14px">When the API is down and nobody is watching.</p>
+          <svg class="mini rise" viewBox="0 0 430 152" role="img" aria-label="An action fails, and a dashed error path fires an alert instead of failing silently">
+            <line x1="142" y1="44" x2="178" y2="44" class="cn"/>
+            <rect class="nd" x="8" y="20" width="134" height="48" rx="6"/>
+            <rect class="nd fails" x="178" y="20" width="134" height="48" rx="6"/>
+            <text x="75" y="48" text-anchor="middle">ACTION</text>
+            <text x="245" y="48" text-anchor="middle">SEND</text>
+            <line x1="245" y1="70" x2="245" y2="96" class="cv"/>
+            <rect class="ndv" x="178" y="98" width="184" height="46" rx="6"/>
+            <text x="270" y="126" text-anchor="middle" fill="var(--vein)">ALERT ME</text>
+            <g class="d-erA"><circle cx="146" cy="44" r="4.5" class="pk"/></g>
+            <g class="d-erB"><circle cx="245" cy="74" r="4.5" class="pkv"/></g>
+          </svg>
+        </div>
+        <div>
+          <p class="statement rise" style="font-size:clamp(26px,4.2vw,54px);color:var(--vein)">Nothing. And nothing is the problem.</p>
+          <div class="trap rise">
+            <div class="trap-tag">The rule to give them</div>
+            <p>Every workflow that touches something real gets an error path, or it doesn't go live.</p>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- 18 CLOSE -->
+  <section class="plate" data-time="14:15" data-len="0:45" data-notes="Two lines, then stop talking. Do not add a summary. Do not thank them for their time yet. Let the second line be the last thing they hear before questions.">
+    <div class="mid"><div class="hold">
+      <p class="statement rise" style="max-width:20ch">Every workflow is a trigger, some actions, some logic, and a plan for when it breaks.</p>
+      <div class="rule rise"></div>
+      <p class="quote rise">Pick the boring, frequent, forgiving task. That's your first one.</p>
+    </div></div>
+  </section>
+
+</main>
+
+<button class="zone prev" id="zPrev" aria-label="Previous slide"></button>
+<button class="zone next" id="zNext" aria-label="Next slide"></button>
+
+<div class="hud">
+  <span id="counter">01 / 19</span>
+  <div class="track"><span id="bar"></span></div>
+  <button id="btnNotes" aria-pressed="false">Notes · N</button>
+</div>
+
+<aside class="notes" id="notes" aria-live="polite">
+  <h4>Speaker notes</h4>
+  <div class="clock" id="clock"></div>
+  <div id="noteBody"></div>
+  <div class="cuehead">Navigation</div>
+  <p>Arrow keys or space to move. F for fullscreen. N to close these notes.</p>
+</aside>
+
+<script>
+(function(){
+  var plates = Array.prototype.slice.call(document.querySelectorAll('.plate'));
+  var i = 0;
+  var counter = document.getElementById('counter');
+  var bar = document.getElementById('bar');
+  var noteBody = document.getElementById('noteBody');
+  var clock = document.getElementById('clock');
+  var notes = document.getElementById('notes');
+  var btnNotes = document.getElementById('btnNotes');
+
+  function pad(n){ return n < 10 ? '0' + n : '' + n; }
+
+  function render(){
+    plates.forEach(function(p, n){ p.classList.toggle('is-live', n === i); });
+    counter.textContent = pad(i + 1) + ' / ' + pad(plates.length);
+    bar.style.width = ((i) / (plates.length - 1) * 100) + '%';
+    var t = plates[i].dataset.time, L = plates[i].dataset.len;
+    clock.textContent = (t && t !== '-') ? ('Start ' + t + '  ·  ' + L + ' on this slide') : 'Before you begin';
+    noteBody.innerHTML = '<p>' + (plates[i].dataset.notes || 'No notes for this slide.') + '</p>';
+  }
+  function go(n){
+    i = Math.max(0, Math.min(plates.length - 1, n));
+    render();
+  }
+  function toggleNotes(){
+    var open = notes.classList.toggle('open');
+    btnNotes.setAttribute('aria-pressed', open ? 'true' : 'false');
+  }
+
+  document.addEventListener('keydown', function(e){
+    var k = e.key;
+    if(k === 'ArrowRight' || k === 'ArrowDown' || k === ' ' || k === 'PageDown'){ e.preventDefault(); go(i + 1); }
+    else if(k === 'ArrowLeft' || k === 'ArrowUp' || k === 'PageUp'){ e.preventDefault(); go(i - 1); }
+    else if(k === 'Home'){ e.preventDefault(); go(0); }
+    else if(k === 'End'){ e.preventDefault(); go(plates.length - 1); }
+    else if(k === 'n' || k === 'N'){ toggleNotes(); }
+    else if(k === 'f' || k === 'F'){
+      if(document.fullscreenElement){ document.exitFullscreen(); }
+      else if(document.documentElement.requestFullscreen){ document.documentElement.requestFullscreen(); }
+    }
+  });
+
+  document.getElementById('zNext').addEventListener('click', function(){ go(i + 1); });
+  document.getElementById('zPrev').addEventListener('click', function(){ go(i - 1); });
+  btnNotes.addEventListener('click', toggleNotes);
+
+  var x0 = null;
+  document.addEventListener('touchstart', function(e){ x0 = e.changedTouches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if(x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if(Math.abs(dx) > 55){ go(dx < 0 ? i + 1 : i - 1); }
+    x0 = null;
+  }, {passive:true});
+
+  render();
+})();
+</script>
+</body>
+</html>
